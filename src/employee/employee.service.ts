@@ -17,7 +17,8 @@ export class EmployeeService {
         const employee = await this.employeeRepository.create(dto);
         const role = await this.roleService.getRoleByValue("EMPLOYEE")
 
-        await employee.$set('roles',[role.role_id])// метод $set перезаписывает поле таблицы, если его нет то добавляет такой столбец
+        await employee.$set('role', role.role_id)// метод $set перезаписывает поле таблицы, если его нет то добавляет такой столбец
+        employee.role = role
 
         return employee;
     }
@@ -25,5 +26,10 @@ export class EmployeeService {
     async getAllEmployee() {
 
         return await this.employeeRepository.findAll({include: {all:true}});// все поля с которым связан пользователь будут подтягиваться
+    }
+
+    async getEmployeeByEmail(email: string) {
+
+       return await this.employeeRepository.findOne({where:{ email}, include: {all: true}});
     }
 }

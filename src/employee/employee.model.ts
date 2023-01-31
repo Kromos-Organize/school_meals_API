@@ -4,14 +4,14 @@ import {Role} from "../role/role.model";
 import {EmployeeRoles} from "../role/employee-role.model";
 
 interface EmployeeCreationAttrs {
-    class_id: number,
-    school_id: number,
+    // class_id: number,
+    // school_id: number,
     email: string,
     password: string,
     phone?: string,
     // type: number,
-    fname: string,
-    name: string,
+    fname?: string,
+    name?: string,
     lname?: string,
     birthday?: string
 }
@@ -23,13 +23,14 @@ export class Employee extends Model<Employee, EmployeeCreationAttrs> {
     @Column({type: DataType.INTEGER, unique: true, autoIncrement: true, primaryKey: true})
     employee_id: number;
 
-    @ApiProperty({example:'12', description:'ID класса'})
-    @Column({type: DataType.INTEGER, allowNull: false})
-    class_id: number;
-
-    @ApiProperty({example:'15', description:'ID школы'})
-    @Column({type: DataType.INTEGER, allowNull: false})
-    school_id: number;
+    // @ApiProperty({example:'12', description:'ID класса'})
+    // @Column({type: DataType.INTEGER, allowNull: false})
+    // class_id: number;
+    //
+    // @ApiProperty({example:'15', description:'ID школы'})
+    // @Column({type: DataType.INTEGER, allowNull: false})
+    // school_id: number;
+    // добавить отдельные таблицы для связывания
 
     @ApiProperty({example:'user@mail.ru', description:'Почтовый адрес'})
     @Column({type: DataType.STRING, unique: true, allowNull: false})
@@ -44,11 +45,11 @@ export class Employee extends Model<Employee, EmployeeCreationAttrs> {
     phone: string;
 
     @ApiProperty({example:'Шавлинский', description:'Фамилия сотрудника'})
-    @Column({type: DataType.STRING, allowNull: false})
+    @Column({type: DataType.STRING, allowNull: true})
     fname: string;
 
     @ApiProperty({example:'Роман', description:'Имя сотрудника'})
-    @Column({type: DataType.STRING, allowNull: false})
+    @Column({type: DataType.STRING, allowNull: true})
     name: string;
 
     @ApiProperty({example:'Игоревич', description:'Отчество сотрудника'})
@@ -60,7 +61,7 @@ export class Employee extends Model<Employee, EmployeeCreationAttrs> {
     birthday: string;
 
     @BelongsToMany(() => Role, () => EmployeeRoles) //для связывания таблиц многие ко многим
-    roles: Role[]
+    role: Role
 }
 
 // @Column({type: DataType.BOOLEAN, defaultValue: false})

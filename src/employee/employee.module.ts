@@ -12,8 +12,9 @@ import {RoleModule} from "../role/role.module";
     providers: [EmployeeService],
     imports: [
         SequelizeModule.forFeature([Employee, Role, EmployeeRoles]),//импорты моделей бд
-        RoleModule
-    ]
+        RoleModule,
+    ],
+    exports: [EmployeeService]
 })
 export class EmployeeModule {
 }

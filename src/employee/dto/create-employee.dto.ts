@@ -2,11 +2,11 @@ import {ApiProperty} from "@nestjs/swagger";
 
 export class CreateEmployeeDto { // неимеет смысловой нагрузки, служит для передачи данных клиент сервер - сервер сервер
 
-    @ApiProperty({example:'12', description:'ID класса'})
-    readonly class_id: number;
-
-    @ApiProperty({example:'15', description:'ID школы'})
-    readonly school_id: number;
+    // @ApiProperty({example:'12', description:'ID класса'})
+    // readonly class_id: number;
+    //
+    // @ApiProperty({example:'15', description:'ID школы'})
+    // readonly school_id: number;
 
     @ApiProperty({example:'user@mail.ru', description:'Почтовый адрес'})
     readonly email: string;
@@ -21,10 +21,10 @@ export class CreateEmployeeDto { // неимеет смысловой нагру
     // readonly type: number;
 
     @ApiProperty({example:'Шавлинский', description:'Фамилия сотрудника'})
-    readonly fname: string;
+    readonly fname?: string;
 
     @ApiProperty({example:'Роман', description:'Имя сотрудника'})
-    readonly name: string;
+    readonly name?: string;
 
     @ApiProperty({example:'Игоревич', description:'Отчество сотрудника'})
     readonly lname?: string;
