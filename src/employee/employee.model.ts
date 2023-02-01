@@ -4,12 +4,9 @@ import {Role} from "../role/role.model";
 import {EmployeeRoles} from "../role/employee-role.model";
 
 interface EmployeeCreationAttrs {
-    // class_id: number,
-    // school_id: number,
     email: string,
     password: string,
     phone?: string,
-    // type: number,
     fname?: string,
     name?: string,
     lname?: string,
@@ -22,15 +19,6 @@ export class Employee extends Model<Employee, EmployeeCreationAttrs> {
     @ApiProperty({example:'1', description:'ID'})
     @Column({type: DataType.INTEGER, unique: true, autoIncrement: true, primaryKey: true})
     employee_id: number;
-
-    // @ApiProperty({example:'12', description:'ID класса'})
-    // @Column({type: DataType.INTEGER, allowNull: false})
-    // class_id: number;
-    //
-    // @ApiProperty({example:'15', description:'ID школы'})
-    // @Column({type: DataType.INTEGER, allowNull: false})
-    // school_id: number;
-    // добавить отдельные таблицы для связывания
 
     @ApiProperty({example:'user@mail.ru', description:'Почтовый адрес'})
     @Column({type: DataType.STRING, unique: true, allowNull: false})
@@ -63,11 +51,3 @@ export class Employee extends Model<Employee, EmployeeCreationAttrs> {
     @BelongsToMany(() => Role, () => EmployeeRoles) //для связывания таблиц многие ко многим
     role: Role
 }
-
-// @Column({type: DataType.BOOLEAN, defaultValue: false})
-// banned: boolean;
-
-// @Column({type: DataType.STRING, allowNull: true})
-// banReason: string;
-
-//добавить таблицу забаненных пользователей

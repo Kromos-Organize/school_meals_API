@@ -30,6 +30,6 @@ export class EmployeeService {
 
     async getEmployeeByEmail(email: string) {
 
-       return await this.employeeRepository.findOne({where:{ email}, include: {all: true}});
+       return await this.employeeRepository.findOne({where:{email}, include: {all: true}});
     }
 }
