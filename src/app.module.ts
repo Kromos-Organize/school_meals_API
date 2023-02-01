@@ -8,6 +8,9 @@ import {Role} from "./role/role.model";
 import {EmployeeRoles} from "./role/employee-role.model";
 import { AuthModule } from './auth/auth.module';
 import { SchoolModule } from './school/school.module';
+import { StudentModule } from './student/student.module';
+import {School} from "./school/school.model";
+import {Student} from "./student/student.model";
 
 
 @Module({
@@ -24,13 +27,14 @@ import { SchoolModule } from './school/school.module';
             username: process.env.POSTGRES_USER,
             password: process.env.POSTGRES_PASSWORD,
             database: process.env.POSTGRES_DB_NAME,
-            models: [Employee, Role, EmployeeRoles], //модели базы данных
+            models: [Employee, Role, EmployeeRoles, School, Student], //модели базы данных
             autoLoadModels: true
         }),
         EmployeeModule,
         RoleModule,
         AuthModule,
         SchoolModule,
+        StudentModule,
     ]
 })
 export class AppModule { }
