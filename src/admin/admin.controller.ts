@@ -15,15 +15,15 @@ export class AdminController {
     @Get()
     getAll() {
 
-        // return this.superAdminService.getAll();
+        return this.superAdminService.getAll();
     }
 
     @ApiOperation({summary: 'Получить данные админа'})
     @ApiResponse({status: 200,type: Admin})
-    @Get('/:admin_id')
-    getAdminById(@Param('admin_id') admin_id: string) {
+    @Get('/:email')
+    getAdminByEmail(@Param('email') email: string) {
 
-        // return this.superAdminService.getAdminById(admin_id);
+        return this.superAdminService.getAdminByEmail(email);
     }
 
     @ApiOperation({summary: 'Создать админа'})
@@ -31,7 +31,7 @@ export class AdminController {
     @Post()
     create(@Body() adminDto: CreateAdminDto) {
 
-        // return this.superAdminService.requestCreate(adminDto);
+        return this.superAdminService.create(adminDto);
     }
 
     @ApiOperation({summary: 'Изменить данные админа'})
@@ -39,7 +39,7 @@ export class AdminController {
     @Put('/:admin_id')
     update(@Param() admin_id: string, @Body() adminDto: CreateAdminDto)  {
 
-        // return this.superAdminService.update(admin_id, adminDto);
+        return this.superAdminService.update(admin_id, adminDto);
     }
 
     @ApiOperation({summary: 'Удалить админа'})
@@ -47,6 +47,6 @@ export class AdminController {
     @Delete('/:admin_id')
     remove(@Param() admin_id: string) {
 
-        // return this.superAdminService.remove(admin_id);
+        return this.superAdminService.remove(admin_id);
     }
 }

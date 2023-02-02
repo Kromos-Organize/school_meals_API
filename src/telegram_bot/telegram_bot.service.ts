@@ -4,7 +4,7 @@ import * as telegramApi from 'node-telegram-bot-api';
 @Injectable()
 export class TelegramBotService {
 
-    // constructor(private superAdminService: SuperAdminService) { }
+    // constructor(private adminService: AdminService) { }
 
     private bot;
     private chatId:0;

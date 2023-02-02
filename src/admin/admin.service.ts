@@ -1,68 +1,41 @@
-import {Injectable} from '@nestjs/common';
+import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
 import {InjectModel} from "@nestjs/sequelize";
 import {Admin} from "./admin.model";
-
+import {CreateAdminDto} from "./dto/create-admin.dto";
 
 @Injectable()
 export class AdminService {
 
+    constructor(@InjectModel(Admin) private adminRepository: typeof Admin) { }
 
-    constructor(@InjectModel(Admin) private adminRepo: typeof Admin) {
+    async getAll() {
 
+        return this.adminRepository.findAll();
     }
 
-    // private tempCreateAdminDto: CreateSuperAdminDto;
-    //
-    // async getAll() {
-    //
-    //     return this.superAdminRepository.findAll();
-    // }
-    //
-    // async getAdminById(admin_id: string) {
-    //
-    //     const admin = await this.superAdminRepository.findOne({where: {admin_id}})
-    //
-    //     if (!admin) {
-    //         throw new HttpException('Админ отсутствуетю.',HttpStatus.BAD_REQUEST)
-    //     }
-    //
-    //     return admin
-    // }
-    //
-    // async requestCreate(adminDto: CreateSuperAdminDto) {
-    //
-    //     try {
-    //
-    //         this.tempCreateAdminDto = adminDto;
-    //
-    //         const message = 'Запрос на создание админа\n'+JSON.stringify(adminDto)+'\n'+
-    //             +'Введите пароль для подтверждения'
-    //
-    //         // await this.bot.sendMessageUser(message);
-    //     }catch (e) {
-    //         console.log(e)
-    //     }
-    // }
-    //
-    // async create() {
-    //
-    //     const admin = await this.superAdminRepository.create(this.tempCreateAdminDto)
-    //
-    //     this.tempCreateAdminDto = null;
-    //
-    //     if (admin) {
-    //
-    //         // await this.bot.sendMessageUser('Админ создан');
-    //     }
-    // }
-    //
-    // async update(admin_id: string, adminDto: CreateSuperAdminDto) {
-    //
-    //     // return this.superAdminRepository.update({where: {admin_id}},adminDto)
-    // }
-    //
-    // async remove(admin_id: string) {
-    //
-    //     // await this.superAdminRepository.delete()
-    // }
+    async getAdminByEmail(email: string) {
+
+        const admin = await this.adminRepository.findOne({where: {email}})
+
+        if (!admin) {
+            throw new HttpException('Админ отсутствуетю.',HttpStatus.BAD_REQUEST)
+        }
+
+        return admin
+    }
+
+    async create(adminDto: CreateAdminDto) {
+
+        return await this.adminRepository.create(adminDto);
+    }
+
+    async update(admin_id: string, adminDto: CreateAdminDto) {
+
+        // return this.adminRepository.update({where: {admin_id}},adminDto)
+    }
+
+    async remove(admin_id: string) {
+
+        // await this.adminRepository.delete()
+    }
 }

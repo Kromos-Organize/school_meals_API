@@ -14,7 +14,7 @@ import {TelegramBotModule} from "../telegram_bot/telegram_bot.module";
         JwtModule.register({
             secret: process.env.PRIVATE_KEY || 'SECRET',
             signOptions:{
-                expiresIn: '10m'
+                expiresIn: '24h'
             }//время жизни токена
         })
     ]
