@@ -22,7 +22,7 @@ export class EmployeeController {
     @ApiResponse({status: 200,type: Employee})
     @Post()
     create(@Body() employeeDto: CreateEmployeeDto) {
-
+        
         return this.employeeService.createEmployee(employeeDto);
     }
 }

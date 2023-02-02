@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "telegra-bot-349817",
+  "private_key_id": "c9c8e2afce0f6548f443916878017d5e41468e59",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQDBOvIsSY9oWq/4\n+SHEuMHx1cS+x7IIsGqDNo1cNa7GcwAHYkCt8dMrDRKBTCqpwgPpEf0G0V7utmbh\n1ljAT6lvTIWPPzUXQJa1F6yQSzm8K4d4HCa0G/JdYEaxuSh7NG0nvxAFz35WUX50\nKffS70frNfpFY+hLGB10Lx5bBojesKx1gwrvZUQNQpAWDn5PZ+f8yg+9auhIQCFV\niD+pOosJapmyeNGAMx5EAHCZCw2PqemK1Ht7IHyRsdRwTLvbxUkJ4G1t6d5Bvt4Q\nv+zK96JFuAmgHCeDrh6LcbH7vYnQR+WAqusATAN1Hw4+3A83AQkEtGXm21jPLVQz\nSkztICu7AgMBAAECggEAYJrUynl4XgbA5avASzbHl911AKCcDKYOik0yvUAFgieq\ngwaHKa+2EFb3wnbO+ZILHHIm20q/uH6uzwe31WW+YuuR9nz2UQq0jhMo7fb+BWqJ\nzu3cF73FHRPuJBpa98XNMMrf+tey5PrXSsJUqTuB7EFPP3Pkhe6ngxeviHiq4xH4\nlFqsc8e7e+wZJX96rMQ7rhnvPaEBzlRJsW/vu+HIkLTIaW3bi6R1l2RJ86Vpi7OI\nc3tNH4NwM/+871RZuOfQK72ikJlPE96h1SsiQPQe7ZKV3GNqyATJpOVE6HS18sHr\nv6RVT1ZBSwonG/ZOBzSdDZPzgelg0QX0Z440BPF+qQKBgQDlx5O4X+SIfsnIZExh\nxa6DoEtu4ZqCmaoy9GlIz3uLlyK0RriN8dmsgL5kw3WP3WpA1B8qj+J/4vgtjMbs\n/x8bNiJ1bLUtvVIk4Nh67znDb2iIL4EqESDmtdbhAJO+hJpVtG22K7W/i8XSU3Ib\noT0qfZLC0Mx7xTXDPtR65RygZwKBgQDXR6xrYS1HEm61UiKedEcSyen2sLLkHuBg\nFFXny8GinSA0QSy6JiD9+NeKpq+p7Q7hRAEffHREhYjN4E0pbkKFVq9tDXs60U8b\nFpjrLGkDFcX3WWvkARVrs3Qwd/N7Nt1V58GwCCJX7zp65qkDFRuSEPTb3anFNpsR\n7nZ25ZW1jQKBgQCMSxSISBQyuqbc8VApihcJSr+Dzb8W6leekNgPmo7mJbsMsvlP\nwVCUIG8e+rA2zItpVZpJ1FwIlT3OIdv7K7GEXcMgSuU8LhGPbrD+Lj3oc4cxTz/f\nvWGHO5MdAcszUachmO47geiQMPjxd/19nS7JWK5YwD95emle8metOWIHFQKBgQDS\nBVpwZ52EeLcIrdiYPVgZPGLECB597qF3Gl+0g1OlESUZ1XuNHyWQn/OnkHZPkLWz\njmSKEyBauOt97hVZFfhPnQIHod9WwlwqUSFeTTUljVhUtyhKh8QeDjSMFHm0+xFz\nfWW4FjdrEjg7Lkw0daMwHNrEpLu7akpedAWeeNxVAQKBgQCRn7QAGx5+kgQ03hda\nCsksm2maRKB5XBHdAKkkBQvPlw7eiRtP96R1Pn21D9DMbtsg4q8NO8Ha5zGGD7Um\nH/ExoQaQcwmJjL3nTrxrDK7MrzPYf/N5hg0gBFKvSv9ZOmG3h+eDScjzWvKnhA+3\n2FZL9YvOIZ0r7PHHndCstEOo1A==\n-----END PRIVATE KEY-----\n",
+  "client_email": "service-account-kromos@telegra-bot-349817.iam.gserviceaccount.com",
+  "client_id": "102625540848900876209",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/service-account-kromos%40telegra-bot-349817.iam.gserviceaccount.com"
+}

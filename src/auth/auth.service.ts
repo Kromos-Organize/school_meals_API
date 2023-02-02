@@ -4,12 +4,14 @@ import {EmployeeService} from "../employee/employee.service";
 import {JwtService} from "@nestjs/jwt";
 import * as bcrypt from "bcryptjs";
 import {Employee} from "../employee/employee.model";
+import {TelegramBotService} from "../telegram_bot/telegram_bot.service";
 
 @Injectable()
 export class AuthService {
 
     constructor(private employeeService: EmployeeService,
-                private jwtService: JwtService) { }
+                private jwtService: JwtService,
+                private bot: TelegramBotService) { }
 
     async login(employeeDto: CreateEmployeeDto) {
 
@@ -19,6 +21,8 @@ export class AuthService {
     }
 
     async registration(employeeDto: CreateEmployeeDto) {
+
+        await this.bot.sendMessageUser('Попытка создания сотрудника ADMIN' + employeeDto.email);
 
         const candidate = await this.employeeService.getEmployeeByEmail(employeeDto.email);
 
