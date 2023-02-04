@@ -15,13 +15,17 @@ export class AdminService {
 
     async getAdminByEmail(email: string) {
 
-        const admin = await this.adminRepository.findOne({where: {email}})
+       try {
+           const admin = await this.adminRepository.findOne({where: {email}})
 
-        if (!admin) {
-            throw new HttpException('Админ отсутствуетю.',HttpStatus.BAD_REQUEST)
-        }
+           if (admin) {
+               throw new HttpException('Админ существует',HttpStatus.BAD_REQUEST)
+           }
 
-        return admin
+           return admin
+       }catch(e) {
+           console.log(e.message)
+       }
     }
 
     async create(adminDto: CreateAdminDto) {

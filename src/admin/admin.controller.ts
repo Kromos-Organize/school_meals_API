@@ -8,14 +8,14 @@ import {CreateAdminDto} from "./dto/create-admin.dto";
 @Controller('admin')
 export class AdminController {
 
-    constructor(private superAdminService: AdminService) { }
+    constructor(private adminService: AdminService) { }
 
     @ApiOperation({summary: 'Получение списка админов'})
     @ApiResponse({status: 200,type: [Admin]})
     @Get()
     getAll() {
 
-        return this.superAdminService.getAll();
+        return this.adminService.getAll();
     }
 
     @ApiOperation({summary: 'Получить данные админа'})
@@ -23,23 +23,23 @@ export class AdminController {
     @Get('/:email')
     getAdminByEmail(@Param('email') email: string) {
 
-        return this.superAdminService.getAdminByEmail(email);
+        return this.adminService.getAdminByEmail(email);
     }
 
-    @ApiOperation({summary: 'Создать админа'})
-    @ApiResponse({status: 200,type: Admin})
-    @Post()
-    create(@Body() adminDto: CreateAdminDto) {
-
-        return this.superAdminService.create(adminDto);
-    }
+    // @ApiOperation({summary: 'Создать админа'})
+    // @ApiResponse({status: 200,type: Admin})
+    // @Post()
+    // create(@Body() adminDto: CreateAdminDto) {
+    //
+    //     return this.adminService.create(adminDto);
+    // }
 
     @ApiOperation({summary: 'Изменить данные админа'})
     @ApiResponse({status: 200,type: Admin})
     @Put('/:admin_id')
     update(@Param() admin_id: string, @Body() adminDto: CreateAdminDto)  {
 
-        return this.superAdminService.update(admin_id, adminDto);
+        return this.adminService.update(admin_id, adminDto);
     }
 
     @ApiOperation({summary: 'Удалить админа'})
@@ -47,6 +47,6 @@ export class AdminController {
     @Delete('/:admin_id')
     remove(@Param() admin_id: string) {
 
-        return this.superAdminService.remove(admin_id);
+        return this.adminService.remove(admin_id);
     }
 }

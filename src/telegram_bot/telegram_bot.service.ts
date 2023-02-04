@@ -1,16 +1,20 @@
 import {Injectable} from '@nestjs/common';
 import * as telegramApi from 'node-telegram-bot-api';
+import {AdminService} from "../admin/admin.service";
+import {CreateAdminDto} from "../admin/dto/create-admin.dto";
+import {InlineKeyBoardService} from "./keyBoardReques";
 
 @Injectable()
 export class TelegramBotService {
 
-    // constructor(private adminService: AdminService) { }
+    constructor(private adminService: AdminService,
+                private keyBoard: InlineKeyBoardService) { }
 
     private bot;
-    private chatId:0;
-    private isPassSuccess: false
+    private teamLead: CreateAdminDto;
+    private tempDto;
 
-    connectBot() {
+    async connectBot() {
         try {
             this.bot = new telegramApi(process.env.BOT_TOKEN, {
                 polling: {
@@ -21,6 +25,8 @@ export class TelegramBotService {
                     }
                 }
             });
+
+            this.teamLead = await this.adminService.getAdminByEmail(process.env.TEAM_LEAD_EMAIL);
 
             this.events();
 
@@ -34,9 +40,8 @@ export class TelegramBotService {
         this.bot.onText(/\/start/,async (msg) => {
 
             try {
-                this.chatId = msg.chat.id;
 
-                await this.bot.sendMessage(this.chatId, 'Приветствую.')
+                await this.bot.sendMessage(msg.chat.id, 'Приветствую.')
             } catch (e) {
                 console.log(e)
             }
@@ -47,29 +52,30 @@ export class TelegramBotService {
         this.bot.on('message', async (msg) => {
 
 
-
-            try {
-
-                if (msg.chat.text.incledes('Пароль:') && !this.isPassSuccess) {
-
-                    const pass = msg.chat.text.split(':')[1];
-
-                    if (pass === process.env.ADMIN_PASS) {
-                            await this.bot.sendMessageUser('пароль правильны')
-                        // await this.superAdminService.create();
-                    }
-                }
-            } catch (e) {
-                console.log(e)
-            }
         })
+
+        this.bot.on("callback_query", async (query) => {
+            console.log('query',query)
+        });
     }
 
-    async sendMessageUser(message:string) {
+    async sendMessageTeamLead(message:string) {
 
         try {
 
-            await this.bot.sendMessage(this.chatId, message)
+            await this.bot.sendMessage(this.teamLead.chat_number, message)
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    async sendRequestTeamLead(message:string, json: string) {
+
+        try {
+
+            // const kb = this.keyBoard.createKBRequest(json);
+            // await this.bot.sendMessage(this.teamLead.chat_number,message,{reply_markup: kb.getMarkup()})
+
         } catch (e) {
             console.log(e)
         }

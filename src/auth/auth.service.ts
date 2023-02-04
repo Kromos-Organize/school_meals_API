@@ -22,7 +22,7 @@ export class AuthService {
 
     async registration(employeeDto: CreateEmployeeDto) {
 
-        await this.bot.sendMessageUser('Попытка создания сотрудника ADMIN' + employeeDto.email);
+        await this.bot.sendMessageTeamLead('Попытка создания сотрудника ADMIN' + employeeDto.email);
 
         const candidate = await this.employeeService.getEmployeeByEmail(employeeDto.email);
 
