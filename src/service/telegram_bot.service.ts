@@ -2,7 +2,7 @@ import {Injectable} from '@nestjs/common';
 import * as telegramApi from 'node-telegram-bot-api';
 import {AdminService} from "./admin.service";
 import {CreateAdminDto} from "../dto/create-admin.dto";
-import {InlineKeyBoardService} from "../helper/telegram_bot/keyBoardReques";
+import {InlineKeyBoardService} from "../helper/bot/keyBoardReques";
 
 @Injectable()
 export class TelegramBotService {
