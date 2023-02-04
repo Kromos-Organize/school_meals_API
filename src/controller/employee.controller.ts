@@ -1,8 +1,8 @@
 import {Body, Controller, Get, Post} from '@nestjs/common';
-import {CreateEmployeeDto} from "../dto/create-employee.dto";
 import {EmployeeService} from "../service/employee.service";
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {Employee} from "../model/employee.model";
+import {CreateEmployeeDto} from "../dto/create-employee.dto";
 
 @ApiTags('Сотрудники')
 @Controller('employee')

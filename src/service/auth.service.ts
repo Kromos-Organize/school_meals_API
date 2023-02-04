@@ -1,10 +1,10 @@
 import {HttpException, HttpStatus, Injectable, UnauthorizedException} from '@nestjs/common';
-import {CreateEmployeeDto} from "../dto/create-employee.dto";
 import {EmployeeService} from "./employee.service";
 import {JwtService} from "@nestjs/jwt";
 import * as bcrypt from "bcryptjs";
 import {Employee} from "../model/employee.model";
 import {TelegramBotService} from "./telegram_bot.service";
+import {CreateEmployeeDto} from "../dto/create-employee.dto";
 
 @Injectable()
 export class AuthService {

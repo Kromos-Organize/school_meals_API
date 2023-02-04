@@ -1,6 +1,6 @@
 import {ApiProperty} from "@nestjs/swagger";
 
-export class CreateEmployeeDto { // неимеет смысловой нагрузки, служит для передачи данных клиент сервер - сервер сервер
+export class UpdateEmployeeDto { // неимеет смысловой нагрузки, служит для передачи данных клиент сервер - сервер сервер
 
     @ApiProperty({example:'user@mail.ru', description:'Почтовый адрес'})
     readonly email: string;
@@ -22,5 +22,13 @@ export class CreateEmployeeDto { // неимеет смысловой нагру
 
     @ApiProperty({example:'11231242355', description:'Дата рождения сотрудника, unix time'})
     readonly birthday?: string;
+}
 
+export class CreateEmployeeDto {
+
+    @ApiProperty({example:'user@mail.ru', description:'Почтовый адрес'})
+    readonly email: string;
+
+    @ApiProperty({example:'123456789', description:'Пароль сотрудника'})
+    readonly password: string;
 }
