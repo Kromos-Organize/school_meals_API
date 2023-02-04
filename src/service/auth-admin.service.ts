@@ -2,7 +2,7 @@ import {HttpException, HttpStatus, Injectable, UnauthorizedException} from '@nes
 import {AdminService} from "./admin.service";
 import {JwtService} from "@nestjs/jwt";
 import {TelegramBotService} from "./telegram_bot.service";
-import {CreateAdminDto} from "../dto/create-admin.dto";
+import {CreateAdminDto, LoginAdminDto} from "../dto/create-admin.dto";
 import {Admin} from "../model/admin.model";
 import * as bcrypt from "bcryptjs";
 
@@ -13,7 +13,7 @@ export class AuthAdminService {
                 private jwtService: JwtService,
                 private bot: TelegramBotService) { }
 
-    async login(adminDto: CreateAdminDto){
+    async login(adminDto: LoginAdminDto){
 
         const admin = await this.validateAdmin(adminDto);
 
@@ -57,12 +57,14 @@ export class AuthAdminService {
 
         return {
             token: this.jwtService.sign(payload)
+
         }
     }
 
-    private async validateAdmin(adminDto: CreateAdminDto) {
+    private async validateAdmin(adminDto: LoginAdminDto) {
 
         const admin = await this.adminService.getAdminByEmail(adminDto.email);
+
         const passwordEq = await bcrypt.compare(adminDto.password, admin.password);
 
         if (adminDto && passwordEq) {

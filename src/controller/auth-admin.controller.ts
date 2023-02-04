@@ -1,7 +1,7 @@
 import {Body, Controller, Post} from '@nestjs/common';
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {Token} from "../dto/auth.dto";
-import {CreateAdminDto} from "../dto/create-admin.dto";
+import {CreateAdminDto, LoginAdminDto} from "../dto/create-admin.dto";
 import {AuthAdminService} from "../service/auth-admin.service";
 
 @ApiTags('Авторизация админов проекта')
@@ -13,7 +13,7 @@ export class AuthAdminController {
     @ApiOperation({summary: 'Логинизация админа'})
     @ApiResponse({status: 200, type: Token})
     @Post('/login')
-    login(@Body() adminDto: CreateAdminDto) {
+    login(@Body() adminDto: LoginAdminDto) {
 
         return this.authAdminService.login(adminDto);
     }

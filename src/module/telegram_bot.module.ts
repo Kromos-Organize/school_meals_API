@@ -1,10 +1,10 @@
 import {Module} from '@nestjs/common';
 import {TelegramBotService} from '../service/telegram_bot.service';
 import {AdminModule} from "./admin.module";
-import {InlineKeyBoardService} from "../helper/telegram_bot/keyBoardReques";
+import {InlineKeyBoardService} from "../helper/bot/keyBoardReques";
 
 @Module({
-    providers: [TelegramBotService,InlineKeyBoardService],
+    providers: [TelegramBotService, InlineKeyBoardService],
     imports:[
         AdminModule
     ],

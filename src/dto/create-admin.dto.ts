@@ -20,3 +20,12 @@ export class CreateAdminDto {
     @ApiProperty({example: '80055665444', description: 'ID чата с ботом'})
     readonly chat_number?: string
 }
+
+export class LoginAdminDto {
+
+    @ApiProperty({example: 'user@mail.ru', description: 'Почтовый адрес'})
+    readonly email: string;
+
+    @ApiProperty({example: '123456789', description: 'Пароль сотрудника'})
+    readonly password: string;
+}
