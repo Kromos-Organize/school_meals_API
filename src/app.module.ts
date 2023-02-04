@@ -1,21 +1,21 @@
 import {Module} from "@nestjs/common";
 import {SequelizeModule} from "@nestjs/sequelize";
-import {EmployeeModule} from './employee/employee.module';
+import {EmployeeModule} from './module/employee.module';
 import {ConfigModule} from "@nestjs/config";
-import {Employee} from "./employee/employee.model";
-import {RoleModule} from './role/role.module';
-import {Role} from "./role/role.model";
-import {EmployeeRoles} from "./role/employee-role.model";
-import {AuthModule} from './auth/auth.module';
-import {SchoolModule} from './school/school.module';
-import {StudentModule} from './student/student.module';
-import {School} from "./school/school.model";
-import {Student} from "./student/student.model";
-import {TelegramBotModule} from './telegram_bot/telegram_bot.module';
-import {TelegramBotService} from "./telegram_bot/telegram_bot.service";
-import {AdminModule} from './admin/admin.module';
-import {Admin} from "./admin/admin.model";
-import { AuthAdminModule } from './auth-admin/auth-admin.module';
+import {Employee} from "./model/employee.model";
+import {RoleModule} from './module/role.module';
+import {Role} from "./model/role.model";
+import {EmployeeRoles} from "./model/employee-role.model";
+import {AuthModule} from './module/auth.module';
+import {SchoolModule} from './module/school.module';
+import {StudentModule} from './module/student.module';
+import {School} from "./model/school.model";
+import {Student} from "./model/student.model";
+import {TelegramBotModule} from './module/telegram_bot.module';
+import {TelegramBotService} from "./service/telegram_bot.service";
+import {AdminModule} from './module/admin.module';
+import {Admin} from "./model/admin.model";
+import { AuthAdminModule } from './module/auth-admin.module';
 
 @Module({
     controllers: [],
