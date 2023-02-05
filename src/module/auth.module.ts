@@ -1,4 +1,4 @@
-import {Module} from '@nestjs/common';
+import {forwardRef, Module} from '@nestjs/common';
 import {AuthController} from '../controller/auth.controller';
 import {AuthService} from '../service/auth.service';
 import {EmployeeModule} from "./employee.module";
@@ -9,7 +9,7 @@ import {TelegramBotModule} from "./telegram_bot.module";
     controllers: [AuthController],
     providers: [AuthService],
     imports: [
-        EmployeeModule,
+        forwardRef(() => EmployeeModule),
         TelegramBotModule,
         JwtModule.register({
             secret: process.env.PRIVATE_KEY || 'SECRET',
@@ -17,6 +17,10 @@ import {TelegramBotModule} from "./telegram_bot.module";
                 expiresIn: '24h'
             }//время жизни токена
         })
+    ],
+    exports: [
+        AuthService,
+        JwtModule
     ]
 })
 export class AuthModule { }

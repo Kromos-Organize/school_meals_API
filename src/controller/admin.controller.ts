@@ -3,6 +3,7 @@ import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {AdminService} from "../service/admin.service";
 import {Admin} from "../model/admin.model";
 import {CreateAdminDto} from "../dto/create-admin.dto";
+import {JwtAdminAuthGuard} from "../guard/jwt-admin-auth.guard";
 
 @ApiTags('Администраторы проекта')
 @Controller('admin')
