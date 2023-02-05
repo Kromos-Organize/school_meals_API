@@ -14,7 +14,7 @@ services:
       - 5001:5001
       - 9229:9229
     command:
-      - npm run start:dev
+      - npm run start
     depends_on:
       - postgres
     restart: always
@@ -22,7 +22,7 @@ services:
     container_name: postgres
     image: postgres:14
     env_file:
-      - .development.env
+      - .production.env
     environment:
       PG_DATA: /var/lib/postgresql/data
     ports:
