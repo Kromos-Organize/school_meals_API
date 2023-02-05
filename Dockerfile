@@ -11,4 +11,4 @@ COPY . .
 
 COPY ./dist ./dist
 
-CMD ['yarn', 'run','start:dev']
+CMD ['npm', 'run','start:dev']

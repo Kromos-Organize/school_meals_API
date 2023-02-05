@@ -2,7 +2,6 @@ version: '3.0'
 
 services:
   main:
-
     container_name: main
     build:
       context: .
@@ -15,13 +14,12 @@ services:
       - 5001:5001
       - 9229:9229
     command:
-      - yarn run start:dev
+      - npm run start:dev
     depends_on:
       - postgres
     restart: always
   postgres:
     container_name: postgres
-
     image: postgres:14
     env_file:
       - .development.env
