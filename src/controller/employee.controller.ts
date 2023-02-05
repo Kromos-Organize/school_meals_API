@@ -1,9 +1,10 @@
-import {Body, Controller, Get, Post, UseGuards} from '@nestjs/common';
+import {Body, Controller, Get, Post, UseGuards, UsePipes} from '@nestjs/common';
 import {EmployeeService} from "../service/employee.service";
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {Employee} from "../model/employee.model";
 import {CreateEmployeeDto} from "../dto/create-employee.dto";
 import {JwtAdminAuthGuard} from "../guard/jwt-admin-auth.guard";
+import {ValidationAuth} from "../validate/valdationAuth.pipe";
 
 @ApiTags('Сотрудники')
 @Controller('employee')
@@ -22,6 +23,7 @@ export class EmployeeController {
 
     @ApiOperation({summary: 'Создание сотрудника'})
     @ApiResponse({status: 200,type: Employee})
+    @UsePipes(ValidationAuth)
     @Post()
     create(@Body() employeeDto: CreateEmployeeDto) {
         
