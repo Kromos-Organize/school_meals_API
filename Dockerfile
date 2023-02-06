@@ -1,9 +1,8 @@
-FROM node:16.14.2
+FROM node:16.14.2-alpine
 
 WORKDIR /app
 
-COPY package.json ./
-COPY yarn.lock ./
+COPY package*.json ./
 
 RUN npm install
 
@@ -11,4 +10,4 @@ COPY . .
 
 COPY ./dist ./dist
 
-CMD ['npm', 'run','start']
+CMD ['npm', 'run', 'start']
