@@ -6,20 +6,19 @@ services:
     build:
       context: .
     env_file:
-      -   .production.env
+      - .production.env
     volumes:
       - .:/app
       - /app/node_modules
     ports:
       - 5001:5001
       - 9229:9229
-    command:
-      - npm run start
+    command: npm run start
     depends_on:
-      - postgres
+      - postgres_school
     restart: always
-  postgres:
-    container_name: postgres
+  postgres_school:
+    container_name: postgres_school
     image: postgres:14
     env_file:
       - .production.env
@@ -29,7 +28,6 @@ services:
       - 5432:5432
     volumes:
       - pgdata:/var/lib/postgresql/data
-
     restart: always
 
 volumes:
