@@ -15,10 +15,10 @@ services:
       - 9229:9229
     command: npm run start
     depends_on:
-      - postgres_school
+      - postgres
     restart: always
-  postgres_school:
-    container_name: postgres_school
+  postgres:
+    container_name: postgres
     image: postgres:14
     env_file:
       - .production.env
