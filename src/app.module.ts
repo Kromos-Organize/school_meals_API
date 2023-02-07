@@ -15,7 +15,6 @@ import {TelegramBotModule} from './module/telegram_bot.module';
 import {TelegramBotService} from "./service/telegram_bot.service";
 import {AdminModule} from './module/admin.module';
 import {Admin} from "./model/admin.model";
-import { AuthAdminModule } from './module/auth-admin.module';
 
 @Module({
     controllers: [],
@@ -34,7 +33,6 @@ import { AuthAdminModule } from './module/auth-admin.module';
             models: [Employee, Role, EmployeeRoles, School, Student, Admin], //модели базы данных
             autoLoadModels: true
         }),
-        AuthAdminModule,
         AdminModule,
         AuthModule,
         EmployeeModule,

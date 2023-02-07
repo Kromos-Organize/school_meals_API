@@ -10,11 +10,10 @@ import {ValidationAuth} from "../validate/valdationAuth.pipe";
 @Controller('employee')
 export class EmployeeController {
 
-    // внедрение зависимости, добавление ссылки на сервис
     constructor(private employeeService: EmployeeService) { }
 
     @ApiOperation({summary: 'Получение списка сотрудников'})
-    @ApiResponse({status: 200,type: [Employee]})//[Employee] -> массив пользователей
+    @ApiResponse({status: 200,type: [Employee]})
     @UseGuards(JwtAdminAuthGuard)
     @Get()
     getAll() {
