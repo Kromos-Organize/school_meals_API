@@ -1,5 +1,5 @@
 import {ApiProperty} from "@nestjs/swagger";
-import {IsBoolean, IsEmail, IsString, Length} from "class-validator";
+import {IsEmail, IsString, Length} from "class-validator";
 
 export class Token {
 
@@ -20,6 +20,5 @@ export class LoginDto {
     readonly password: string;
 
     @ApiProperty({example: 'true', description: 'Заходит ли админ проекта'})
-    @IsBoolean({message: 'Должно быть типа boolean'})
     readonly isAdminDev: boolean
 }
