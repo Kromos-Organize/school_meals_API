@@ -1,27 +1,27 @@
 import {ApiProperty} from "@nestjs/swagger";
-import {IsEmail, IsString, Length} from "class-validator";
+import {IsEmail, IsPhoneNumber, IsString, Length} from "class-validator";
 
-export class UpdateEmployeeDto { // неимеет смысловой нагрузки, служит для передачи данных клиент сервер - сервер сервер
-
-    @ApiProperty({example:'user@mail.ru', description:'Почтовый адрес'})
-    readonly email: string;
-
-    @ApiProperty({example:'123456789', description:'Пароль сотрудника'})
-    readonly password: string;
+export class UpdateEmployeeDto {
 
     @ApiProperty({example:'375297485875', description:'Телефон сотрудника'})
+    @IsString({message: 'Должно быть строкой.'})
+    @IsPhoneNumber('BY',{message: 'Должен быть правильный формат телефона'})
     readonly phone?: string;
 
     @ApiProperty({example:'Шавлинский', description:'Фамилия сотрудника'})
+    @IsString({message: 'Должно быть строкой.'})
     readonly fname?: string;
 
     @ApiProperty({example:'Роман', description:'Имя сотрудника'})
+    @IsString({message: 'Должно быть строкой.'})
     readonly name?: string;
 
     @ApiProperty({example:'Игоревич', description:'Отчество сотрудника'})
+    @IsString({message: 'Должно быть строкой.'})
     readonly lname?: string;
 
     @ApiProperty({example:'11231242355', description:'Дата рождения сотрудника, unix time'})
+    @IsString({message: 'Должно быть строкой.'})
     readonly birthday?: string;
 }
 

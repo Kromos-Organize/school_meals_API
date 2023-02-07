@@ -1,8 +1,9 @@
-import {Body, Controller, Get, Post} from '@nestjs/common';
+import {Body, Controller, Get, Post, UsePipes} from '@nestjs/common';
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {SchoolService} from "../service/school.service";
 import {CreateSchoolDto} from "../dto/create-school.dto";
 import {School} from "../model/school.model";
+import {ValidationBody} from "../validate/valdationBody.pipe";
 
 @ApiTags('Школа')
 @Controller('school')
@@ -20,6 +21,7 @@ export class SchoolController {
 
     @ApiOperation({summary: 'Добавить школу'})
     @ApiResponse({status: 200, type: School})
+    @UsePipes(ValidationBody)
     @Post()
     create(@Body() schoolDto: CreateSchoolDto) {
 

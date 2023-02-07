@@ -1,6 +1,6 @@
 import {HttpException, HttpStatus} from "@nestjs/common";
 
-export class ValidationAuthException extends HttpException {
+export class ValidationException extends HttpException {
 
     messages;
 
