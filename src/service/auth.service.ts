@@ -5,24 +5,31 @@ import * as bcrypt from "bcryptjs";
 import {Employee} from "../model/employee.model";
 import {TelegramBotService} from "./telegram_bot.service";
 import {CreateEmployeeDto} from "../dto/create-employee.dto";
+import {LoginDto} from "../dto/auth.dto";
+import {AdminService} from "./admin.service";
+import {Admin} from "../model/admin.model";
 
 @Injectable()
 export class AuthService {
 
     constructor(private employeeService: EmployeeService,
+                private adminService: AdminService,
                 private jwtService: JwtService,
                 private bot: TelegramBotService) { }
 
-    async login(employeeDto: CreateEmployeeDto) {
+    async login(userDto: LoginDto) {
 
-        const employee = await this.validateEmployee(employeeDto);
+        if (userDto.isAdminDev) {
 
-        return this.generateToken(employee)
+            return this.generateAdminToken(await this.validateUser(userDto))
+        }
+
+        return this.generateEmployeeToken(await this.validateUser(userDto))
     }
 
     async registration(employeeDto: CreateEmployeeDto) {
 
-        await this.bot.sendMessageTeamLead('Попытка создания сотрудника ADMIN' + employeeDto.email);
+        // await this.bot.sendMessageTeamLead('Попытка создания сотрудника ADMIN' + employeeDto.email);
 
         const candidate = await this.employeeService.getEmployeeByEmail(employeeDto.email);
 
@@ -30,34 +37,51 @@ export class AuthService {
             throw new HttpException('Соруник существует',HttpStatus.BAD_REQUEST);// 400 status
         }
 
-        const hashPassword = await bcrypt.hash(employeeDto.password, 5); // 5 = какая-то соль, посмотреть доку по bcrypt
+        const hashPassword = await bcrypt.hash(employeeDto.password, 5);
 
         const employee = await this.employeeService.createEmployee({...employeeDto, password: hashPassword});
 
-        return this.generateToken(employee);
+        return this.generateEmployeeToken(employee);
     }
 
-    private async generateToken(employee: Employee){
-
-        const payload = {
-            id: employee.employee_id,
-            email: employee.email,
-            role: employee.role,
-        }
+    private async generateEmployeeToken(employee: Employee ){
 
         return {
-            token: this.jwtService.sign(payload)
+            token: this.jwtService.sign({
+                id: employee.employee_id,
+                email: employee.email,
+                role: employee.role,
+            })
         }
     }
 
-    private async validateEmployee(employeeDto: CreateEmployeeDto) {
+    private async generateAdminToken(admin: Admin){
 
-        const employee = await this.employeeService.getEmployeeByEmail(employeeDto.email);
-        const passwordEq = await bcrypt.compare(employeeDto.password, employee.password);
-
-        if (employeeDto && passwordEq) {
-             return employee;
+        return {
+            token: this.jwtService.sign({
+                id: admin.admin_id,
+                email: admin.email,
+                position: admin.position
+            })
         }
+    }
+
+    private async validateUser(userDto: LoginDto) {
+
+        let user;
+
+        if (userDto.isAdminDev) {
+            user = await this.adminService.getAdminByEmail(userDto.email)
+        }else {
+            user = await this.employeeService.getEmployeeByEmail(userDto.email)
+        }
+
+        const passwordEq = await bcrypt.compare(userDto.password, user.password);
+
+        if (userDto && passwordEq) {
+            return user;
+        }
+
         throw new UnauthorizedException({message: 'Некорректный емейл или пароль.'})
     }
 }
