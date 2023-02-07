@@ -14,10 +14,10 @@ export class EmployeeService {
     async createEmployee(dto: CreateEmployeeDto) {
 
         const employee = await this.employeeRepository.create(dto);
-        const role = await this.roleService.getRoleByValue("EMPLOYEE")
-
-        await employee.$set('role', role.role_id)// метод $set перезаписывает поле таблицы, если его нет то добавляет такой столбец
-        employee.role = role
+        // const role = await this.roleService.getRoleByValue("EMPLOYEE")
+        //
+        // await employee.$set('role', role.role_id)// метод $set перезаписывает поле таблицы, если его нет то добавляет такой столбец
+        // employee.role = role
 
         return employee;
     }
