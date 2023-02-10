@@ -13,7 +13,6 @@ export class ModerationController {
 
     @ApiOperation({summary: 'Получить список ожидающих модерации'})
     @ApiResponse({status: 200, type: [Moderation]})
-    // @UseGuards(JwtAdminAuthGuard) //todo проверть почему нет доступа
     @Get('/employee')
     getListModeration() {
 
@@ -22,7 +21,6 @@ export class ModerationController {
 
     @ApiOperation({summary: 'Подтвердить создание админа школы'})
     @ApiResponse({status: 200, type: MessageDto})
-    // @UseGuards(JwtAdminAuthGuard)
     @UsePipes(ValidateParams)
     @Get('/employee/:id')
     confirmModeration(@Param('id') id: string){
@@ -32,7 +30,6 @@ export class ModerationController {
 
     @ApiOperation({summary: 'Удалить админа проходящего модерацию'})
     @ApiResponse({status: 200, type: MessageDto})
-    // @UseGuards(JwtAdminAuthGuard)
     @UsePipes(ValidateParams)
     @Delete('/employee/:id')
     cancelModeration(@Param('id') id: string){

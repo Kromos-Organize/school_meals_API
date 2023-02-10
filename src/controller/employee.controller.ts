@@ -1,4 +1,4 @@
-import {Body, Controller, Get, Post, UseGuards, UsePipes} from '@nestjs/common';
+import {Body, Controller, Get, Param, Post, UseGuards, UsePipes} from '@nestjs/common';
 import {EmployeeService} from "../service/employee.service";
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {Employee} from "../model/employee.model";
@@ -20,9 +20,8 @@ export class EmployeeController {
         return this.employeeService.getAllEmployee();
     }
 
-    @ApiOperation({summary: 'Получение списка сотрудников'})
-    @ApiResponse({status: 200,type: [Employee]})
-    // @UseGuards(JwtAdminAuthGuard)
+    @ApiOperation({summary: 'Получить данные сотрудника по '})
+    @ApiResponse({status: 200,type: Employee})
     @Get('/:email')
     getEmployeeByEmail(@Param('email') email: string) {
         return this.employeeService.getEmployeeByEmail(email);

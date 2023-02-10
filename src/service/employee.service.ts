@@ -32,8 +32,8 @@ export class EmployeeService {
        return await this.employeeRepository.findOne({where:{email}, include: {all: true}});
     }
 
-    async getEmployeeById(employeeId: string) {
+    async getEmployeeById(employee_id: string) {
 
-        return await this.employeeRepository.findOne({where:{ employee_id: employeeId }, include: {all: true}});
+        return await this.employeeRepository.findOne({where:{ employee_id }, include: {all: true}});
     }
 }
