@@ -3,7 +3,8 @@ import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {CreateEmployeeDto} from "../dto/create-employee.dto";
 import {AuthService} from "../service/auth.service";
 import {LoginDto, Token} from "../dto/auth.dto";
-import {ValidationBody} from "../validate/valdationBody.pipe";
+import {ValidationBody} from "../pipes/valdationBody.pipe";
+import {MessageDto} from "../dto/message.dto";
 
 @ApiTags('Авторизация')
 @Controller('auth')
@@ -21,7 +22,7 @@ export class AuthController {
     }
 
     @ApiOperation({summary: 'Регистрация'})
-    @ApiResponse({status: 200, type: Token})
+    @ApiResponse({status: 200, type: MessageDto})
     @UsePipes(ValidationBody)
     @Post('/registration')
     registration(@Body() employeeDto: CreateEmployeeDto) {

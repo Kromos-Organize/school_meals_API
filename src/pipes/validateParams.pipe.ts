@@ -18,7 +18,7 @@ export class ValidateParams implements PipeTransform<any>{
 
                     throw new ValidationException(`${metadata.data} - не валидный емейл`)
                 }
-                break;
+                return value
             }
 
             case 'id': {
@@ -26,7 +26,7 @@ export class ValidateParams implements PipeTransform<any>{
                 if (!this.regexId.test(value)) {
                     throw new ValidationException(`${metadata.data} - не правильный id, не должен быть отрицательный или иметь буквы.`)
                 }
-                break;
+                return value
             }
 
             case 'type_role': {
@@ -34,10 +34,8 @@ export class ValidateParams implements PipeTransform<any>{
                 if (!this.regexRole.test(value)) {
                     throw new ValidationException(`${metadata.data} - роль не должна содержать цифр.`)
                 }
-                break;
-            }
-            default:
                 return value
+            }
         }
     }
 

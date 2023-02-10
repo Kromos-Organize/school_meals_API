@@ -3,7 +3,7 @@ import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {SchoolService} from "../service/school.service";
 import {CreateSchoolDto} from "../dto/create-school.dto";
 import {School} from "../model/school.model";
-import {ValidationBody} from "../validate/valdationBody.pipe";
+import {ValidationBody} from "../pipes/valdationBody.pipe";
 
 @ApiTags('Школа')
 @Controller('school')

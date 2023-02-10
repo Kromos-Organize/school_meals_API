@@ -16,7 +16,8 @@ import {TelegramBotService} from "./service/telegram_bot.service";
 import {AdminModule} from './module/admin.module';
 import {Admin} from "./model/admin.model";
 import {LoggerMiddleware} from "./middleware/logger.middleware";
-
+import {ModerationModule} from "./module/moderation.module";
+import {Moderation} from "./model/moderation.model";
 
 @Module({
     controllers: [],
@@ -32,7 +33,7 @@ import {LoggerMiddleware} from "./middleware/logger.middleware";
             username: process.env.POSTGRES_USER,
             password: process.env.POSTGRES_PASSWORD,
             database: process.env.POSTGRES_DB_NAME,
-            models: [Employee, Role, EmployeeRoles, School, Student, Admin], //модели базы данных
+            models: [Employee, Role, EmployeeRoles, School, Student, Admin, Moderation],
             autoLoadModels: true
         }),
         AdminModule,
@@ -42,6 +43,7 @@ import {LoggerMiddleware} from "./middleware/logger.middleware";
         SchoolModule,
         StudentModule,
         TelegramBotModule,
+        ModerationModule,
     ]
 })
 export class AppModule {
@@ -50,6 +52,7 @@ export class AppModule {
 
         // bot.connectBot();
     }
+
     configure(consumer: MiddlewareConsumer) {
         consumer.apply(LoggerMiddleware).forRoutes('*');
     }

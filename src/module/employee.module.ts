@@ -12,11 +12,10 @@ import {AuthModule} from "./auth.module";
     controllers: [EmployeeController],
     providers: [EmployeeService],
     imports: [
-        SequelizeModule.forFeature([Employee, Role, EmployeeRoles]),//импорты моделей бд
+        SequelizeModule.forFeature([Employee, Role, EmployeeRoles]),
         RoleModule,
         forwardRef(() => AuthModule),
     ],
     exports: [EmployeeService]
 })
-export class EmployeeModule {
-}
+export class EmployeeModule { }

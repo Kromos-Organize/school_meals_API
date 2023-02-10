@@ -5,19 +5,21 @@ import {EmployeeModule} from "./employee.module";
 import {JwtModule} from "@nestjs/jwt";
 import {TelegramBotModule} from "./telegram_bot.module";
 import {AdminModule} from "./admin.module";
+import {ModerationModule} from "./moderation.module";
 
 @Module({
     controllers: [AuthController],
     providers: [AuthService],
     imports: [
         forwardRef(() => EmployeeModule),
+        ModerationModule,
         TelegramBotModule,
         AdminModule,
         JwtModule.register({
             secret: process.env.PRIVATE_KEY || 'SECRET',
-            signOptions:{
+            signOptions: {
                 expiresIn: '24h'
-            }//время жизни токена
+            }
         }),
     ],
     exports: [

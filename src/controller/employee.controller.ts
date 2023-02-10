@@ -1,11 +1,10 @@
-import {Body, Controller, Get, Param, Post, UseGuards, UsePipes} from '@nestjs/common';
+import {Body, Controller, Get, Post, UseGuards, UsePipes} from '@nestjs/common';
 import {EmployeeService} from "../service/employee.service";
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {Employee} from "../model/employee.model";
 import {CreateEmployeeDto} from "../dto/create-employee.dto";
 import {JwtAdminAuthGuard} from "../guard/jwt-admin-auth.guard";
-import {ValidationBody} from "../validate/valdationBody.pipe";
-import {ValidateParams} from "../validate/validateParams.pipe";
+import {ValidationBody} from "../pipes/valdationBody.pipe";
 
 @ApiTags('Сотрудники')
 @Controller('employee')

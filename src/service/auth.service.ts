@@ -3,19 +3,19 @@ import {EmployeeService} from "./employee.service";
 import {JwtService} from "@nestjs/jwt";
 import * as bcrypt from "bcryptjs";
 import {Employee} from "../model/employee.model";
-import {TelegramBotService} from "./telegram_bot.service";
 import {CreateEmployeeDto} from "../dto/create-employee.dto";
 import {LoginDto} from "../dto/auth.dto";
 import {AdminService} from "./admin.service";
 import {Admin} from "../model/admin.model";
+import {ModerationService} from "./moderation.service";
 
 @Injectable()
 export class AuthService {
 
     constructor(private employeeService: EmployeeService,
+                private moderationService: ModerationService,
                 private adminService: AdminService,
-                private jwtService: JwtService,
-                private bot: TelegramBotService) { }
+                private jwtService: JwtService) { }
 
     async login(userDto: LoginDto) {
 
@@ -29,8 +29,6 @@ export class AuthService {
 
     async registration(employeeDto: CreateEmployeeDto) {
 
-        // await this.bot.sendMessageTeamLead('Попытка создания сотрудника ADMIN' + employeeDto.email);
-
         const candidate = await this.employeeService.getEmployeeByEmail(employeeDto.email);
 
         if (candidate) {
@@ -39,9 +37,9 @@ export class AuthService {
 
         const hashPassword = await bcrypt.hash(employeeDto.password, 5);
 
-        const employee = await this.employeeService.createEmployee({...employeeDto, password: hashPassword});
+        await this.moderationService.create({...employeeDto, password: hashPassword});
 
-        return this.generateEmployeeToken(employee);
+        return { message: "Ваши данные отправлены на модерацию. Время проверки может составлять от нескольких минут до 2 часов." }
     }
 
     private async generateEmployeeToken(employee: Employee ){

@@ -3,7 +3,7 @@ import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {AdminService} from "../service/admin.service";
 import {Admin} from "../model/admin.model";
 import {CreateAdminDto} from "../dto/create-admin.dto";
-import {ValidateParams} from "../validate/validateParams.pipe";
+import {ValidateParams} from "../pipes/validateParams.pipe";
 
 @ApiTags('Администраторы проекта')
 @Controller('admin')

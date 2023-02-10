@@ -3,7 +3,7 @@ import {RoleService} from "../service/role.service";
 import {CreateRoleDto} from "../dto/create-role.dto";
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {Role} from "../model/role.model";
-import {ValidationBody} from "../validate/valdationBody.pipe";
+import {ValidationBody} from "../pipes/valdationBody.pipe";
 
 @ApiTags('Роли сотрудников')
 @Controller('role')
