@@ -48,7 +48,7 @@ export class AppModule {
 
     constructor(private bot: TelegramBotService) {
 
-        bot.connectBot();
+        // bot.connectBot();
     }
     configure(consumer: MiddlewareConsumer) {
         consumer.apply(LoggerMiddleware).forRoutes('*');
