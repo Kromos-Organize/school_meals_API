@@ -21,6 +21,14 @@ export class EmployeeController {
         return this.employeeService.getAllEmployee();
     }
 
+    @ApiOperation({summary: 'Получение списка сотрудников'})
+    @ApiResponse({status: 200,type: [Employee]})
+    // @UseGuards(JwtAdminAuthGuard)
+    @Get('/:email')
+    getEmployeeByEmail(@Param('email') email: string) {
+        return this.employeeService.getEmployeeByEmail(email);
+    }
+
     @ApiOperation({summary: 'Создание сотрудника'})
     @ApiResponse({status: 200,type: Employee})
     @UsePipes(ValidationBody)
