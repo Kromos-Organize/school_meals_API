@@ -1,41 +1,36 @@
 import { Injectable, Logger, NestMiddleware } from '@nestjs/common';
-import { randomUUID } from 'crypto';
 import { Request, Response, NextFunction } from 'express';
 import * as fs from "fs";
-import * as path from "path";
+import * as moment from "moment";
 
 @Injectable()
 export class LoggerMiddleware implements NestMiddleware {
-  private logger = new Logger(`HTTP`);
   use(req: Request, res: Response, next: NextFunction) {
 
-    const { ip, method, originalUrl, body } = req;
+    const now = moment().format('DD-MM-YYYY HH:mm:SS');
 
-    const userAgent = req.get('user-agent' || '')
+    const dirDate = moment().format('DD-MM-YYYY');
 
-    res.on('finish', () => {
+    if (!fs.existsSync(`logs/${dirDate}`)) {
+      fs.mkdir(`logs/${dirDate}`, {recursive: true}, (err: Error) => {
+        if (err) throw err;
+      });
+    }
 
-      const { statusCode } = res;
-
-      const contentLength = res.get('content-length')
-
-      this.logger.log(`Logging HTTP request ${method} ${originalUrl} ${req.body[0]} ${statusCode} ${contentLength} - ${userAgent} ${ip}`,);
-
-      const filePath = path.resolve("./src", "requestLogs");
-
-      if (!fs.existsSync(filePath)) {
-
-        fs.mkdirSync(filePath, { recursive: true });
+    fs.readFile(`./logs/${dirDate}/query_logs.log`, 'utf-8', (err:Error) => {
+      if (err) {
+        fs.open(`./logs/${dirDate}/query_logs.log`, 'r+', (err: Error) => {
+          if (err) console.log(err)
+        })
       }
 
-      const fileName = randomUUID()
+      const message = `\n[${now}]\nMethod: ${req.method} -- Path: ${req.url} -- Params ${JSON.stringify(req.params)}\nQuery ${JSON.stringify(req.query)}\nBody ${JSON.stringify(req.body)}\nCookies ${JSON.stringify(req.cookies)}\n`
 
-      const date = new Date().toLocaleString()
-
-      let logger = fs.createWriteStream(`./src/requestLogs/${fileName}.txt`)
-
-      logger.write(`${date} Logging HTTP request ${method} ${originalUrl} ${statusCode} ${contentLength} - ${userAgent} ${ip}`)
+      fs.appendFile(`logs/${dirDate}/query_logs.log`, message, (err: Error) => {
+        if (err) throw err;
+      })
     })
+
     next();
   }
 }
