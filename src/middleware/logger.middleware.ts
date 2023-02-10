@@ -1,10 +1,11 @@
-import { Injectable, Logger, NestMiddleware } from '@nestjs/common';
+import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 import * as fs from "fs";
 import * as moment from "moment";
 
 @Injectable()
 export class LoggerMiddleware implements NestMiddleware {
+
   use(req: Request, res: Response, next: NextFunction) {
 
     const now = moment().format('DD-MM-YYYY HH:mm:SS');
