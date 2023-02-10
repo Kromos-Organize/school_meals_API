@@ -1,4 +1,4 @@
-import {HttpException, HttpStatus, Injectable, UnauthorizedException} from '@nestjs/common';
+import { BadRequestException, HttpException, HttpStatus, Injectable, UnauthorizedException } from "@nestjs/common";
 import {EmployeeService} from "./employee.service";
 import {JwtService} from "@nestjs/jwt";
 import * as bcrypt from "bcryptjs";
@@ -32,7 +32,13 @@ export class AuthService {
         const candidate = await this.employeeService.getEmployeeByEmail(employeeDto.email);
 
         if (candidate) {
-            throw new HttpException('Соруник существует',HttpStatus.BAD_REQUEST);// 400 status
+
+            throw new BadRequestException([
+                {
+                    message: 'Сотрудник существует',
+                    field: 'email',
+                },
+            ]);
         }
 
         const hashPassword = await bcrypt.hash(employeeDto.password, 5);
@@ -44,24 +50,54 @@ export class AuthService {
 
     private async generateEmployeeToken(employee: Employee ){
 
+        const accessToken = this.jwtService.sign(
+          {
+              id: employee.employee_id,
+              email: employee.email,
+              role: employee.role,
+          },{
+              expiresIn: '15m',
+          },
+        );
+
+        const refreshToken = this.jwtService.sign(
+          {
+              id: employee.employee_id,
+              email: employee.email,
+              role: employee.role,
+          },{ expiresIn: '30d' },
+        );
+
         return {
-            token: this.jwtService.sign({
-                id: employee.employee_id,
-                email: employee.email,
-                role: employee.role,
-            })
-        }
+            accessToken: accessToken,
+            refreshToken: refreshToken,
+        };
     }
 
     private async generateAdminToken(admin: Admin){
 
+        const accessToken = this.jwtService.sign(
+          {
+              id: admin.admin_id,
+              email: admin.email,
+              position: admin.position
+          },{
+              expiresIn: '15m',
+          },
+        );
+
+        const refreshToken = this.jwtService.sign(
+          {
+              id: admin.admin_id,
+              email: admin.email,
+              position: admin.position
+          },{ expiresIn: '30d' },
+        );
+
         return {
-            token: this.jwtService.sign({
-                id: admin.admin_id,
-                email: admin.email,
-                position: admin.position
-            })
-        }
+            accessToken: accessToken,
+            refreshToken: refreshToken,
+        };
     }
 
     private async validateUser(userDto: LoginDto) {
