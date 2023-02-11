@@ -2,7 +2,7 @@ module.exports = {
   apps : [{
     name:'school_meals_API',
     script: './dist/main.js',
-    env_production: {
+    env: {
       NODE_ENV: '.production.env',
     },
     watch: true,
