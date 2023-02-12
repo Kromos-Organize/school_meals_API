@@ -18,6 +18,8 @@ import {Admin} from "./model/admin.model";
 import {LoggerMiddleware} from "./middleware/logger.middleware";
 import {ModerationModule} from "./module/moderation.module";
 import {Moderation} from "./model/moderation.model";
+import {ClassModule} from "./module/class.module";
+import {allModels} from "./importModels";
 
 @Module({
     controllers: [],
@@ -33,7 +35,7 @@ import {Moderation} from "./model/moderation.model";
             username: process.env.POSTGRES_USER,
             password: process.env.POSTGRES_PASSWORD,
             database: process.env.POSTGRES_DB_NAME,
-            models: [Employee, Role, EmployeeRoles, School, Student, Admin, Moderation],
+            models: allModels,
             autoLoadModels: true
         }),
         AdminModule,
@@ -44,6 +46,7 @@ import {Moderation} from "./model/moderation.model";
         StudentModule,
         TelegramBotModule,
         ModerationModule,
+        ClassModule,
     ]
 })
 export class AppModule {

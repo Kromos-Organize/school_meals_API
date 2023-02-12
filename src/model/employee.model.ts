@@ -1,11 +1,13 @@
-import {BelongsToMany, Column, DataType, Model, Table} from "sequelize-typescript";
+import {BelongsToMany, Column, DataType, ForeignKey, Model, Table} from "sequelize-typescript";
 import {ApiProperty} from "@nestjs/swagger";
 import {Role} from "./role.model";
 import {EmployeeRoles} from "./employee-role.model";
+import {School} from "./school.model";
 
 interface EmployeeCreationAttrs {
     email: string,
     password: string,
+    school_id?: number
     phone?: string,
     fname?: string,
     name?: string,
@@ -19,6 +21,11 @@ export class Employee extends Model<Employee, EmployeeCreationAttrs> {
     @ApiProperty({example:'1', description:'ID'})
     @Column({type: DataType.INTEGER, unique: true, autoIncrement: true, primaryKey: true})
     employee_id: number;
+
+    @ApiProperty({example:'1', description:'ID школы'})
+    @Column({type: DataType.INTEGER, allowNull: true})
+    @ForeignKey(() => School)
+    school_id: number;
 
     @ApiProperty({example:'user@mail.ru', description:'Почтовый адрес'})
     @Column({type: DataType.STRING, unique: true, allowNull: false})

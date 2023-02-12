@@ -1,7 +1,11 @@
-import {Column, DataType, Model, Table} from "sequelize-typescript";
+import {Column, DataType, ForeignKey, Model, Table} from "sequelize-typescript";
 import {ApiProperty} from "@nestjs/swagger";
+import {School} from "./school.model";
+import {Class} from "./class.model";
 
 interface StudentCreationAttrs {
+    school_id: number,
+    class_id: number,
     fname: string,
     name: string,
     lname: string,
@@ -15,6 +19,16 @@ export class Student extends Model<Student, StudentCreationAttrs> {
     @ApiProperty({example:'1', description:'ID'})
     @Column({type: DataType.INTEGER, unique: true, autoIncrement: true, primaryKey: true})
     student_id: number;
+
+    @ApiProperty({example:'1', description:'ID школы'})
+    @Column({type: DataType.INTEGER, allowNull: true})
+    @ForeignKey(() => School)
+    school_id: number;
+
+    @ApiProperty({example:'1', description:'ID класса'})
+    @Column({type: DataType.INTEGER, allowNull: true})
+    @ForeignKey(() => Class)
+    class_id: number;
 
     @ApiProperty({example:'Шавлинский', description:'Фамилия ученика'})
     @Column({type: DataType.STRING, allowNull: false})

@@ -1,9 +1,10 @@
-import {Body, Controller, Get, Post, UsePipes} from '@nestjs/common';
+import {Body, Controller, Get, Param, Post, UsePipes} from '@nestjs/common';
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {SchoolService} from "../service/school.service";
 import {CreateSchoolDto} from "../dto/create-school.dto";
 import {School} from "../model/school.model";
 import {ValidationBody} from "../pipes/valdationBody.pipe";
+import {ValidateParams} from "../pipes/validateParams.pipe";
 
 @ApiTags('Школа')
 @Controller('school')
@@ -17,6 +18,15 @@ export class SchoolController {
     getAll() {
 
         return this.schoolService.getAllSchool();
+    }
+
+    @ApiOperation({summary: 'Получить данные школы'})
+    @ApiResponse({status: 200, type: School})
+    @UsePipes(ValidateParams)
+    @Get(':id')
+    get(@Param('id') id: number,) {
+
+        return this.schoolService.get(id);
     }
 
     @ApiOperation({summary: 'Добавить школу'})

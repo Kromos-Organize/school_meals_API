@@ -13,6 +13,18 @@ export class SchoolService {
         return await this.schoolRepository.findAll();
     }
 
+    async get(school_id: number) {
+
+        const school = await this.schoolRepository.findOne({where: {school_id}})
+
+        if (!school) {
+
+            throw new HttpException({message: 'Школа не найдена.'},HttpStatus.NOT_FOUND)
+        }
+
+        return school;
+    }
+
     async createSchool(dto: CreateSchoolDto) {
 
         const schoolCandidate = await this.schoolRepository.findOne({where: {name: dto.name, city: dto.city}})
