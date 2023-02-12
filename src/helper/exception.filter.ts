@@ -6,43 +6,59 @@ import {
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 
+
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
+
+  sendStatus(response: Response, status: number, json: object) {
+
+    response.status(status).json(json)
+  }
+
   catch(exception: HttpException, host: ArgumentsHost) {
+
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
     const status = exception.getStatus();
-    if (status === 429) {
-      response.sendStatus(429);
-      return;
-    }
-    if (status === 404) {
-      response.sendStatus(404);
-      return;
-    }
-    if (status === 403) {
-      response.sendStatus(403);
-      return;
-    }
-    if (status === 401) {
-      response.sendStatus(401);
-      return;
-    }
-    if (status === 400) {
-      const errorResponse = {
-        errorsMessages: [],
-      };
-      const responseBody: any = exception.getResponse();
-      console.log('responseBody.message', responseBody);
-      responseBody.message.forEach((m) => errorResponse.errorsMessages.push(m));
-      response.status(status).json(errorResponse);
-    } else {
-      response.status(status).json({
-        statusCode: status,
-        timestamp: new Date().toISOString(),
-        path: request.url,
-      });
+    const responseBody = exception.getResponse();
+
+    switch (status) {
+
+      case 429:
+      case 404:
+      case 403:
+      case 401:
+      case 400:
+
+        if (typeof responseBody === 'object') {
+
+          let errorsMessages = []
+
+          for(let param in responseBody as object) {
+
+            if (param === 'message') {
+
+              errorsMessages.push(responseBody[param])
+            }
+          }
+
+          response.status(status).json({errorResponse: errorsMessages});
+
+        } else {
+
+          this.sendStatus(response, status, {message: responseBody})
+        }
+
+        return;
+
+      default:
+
+        this.sendStatus(response, status, {
+          statusCode: status,
+          timestamp: new Date().toISOString(),
+          path: request.url,
+        })
     }
   }
 }
