@@ -9,6 +9,9 @@ import {School} from "../model/school.model";
   controllers: [SchoolController],
   imports: [
     SequelizeModule.forFeature([School])
+  ],
+  exports: [
+    SchoolService
   ]
 })
 export class SchoolModule {}
