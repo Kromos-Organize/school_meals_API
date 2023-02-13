@@ -1,4 +1,4 @@
-import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
+import {BadRequestException, HttpException, HttpStatus, Injectable} from '@nestjs/common';
 import {InjectModel} from "@nestjs/sequelize";
 import {Moderation} from "../model/moderation.model";
 import {CreateEmployeeDto} from "../dto/create-employee.dto";
@@ -15,7 +15,13 @@ export class ModerationService {
         const candidate = await this.moderationRepo.findOne({where: {email: employeeDto.email}})
 
         if (candidate) {
-            throw new HttpException('Запрос на модерацию уже существует',HttpStatus.BAD_REQUEST);
+
+            throw new BadRequestException([
+                {
+                    message: 'Запрос на модерацию уже существует',
+                    field: 'email',
+                },
+            ]);
         }
 
         return await this.moderationRepo.create(employeeDto);

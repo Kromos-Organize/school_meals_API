@@ -32,8 +32,12 @@ export class CreateEmployeeDto {
     @IsEmail({}, {message:'Некорректынй емейл.'})
     readonly email: string;
 
-    @ApiProperty({example:'123456789', description:'Пароль сотрудника'})
+    @ApiProperty({example:'123456789', description:'Пароль админа школы'})
     @IsString({message: 'Должно быть строкой.'})
     @Length(8,16,{message: 'Пароль должен быть от 8 до 16 символов.'})
     readonly password: string;
+
+    @ApiProperty({example:'375297485875', description:'Телефон админа школы'})
+    @IsString({message: 'Должно быть строкой.'})
+    readonly phone: string;
 }

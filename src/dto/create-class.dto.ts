@@ -8,6 +8,7 @@ export class CreateClassDto {
     readonly school_id: number;
 
     @ApiProperty({example:'2', description:'Номер класса'})
+
     @IsNumber()
     readonly number: number;
 
