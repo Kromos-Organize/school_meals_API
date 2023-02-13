@@ -1,4 +1,4 @@
-import { Body, Controller, HttpCode, Post, Req, Res, UseGuards, UsePipes } from "@nestjs/common";
+import { Body, Controller, HttpCode, Post, Req, Res, UnauthorizedException, UseGuards, UsePipes } from "@nestjs/common";
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {CreateEmployeeDto} from "../dto/create-employee.dto";
 import {AuthService} from "../service/auth.service";
@@ -21,6 +21,7 @@ export class AuthController {
     async login(@Body() userDto: LoginDto, @Res() res) {
 
         const tokens = await this.authService.login(userDto)
+        if (tokens === null) throw new UnauthorizedException();
         res
           .cookie('refreshToken', tokens.refreshToken, {
               maxAge: 200000000,

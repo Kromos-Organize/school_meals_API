@@ -27,8 +27,18 @@ export class HttpExceptionFilter implements ExceptionFilter {
 
       case 429:
       case 404:
+
+        response.sendStatus(404);
+
+        return;
+
       case 403:
       case 401:
+
+        response.sendStatus(401);
+
+        return;
+
       case 400:
 
         if (typeof responseBody === 'object') {

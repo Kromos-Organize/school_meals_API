@@ -49,7 +49,8 @@ export class AuthService {
     }
 
     private async generateEmployeeToken(employee: Employee ){
-
+        if (employee === null) return null;
+      console.log(employee);
         const accessToken = this.jwtService.sign(
           {
               id: employee.employee_id,
@@ -75,7 +76,7 @@ export class AuthService {
     }
 
     private async generateAdminToken(admin: Admin){
-
+      if (admin === null) return null;
         const accessToken = this.jwtService.sign(
           {
               id: admin.admin_id,
@@ -109,7 +110,7 @@ export class AuthService {
         }else {
             user = await this.employeeService.getEmployeeByEmail(userDto.email)
         }
-
+        if (!user) return null;
         const passwordEq = await bcrypt.compare(userDto.password, user.password);
 
         if (userDto && passwordEq) {
