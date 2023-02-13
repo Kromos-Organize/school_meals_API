@@ -33,7 +33,12 @@ export const createApp = (app: INestApplication): INestApplication => {
 
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
   app.use(cookieParser());
-  app.enableCors();
+  app.enableCors(
+      {
+        origin: 'http://localhost:3000',
+        credentials: true,
+      }
+  );
 
   const ValidatePipe = new ValidationPipe({
     stopAtFirstError: true,

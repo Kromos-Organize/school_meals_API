@@ -24,12 +24,12 @@ export class EmployeeService {
 
     async getAllEmployee() {
 
-        return await this.employeeRepository.findAll({include: {all:true}});// все поля с которым связан пользователь будут подтягиваться
+        return await this.employeeRepository.findAll({include: {all:true}});
     }
 
     async getEmployeeByEmail(email: string) {
 
-       return await this.employeeRepository.findOne({where:{email}, include: {all: true}});
+       return await this.employeeRepository.findOne({where:{email}});
     }
 
     async getEmployeeById(employee_id: string) {
