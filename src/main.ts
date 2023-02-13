@@ -1,11 +1,15 @@
 import {NestFactory} from "@nestjs/core";
 import {AppModule} from "./app.module";
 import {DocumentBuilder, SwaggerModule} from "@nestjs/swagger";
+import { createApp } from "./helper/createApp";
 
 const start = async () => {
 
     const PORT = process.env.PORT || 5000;
-    const app = await NestFactory.create(AppModule);
+
+    const rawApp = await NestFactory.create(AppModule);
+
+    const app = createApp(rawApp);
 
     const config = new DocumentBuilder() //задает поля для документа
         .setTitle('Школьное питание')

@@ -1,4 +1,4 @@
-import {Body, Controller, Delete, Get, Param, Put, UsePipes} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Put, Res, UsePipes } from "@nestjs/common";
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {AdminService} from "../service/admin.service";
 import {Admin} from "../model/admin.model";
