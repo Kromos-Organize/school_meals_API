@@ -2,17 +2,14 @@ import {MiddlewareConsumer, Module} from "@nestjs/common";
 import {SequelizeModule} from "@nestjs/sequelize";
 import {EmployeeModule} from './module/employee.module';
 import {ConfigModule} from "@nestjs/config";
-import {RoleModule} from './module/role.module';
 import {AuthModule} from './module/auth.module';
 import {SchoolModule} from './module/school.module';
 import {StudentModule} from './module/student.module';
-import {TelegramBotModule} from './module/telegram_bot.module';
-import {TelegramBotService} from "./service/telegram_bot.service";
 import {AdminModule} from './module/admin.module';
 import {LoggerMiddleware} from "./middleware/logger.middleware";
-import {ModerationModule} from "./module/moderation.module";
 import {ClassModule} from "./module/class.module";
 import {allModels} from "./importModels";
+import {ManagerModule} from "./module/manager.module";
 
 @Module({
     controllers: [],
@@ -31,23 +28,23 @@ import {allModels} from "./importModels";
             models: allModels,
             autoLoadModels: true
         }),
-        AdminModule,
         AuthModule,
+        AdminModule,
         EmployeeModule,
-        RoleModule,
+        ManagerModule,
         SchoolModule,
         StudentModule,
-        TelegramBotModule,
-        ModerationModule,
         ClassModule,
+        // RoleModule,
+        // TelegramBotModule,
     ]
 })
 export class AppModule {
 
-    constructor(private bot: TelegramBotService) {
+    // constructor(private bot: TelegramBotService) {
 
         // bot.connectBot();
-    }
+    // }
 
     configure(consumer: MiddlewareConsumer) {
         consumer.apply(LoggerMiddleware).forRoutes('*');

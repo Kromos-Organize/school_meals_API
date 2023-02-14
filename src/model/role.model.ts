@@ -22,7 +22,4 @@ export class Role extends Model<Role, RoleCreationAttrs> {
     @ApiProperty({example:'Сотрудник', description:'Описание роли'})
     @Column({type: DataType.STRING, unique: true, allowNull: false})
     description: string;
-
-    @BelongsToMany(() => Employee, () => EmployeeRoles) //для связывания таблиц многие ко многим
-    employee: Employee[]
 }

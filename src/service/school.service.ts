@@ -31,9 +31,23 @@ export class SchoolService {
 
         if (schoolCandidate) {
 
-            throw new HttpException('Школа существует',HttpStatus.BAD_REQUEST);// 400 status
+            throw new HttpException('Школа существует',HttpStatus.BAD_REQUEST);
         }
 
         return await this.schoolRepository.create(dto);
+    }
+
+    async updateSchool(school_id: number, schoolDto: CreateSchoolDto) {
+
+        const school = await this.get(school_id);
+
+        return await school.update(schoolDto);
+    }
+
+    async removeSchool(school_id: string) {
+
+        const result = await this.schoolRepository.destroy({where: {school_id}});
+
+        return result ? {message: "Школа удалена."} : {message: "Школа не найдена."}
     }
 }

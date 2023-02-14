@@ -1,16 +1,14 @@
-import {BelongsToMany, Column, DataType, ForeignKey, Model, Table} from "sequelize-typescript";
+import {Column, DataType, ForeignKey, Model, Table} from "sequelize-typescript";
 import {ApiProperty} from "@nestjs/swagger";
-import {Role} from "./role.model";
-import {EmployeeRoles} from "./employee-role.model";
 import {School} from "./school.model";
 
 interface EmployeeCreationAttrs {
+    school_id: number
     email: string,
     password: string,
-    school_id?: number
     phone?: string,
-    fname?: string,
-    name?: string,
+    fname: string,
+    name: string,
     lname?: string,
     birthday?: string
 }
@@ -23,7 +21,7 @@ export class Employee extends Model<Employee, EmployeeCreationAttrs> {
     employee_id: number;
 
     @ApiProperty({example:'1', description:'ID школы'})
-    @Column({type: DataType.INTEGER, allowNull: true})
+    @Column({type: DataType.INTEGER, allowNull: false})
     @ForeignKey(() => School)
     school_id: number;
 
@@ -40,11 +38,11 @@ export class Employee extends Model<Employee, EmployeeCreationAttrs> {
     phone: string;
 
     @ApiProperty({example:'Шавлинский', description:'Фамилия сотрудника'})
-    @Column({type: DataType.STRING, allowNull: true})
+    @Column({type: DataType.STRING, allowNull: false})
     fname: string;
 
     @ApiProperty({example:'Роман', description:'Имя сотрудника'})
-    @Column({type: DataType.STRING, allowNull: true})
+    @Column({type: DataType.STRING, allowNull: false})
     name: string;
 
     @ApiProperty({example:'Игоревич', description:'Отчество сотрудника'})
@@ -54,7 +52,4 @@ export class Employee extends Model<Employee, EmployeeCreationAttrs> {
     @ApiProperty({example:'11231242355', description:'Дата рождения сотрудника, unix time'})
     @Column({type: DataType.STRING, allowNull: true})
     birthday: string;
-
-    @BelongsToMany(() => Role, () => EmployeeRoles) //для связывания таблиц многие ко многим
-    role: Role
 }

@@ -1,19 +1,17 @@
 import {Employee} from "./model/employee.model";
-import {Role} from "./model/role.model";
-import {EmployeeRoles} from "./model/employee-role.model";
 import {School} from "./model/school.model";
 import {Student} from "./model/student.model";
 import {Admin} from "./model/admin.model";
-import {Moderation} from "./model/moderation.model";
 import {Class} from "./model/class.model";
+import {Manager} from "./model/manager.model";
 
 export const allModels = [
+    Admin,
+    Manager,
     Employee,
-    Role,
-    EmployeeRoles,
+    // Role,
+    // EmployeeRoles,
     School,
     Student,
-    Admin,
-    Moderation,
     Class,
 ]

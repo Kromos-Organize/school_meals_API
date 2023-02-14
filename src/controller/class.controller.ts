@@ -7,7 +7,7 @@ import {ValidationBody} from "../pipes/valdationBody.pipe";
 import {CreateClassDto} from "../dto/create-class.dto";
 import {ValidateParams} from "../pipes/validateParams.pipe";
 
-@ApiTags('Класс')
+@ApiTags('Классы')
 @Controller('school/:school_id/class')
 export class ClassController {
 

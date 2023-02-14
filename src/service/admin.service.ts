@@ -31,11 +31,19 @@ export class AdminService {
 
     async update(admin_id: string, adminDto: CreateAdminDto) {
 
-        // return this.adminRepository.update({where: {admin_id}},adminDto)
+        const admin = await this.adminRepository.findOne({where: {admin_id}})
+
+        if (!admin) {
+            throw new HttpException('Такого админа не существует',HttpStatus.BAD_REQUEST)
+        }
+
+        return await admin.update(adminDto);
     }
 
     async remove(admin_id: string) {
 
-        // await this.adminRepository.delete()
+        const result = await this.adminRepository.destroy({where: {admin_id}})
+
+        return result ? {message: "Админ удален"} : {message: "Админ не найден."}
     }
 }
