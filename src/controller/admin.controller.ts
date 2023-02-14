@@ -29,7 +29,7 @@ export class AdminController {
     }
 
     @ApiOperation({summary: 'Изменить данные админа'})
-    @ApiResponse({status: 200,type: Admin})
+    @ApiResponse({status: 201,type: Admin})
     @UsePipes(ValidateParams)
     @Put('/:id')
     update(@Param('id') admin_id: string, @Body() adminDto: CreateAdminDto)  {
