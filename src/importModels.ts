@@ -4,7 +4,6 @@ import {EmployeeRoles} from "./model/employee-role.model";
 import {School} from "./model/school.model";
 import {Student} from "./model/student.model";
 import {Admin} from "./model/admin.model";
-import {Moderation} from "./model/moderation.model";
 import {Class} from "./model/class.model";
 
 export const allModels = [
@@ -14,6 +13,5 @@ export const allModels = [
     School,
     Student,
     Admin,
-    Moderation,
     Class,
 ]

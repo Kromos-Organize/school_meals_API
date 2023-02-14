@@ -7,13 +7,11 @@ import {CreateEmployeeDto} from "../dto/create-employee.dto";
 import {LoginDto} from "../dto/auth.dto";
 import {AdminService} from "./admin.service";
 import {Admin} from "../model/admin.model";
-import {ModerationService} from "./moderation.service";
 
 @Injectable()
 export class AuthService {
 
     constructor(private employeeService: EmployeeService,
-                private moderationService: ModerationService,
                 private adminService: AdminService,
                 private jwtService: JwtService) { }
 
@@ -43,7 +41,7 @@ export class AuthService {
 
         const hashPassword = await bcrypt.hash(employeeDto.password, 5);
 
-        await this.moderationService.create({...employeeDto, password: hashPassword});
+        // await this.moderationService.create({...employeeDto, password: hashPassword});
 
         return { message: "Ваши данные отправлены на модерацию. Время проверки может составлять от нескольких минут до 2 часов." }
     }

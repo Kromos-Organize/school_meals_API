@@ -10,7 +10,6 @@ import {TelegramBotModule} from './module/telegram_bot.module';
 import {TelegramBotService} from "./service/telegram_bot.service";
 import {AdminModule} from './module/admin.module';
 import {LoggerMiddleware} from "./middleware/logger.middleware";
-import {ModerationModule} from "./module/moderation.module";
 import {ClassModule} from "./module/class.module";
 import {allModels} from "./importModels";
 
@@ -38,7 +37,6 @@ import {allModels} from "./importModels";
         SchoolModule,
         StudentModule,
         TelegramBotModule,
-        ModerationModule,
         ClassModule,
     ]
 })
