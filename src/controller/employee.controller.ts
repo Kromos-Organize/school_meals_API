@@ -1,12 +1,12 @@
-import {Body, Controller, Delete, Get, Param, Post, Put} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Post, Put, Query} from '@nestjs/common';
 import {EmployeeService} from "../service/employee.service";
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {Employee} from "../model/employee.model";
-import {CreateEmployeeDto} from "../dto/create-employee.dto";
+import {CreateEmployeeDto, UpdateEmloyeeDto} from "../dto/create-employee.dto";
 import {MessageDto} from "../dto/message.dto";
 
 @ApiTags('Сотрудники школы')
-@Controller('school/:school_id/employee')
+@Controller('employee')
 export class EmployeeController {
 
     constructor(private employeeService: EmployeeService) {
@@ -15,7 +15,7 @@ export class EmployeeController {
     @ApiOperation({summary: 'Получение списка сотрудников'})
     @ApiResponse({status: 200, type: [Employee]})
     @Get()
-    getAll(@Param('school_id') school_id: string) {
+    getAll(@Query('school_id') school_id: string) {
 
         return this.employeeService.getAllEmployee(school_id);
     }
@@ -30,8 +30,9 @@ export class EmployeeController {
 
     @ApiOperation({summary: 'Получить данные сотрудника по емейлу'})
     @ApiResponse({status: 200, type: Employee})
-    @Get('/:email')
-    getEmployeeByEmail(@Param('email') email: string) {
+    @Get()
+    getEmployeeByEmail(@Query('email') email: string) {
+
         return this.employeeService.getEmployeeByEmail(email);
     }
 
@@ -46,7 +47,7 @@ export class EmployeeController {
     @ApiOperation({summary: 'Изменить данные сотрудника'})
     @ApiResponse({status: 200, type: Employee})
     @Put(':employee_id')
-    update(@Param('employee_id') employee_id: string, @Body() employeeDto: CreateEmployeeDto) {
+    update(@Param('employee_id') employee_id: string, @Body() employeeDto: UpdateEmloyeeDto) {
 
         return this.employeeService.updateEmployee(employee_id, employeeDto);
     }

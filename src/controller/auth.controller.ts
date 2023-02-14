@@ -1,12 +1,11 @@
-import { Body, Controller, HttpCode, Post, Req, Res, UnauthorizedException, UseGuards, UsePipes } from "@nestjs/common";
+import {Body, Controller, HttpCode, Post, Req, Res, UnauthorizedException, UseGuards, UsePipes} from "@nestjs/common";
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
-import {CreateEmployeeDto} from "../dto/create-employee.dto";
 import {AuthService} from "../service/auth.service";
 import {LoginDto, Token} from "../dto/auth.dto";
 import {ValidationBody} from "../pipes/valdationBody.pipe";
 import {MessageDto} from "../dto/message.dto";
-import { RefreshTokenGuard } from "../guard/refresh.token.guard";
-import { JwtService } from "@nestjs/jwt";
+import {RefreshTokenGuard} from "../guard/refresh.token.guard";
+import {JwtService} from "@nestjs/jwt";
 import {CreateManagerDto} from "../dto/create-manager.dto";
 
 @ApiTags('Авторизация')

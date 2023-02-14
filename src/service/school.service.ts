@@ -1,4 +1,4 @@
-import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
+import {BadRequestException, HttpException, HttpStatus, Injectable} from '@nestjs/common';
 import {InjectModel} from "@nestjs/sequelize";
 import {School} from "../model/school.model";
 import {CreateSchoolDto} from "../dto/create-school.dto";
@@ -19,7 +19,12 @@ export class SchoolService {
 
         if (!school) {
 
-            throw new HttpException({message: 'Школа не найдена.'},HttpStatus.NOT_FOUND)
+            throw new BadRequestException([
+                {
+                    message: 'Школа не найдена.',
+                    field: 'school_id',
+                },
+            ]);
         }
 
         return school;
@@ -30,8 +35,12 @@ export class SchoolService {
         const schoolCandidate = await this.schoolRepository.findOne({where: {name: dto.name, city: dto.city}})
 
         if (schoolCandidate) {
-
-            throw new HttpException('Школа существует',HttpStatus.BAD_REQUEST);
+            throw new BadRequestException([
+                {
+                    message: 'Школа не найдена.',
+                    field: 'school_id',
+                },
+            ]);
         }
 
         return await this.schoolRepository.create(dto);

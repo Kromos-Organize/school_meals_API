@@ -7,13 +7,14 @@ import {Role} from "../model/role.model";
 import {EmployeeRoles} from "../model/employee-role.model";
 import {RoleModule} from "./role.module";
 import {AuthModule} from "./auth.module";
+import {SchoolModule} from "./school.module";
 
 @Module({
     controllers: [EmployeeController],
     providers: [EmployeeService],
     imports: [
-        SequelizeModule.forFeature([Employee, Role, EmployeeRoles]),
-        RoleModule,
+        SequelizeModule.forFeature([Employee]),
+        SchoolModule,
         forwardRef(() => AuthModule),
     ],
     exports: [EmployeeService]
