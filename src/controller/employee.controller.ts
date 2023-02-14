@@ -1,10 +1,8 @@
-import {Body, Controller, Delete, Get, Param, Post, Put, UseGuards, UsePipes} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Post, Put} from '@nestjs/common';
 import {EmployeeService} from "../service/employee.service";
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {Employee} from "../model/employee.model";
 import {CreateEmployeeDto} from "../dto/create-employee.dto";
-import {JwtAdminAuthGuard} from "../guard/jwt-admin-auth.guard";
-import {ValidationBody} from "../pipes/valdationBody.pipe";
 import {MessageDto} from "../dto/message.dto";
 
 @ApiTags('Сотрудники школы')

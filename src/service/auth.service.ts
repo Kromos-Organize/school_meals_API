@@ -2,18 +2,21 @@ import {BadRequestException, Injectable, UnauthorizedException} from "@nestjs/co
 import {EmployeeService} from "./employee.service";
 import {JwtService} from "@nestjs/jwt";
 import * as bcrypt from "bcryptjs";
-import {Employee} from "../model/employee.model";
-import {CreateEmployeeDto} from "../dto/create-employee.dto";
 import {LoginDto} from "../dto/auth.dto";
 import {AdminService} from "./admin.service";
 import {Admin} from "../model/admin.model";
+import {CreateManagerDto} from "../dto/create-manager.dto";
+import {ManagerService} from "./manager.service";
+import {Manager} from "../model/manager.model";
 
 @Injectable()
 export class AuthService {
 
-    constructor(private employeeService: EmployeeService,
-                private adminService: AdminService,
-                private jwtService: JwtService) { }
+    constructor(private adminService: AdminService,
+                private managerService: ManagerService,
+                private employeeService: EmployeeService,
+                private jwtService: JwtService) {
+    }
 
     async login(userDto: LoginDto) {
 
@@ -25,44 +28,41 @@ export class AuthService {
         return this.generateEmployeeToken(await this.validateUser(userDto))
     }
 
-    async registration(employeeDto: CreateEmployeeDto) {
+    async registration(managerDto: CreateManagerDto) {
 
-        const candidate = await this.employeeService.getEmployeeByEmail(employeeDto.email);
+        const candidate = await this.managerService.getByEmail(managerDto.email);
 
         if (candidate) {
 
             throw new BadRequestException([
                 {
-                    message: 'Сотрудник существует',
+                    message: 'Менеджер существует',
                     field: 'email',
                 },
             ]);
         }
 
-        const hashPassword = await bcrypt.hash(employeeDto.password, 5);
-
-        // await this.moderationService.create({...employeeDto, password: hashPassword});
-
-        return { message: "Ваши данные отправлены на модерацию. Время проверки может составлять от нескольких минут до 2 часов." }
+        const hashPassword = await bcrypt.hash(managerDto.password, 5);
+        return await this.managerService.createManager({...managerDto, password: hashPassword});
     }
 
-    private async generateEmployeeToken(employee: Employee ){
-        if (employee === null) return null;
-      console.log(employee);
+    private async generateEmployeeToken(manager: Manager) {
+        if (manager === null) return null;
+
         const accessToken = this.jwtService.sign(
-          {
-              id: employee.employee_id,
-              email: employee.email,
-          },{
-              expiresIn: '15m',
-          },
+            {
+                id: manager.manager_id,
+                email: manager.email,
+            }, {
+                expiresIn: '15m',
+            },
         );
 
         const refreshToken = this.jwtService.sign(
-          {
-              id: employee.employee_id,
-              email: employee.email,
-          },{ expiresIn: '30d' },
+            {
+                id: manager.manager_id,
+                email: manager.email,
+            }, {expiresIn: '30d'},
         );
 
         return {
@@ -71,24 +71,24 @@ export class AuthService {
         };
     }
 
-    private async generateAdminToken(admin: Admin){
-      if (admin === null) return null;
+    private async generateAdminToken(admin: Admin) {
+        if (admin === null) return null;
         const accessToken = this.jwtService.sign(
-          {
-              id: admin.admin_id,
-              email: admin.email,
-              position: admin.position
-          },{
-              expiresIn: '15m',
-          },
+            {
+                id: admin.admin_id,
+                email: admin.email,
+                position: admin.position
+            }, {
+                expiresIn: '15m',
+            },
         );
 
         const refreshToken = this.jwtService.sign(
-          {
-              id: admin.admin_id,
-              email: admin.email,
-              position: admin.position
-          },{ expiresIn: '30d' },
+            {
+                id: admin.admin_id,
+                email: admin.email,
+                position: admin.position
+            }, {expiresIn: '30d'},
         );
 
         return {
@@ -103,8 +103,8 @@ export class AuthService {
 
         if (userDto.isAdminDev) {
             user = await this.adminService.getAdminByEmail(userDto.email)
-        }else {
-            user = await this.employeeService.getEmployeeByEmail(userDto.email)
+        } else {
+            user = await this.managerService.getByEmail(userDto.email)
         }
         if (!user) return null;
         const passwordEq = await bcrypt.compare(userDto.password, user.password);

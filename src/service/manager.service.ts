@@ -1,7 +1,7 @@
-import {HttpException, HttpStatus, Injectable} from "@nestjs/common";
+import {BadRequestException, HttpException, HttpStatus, Injectable} from "@nestjs/common";
 import {InjectModel} from "@nestjs/sequelize";
 import {Manager} from "../model/manager.model";
-import {CreateManagerDto, UpdateManagerDto} from "../dto/manager.dto";
+import {CreateManagerDto, UpdateManagerDto} from "../dto/create-manager.dto";
 
 @Injectable()
 export class ManagerService {
@@ -29,7 +29,12 @@ export class ManagerService {
         const manager = await this.managerRepo.findOne({where: {email:managerDto.email}})
 
         if (manager) {
-            throw new HttpException('Такой менеджер существует',HttpStatus.BAD_REQUEST)
+            throw new BadRequestException([
+                {
+                    message: 'Менеджер существует',
+                    field: 'email',
+                },
+            ]);
         }
 
         return await this.managerRepo.create(managerDto);

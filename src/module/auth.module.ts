@@ -5,6 +5,7 @@ import {EmployeeModule} from "./employee.module";
 import {JwtModule} from "@nestjs/jwt";
 import {TelegramBotModule} from "./telegram_bot.module";
 import {AdminModule} from "./admin.module";
+import {ManagerModule} from "./manager.module";
 
 @Module({
     controllers: [AuthController],
@@ -13,6 +14,7 @@ import {AdminModule} from "./admin.module";
         forwardRef(() => EmployeeModule),
         TelegramBotModule,
         AdminModule,
+        ManagerModule,
         JwtModule.register({
             secret: process.env.PRIVATE_KEY || 'SECRET',
             signOptions: {
