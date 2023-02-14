@@ -14,7 +14,6 @@ export class EmployeeController {
 
     @ApiOperation({summary: 'Получение списка сотрудников'})
     @ApiResponse({status: 200,type: [Employee]})
-    @UseGuards(JwtAdminAuthGuard)
     @Get()
     getAll() {
         return this.employeeService.getAllEmployee();

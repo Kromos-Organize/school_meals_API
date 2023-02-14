@@ -54,7 +54,4 @@ export class Employee extends Model<Employee, EmployeeCreationAttrs> {
     @ApiProperty({example:'11231242355', description:'Дата рождения сотрудника, unix time'})
     @Column({type: DataType.STRING, allowNull: true})
     birthday: string;
-
-    @BelongsToMany(() => Role, () => EmployeeRoles) //для связывания таблиц многие ко многим
-    role: Role
 }

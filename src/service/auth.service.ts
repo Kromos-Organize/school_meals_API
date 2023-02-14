@@ -1,4 +1,4 @@
-import { BadRequestException, HttpException, HttpStatus, Injectable, UnauthorizedException } from "@nestjs/common";
+import {BadRequestException, Injectable, UnauthorizedException} from "@nestjs/common";
 import {EmployeeService} from "./employee.service";
 import {JwtService} from "@nestjs/jwt";
 import * as bcrypt from "bcryptjs";
@@ -53,7 +53,6 @@ export class AuthService {
           {
               id: employee.employee_id,
               email: employee.email,
-              role: employee.role,
           },{
               expiresIn: '15m',
           },
@@ -63,7 +62,6 @@ export class AuthService {
           {
               id: employee.employee_id,
               email: employee.email,
-              role: employee.role,
           },{ expiresIn: '30d' },
         );
 
