@@ -3,7 +3,7 @@ import {Body, Controller, Delete, Get, Param, Post, Put, UsePipes} from "@nestjs
 import {ManagerService} from "src/service/manager.service";
 import {Manager} from "../model/manager.model";
 import {ValidationBody} from "../pipes/valdationBody.pipe";
-import {CreateManagerDto, UpdateManagerDto} from "../dto/manager.dto";
+import {CreateManagerDto, UpdateManagerDto} from "../dto/create-manager.dto";
 import {MessageDto} from "../dto/message.dto";
 
 @ApiTags('Менеджеры школы')

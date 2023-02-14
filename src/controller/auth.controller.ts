@@ -7,6 +7,7 @@ import {ValidationBody} from "../pipes/valdationBody.pipe";
 import {MessageDto} from "../dto/message.dto";
 import { RefreshTokenGuard } from "../guard/refresh.token.guard";
 import { JwtService } from "@nestjs/jwt";
+import {CreateManagerDto} from "../dto/create-manager.dto";
 
 @ApiTags('Авторизация')
 @Controller('auth')
@@ -39,9 +40,9 @@ export class AuthController {
     @UsePipes(ValidationBody)
     @HttpCode(204)
     @Post('/registration')
-    registration(@Body() employeeDto: CreateEmployeeDto) {
+    registration(@Body() managerDto: CreateManagerDto) {
 
-        return this.authService.registration(employeeDto)
+        return this.authService.registration(managerDto)
     }
 
   @UseGuards(RefreshTokenGuard)
