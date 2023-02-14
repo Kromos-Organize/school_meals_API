@@ -1,9 +1,8 @@
-import {Body, Controller, Delete, Get, Param, Post, Put, UsePipes} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Post, Put} from '@nestjs/common';
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {SchoolService} from "../service/school.service";
 import {CreateSchoolDto} from "../dto/create-school.dto";
 import {School} from "../model/school.model";
-import {ValidationBody} from "../pipes/valdationBody.pipe";
 import {MessageDto} from "../dto/message.dto";
 
 @ApiTags('Школа')
@@ -30,7 +29,6 @@ export class SchoolController {
 
     @ApiOperation({summary: 'Добавить школу'})
     @ApiResponse({status: 200, type: School})
-    @UsePipes(ValidationBody)
     @Post()
     create(@Body() schoolDto: CreateSchoolDto) {
 
@@ -39,7 +37,6 @@ export class SchoolController {
 
     @ApiOperation({summary: 'Изменить данные школы'})
     @ApiResponse({status: 200, type: School})
-    @UsePipes(ValidationBody)
     @Put(':school_id')
     update(@Param('school_id') school_id: number, @Body() schoolDto: CreateSchoolDto) {
 

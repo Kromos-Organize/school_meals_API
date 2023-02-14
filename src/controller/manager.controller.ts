@@ -1,8 +1,7 @@
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
-import {Body, Controller, Delete, Get, Param, Post, Put, UsePipes} from "@nestjs/common";
+import {Body, Controller, Delete, Get, Param, Post, Put} from "@nestjs/common";
 import {ManagerService} from "src/service/manager.service";
 import {Manager} from "../model/manager.model";
-import {ValidationBody} from "../pipes/valdationBody.pipe";
 import {CreateManagerDto, UpdateManagerDto} from "../dto/create-manager.dto";
 import {MessageDto} from "../dto/message.dto";
 
@@ -28,8 +27,7 @@ export class ManagerController {
     }
 
     @ApiOperation({summary: 'Создание менеджера'})
-    @ApiResponse({status: 200, type: Manager})
-    @UsePipes(ValidationBody)
+    @ApiResponse({status: 201, type: Manager})
     @Post()
     create(@Body() managerDto: CreateManagerDto) {
 
