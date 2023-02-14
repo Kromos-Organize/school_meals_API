@@ -29,3 +29,22 @@ export class CreateAdminDto {
     @IsString({message: 'Должно быть строкой.'})
     readonly chat_number?: string
 }
+
+export class UpdateAdminDto {
+
+    @ApiProperty({example: 'Шавлинский', description: 'Фамилия админа'})
+    @IsString({message: 'Должно быть строкой.'})
+    readonly fname: string
+
+    @ApiProperty({example: 'Роман', description: 'Имя админа'})
+    @IsString({message: 'Должно быть строкой.'})
+    readonly name: string
+
+    @ApiProperty({example: 'ТимЛид', description: 'Должность админа'})
+    @IsString({message: 'Должно быть строкой.'})
+    readonly position: string
+
+    @ApiProperty({example: '80055665444', description: 'ID чата с ботом'})
+    @IsString({message: 'Должно быть строкой.'})
+    readonly chat_number?: string
+}

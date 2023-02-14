@@ -1,9 +1,8 @@
-import { Body, Controller, Delete, Get, Param, Put, Res, UsePipes } from "@nestjs/common";
+import {Body, Controller, Delete, Get, Param, Put} from "@nestjs/common";
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {AdminService} from "../service/admin.service";
 import {Admin} from "../model/admin.model";
-import {CreateAdminDto} from "../dto/create-admin.dto";
-import {ValidateParams} from "../pipes/validateParams.pipe";
+import {UpdateAdminDto} from "../dto/create-admin.dto";
 
 @ApiTags('Администраторы проекта')
 @Controller('admin')
@@ -21,7 +20,6 @@ export class AdminController {
 
     @ApiOperation({summary: 'Получить данные админа'})
     @ApiResponse({status: 200,type: Admin})
-    @UsePipes(ValidateParams)
     @Get('/:email')
     getAdminByEmail(@Param('email') email: string) {
 
@@ -30,16 +28,14 @@ export class AdminController {
 
     @ApiOperation({summary: 'Изменить данные админа'})
     @ApiResponse({status: 201,type: Admin})
-    @UsePipes(ValidateParams)
     @Put('/:id')
-    update(@Param('id') admin_id: string, @Body() adminDto: CreateAdminDto)  {
+    update(@Param('id') admin_id: string, @Body() adminDto: UpdateAdminDto)  {
 
         return this.adminService.update(admin_id, adminDto);
     }
 
     @ApiOperation({summary: 'Удалить админа'})
     @ApiResponse({status: 200})
-    @UsePipes(ValidateParams)
     @Delete('/:id')
     remove(@Param('id') admin_id: string) {
 

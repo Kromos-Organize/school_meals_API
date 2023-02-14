@@ -18,7 +18,12 @@ export class ManagerService {
         const manager = await this.managerRepo.findOne({where: {email}})
 
         if (!manager) {
-            throw new HttpException('Такого менеджера не существует',HttpStatus.BAD_REQUEST)
+
+
+            throw new BadRequestException({
+                message: 'Такого менеджера не существует',
+                param: 'email',
+            });
         }
 
         return manager;
@@ -29,12 +34,11 @@ export class ManagerService {
         const manager = await this.managerRepo.findOne({where: {email:managerDto.email}})
 
         if (manager) {
-            throw new BadRequestException([
-                {
-                    message: 'Менеджер существует',
-                    field: 'email',
-                },
-            ]);
+
+            throw new BadRequestException({
+                message: 'Менеджер существует',
+                field: 'email',
+            });
         }
 
         return await this.managerRepo.create(managerDto);
@@ -45,7 +49,11 @@ export class ManagerService {
         const manager = await this.managerRepo.findOne({where: {manager_id}})
 
         if (!manager) {
-            throw new HttpException('Такого менеджера не существует',HttpStatus.BAD_REQUEST)
+
+            throw new BadRequestException({
+                message: 'Такого менеджера не существует',
+                param: 'manager_id',
+            });
         }
 
         return await manager.update(managerDto);

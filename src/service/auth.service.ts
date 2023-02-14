@@ -34,12 +34,10 @@ export class AuthService {
 
         if (candidate) {
 
-            throw new BadRequestException([
-                {
-                    message: 'Менеджер существует',
-                    field: 'email',
-                },
-            ]);
+            throw new BadRequestException({
+                message: 'Менеджер существует',
+                field: 'email',
+            });
         }
 
         const hashPassword = await bcrypt.hash(managerDto.password, 5);

@@ -1,7 +1,7 @@
-import {HttpException, HttpStatus, Injectable} from "@nestjs/common";
+import {BadRequestException, Injectable} from "@nestjs/common";
 import {InjectModel} from "@nestjs/sequelize";
 import {Class} from "../model/class.model";
-import {CreateClassDto} from "../dto/create-class.dto";
+import {CreateClassDto, UpdateClassDto} from "../dto/create-class.dto";
 import {SchoolService} from "./school.service";
 
 @Injectable()
@@ -12,7 +12,7 @@ export class ClassService {
 
     async getAll(school_id: number) {
 
-        return await this.classRepo.findAll({where: {school_id}, include: {all: true}})
+        return await this.classRepo.findAll({where: {school_id}})
     }
 
     async get(class_id: number) {
@@ -27,13 +27,16 @@ export class ClassService {
 
         if (candidateClass) {
 
-            throw new HttpException('Такой класс существует', HttpStatus.BAD_REQUEST)
+            throw new BadRequestException({
+                message: 'Такой класс существует.',
+                fields: ['number','type'],
+            });
         }
 
         return await this.classRepo.create(classDto);
     }
 
-    async update(class_id: number, classDto: CreateClassDto) {
+    async update(class_id: number, classDto: UpdateClassDto) {
 
         const classSchool = await this.searchClass(class_id);
 
@@ -53,7 +56,10 @@ export class ClassService {
 
         if (!classSchool) {
 
-            throw new HttpException('Класс не найден.', HttpStatus.NOT_FOUND)
+            throw new BadRequestException({
+                message: 'Класс не найден.',
+                field: 'class_id',
+            });
         }
 
         return classSchool

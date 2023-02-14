@@ -8,7 +8,8 @@ import {SchoolService} from "./school.service";
 export class EmployeeService {
 
     constructor(@InjectModel(Employee) private employeeRepository: typeof Employee,
-                private schoolService: SchoolService) { }
+                private schoolService: SchoolService) {
+    }
 
     async getAllEmployee(school_id: string) {
 
@@ -17,16 +18,14 @@ export class EmployeeService {
 
     async getEmployeeByEmail(email: string) {
 
-        const employee  = await this.employeeRepository.findOne({where:{email}});
+        const employee = await this.employeeRepository.findOne({where: {email}});
 
         if (!employee) {
 
-            throw new BadRequestException([
-                {
-                    message: 'Сотрудник не найден',
-                    query_param: 'email',
-                },
-            ]);
+            throw new BadRequestException({
+                message: 'Сотрудник не найден',
+                query_param: 'email',
+            });
         }
 
         return employee
@@ -34,16 +33,14 @@ export class EmployeeService {
 
     async getEmployeeById(employee_id: string) {
 
-        const employee  = await this.employeeRepository.findOne({where:{ employee_id }});
+        const employee = await this.employeeRepository.findOne({where: {employee_id}});
 
         if (!employee) {
 
-            throw new BadRequestException([
-                {
-                    message: 'Сотрудник не найден',
-                    query_param: 'employee_id',
-                },
-            ]);
+            throw new BadRequestException({
+                message: 'Сотрудник не найден',
+                query_param: 'employee_id',
+            });
         }
 
         return employee
@@ -57,12 +54,10 @@ export class EmployeeService {
 
         if (candidate) {
 
-            throw new BadRequestException([
-                {
-                    message: 'Такой сотрудник существует',
-                    field: 'email',
-                },
-            ]);
+            throw new BadRequestException({
+                message: 'Такой сотрудник существует',
+                field: 'email',
+            });
         }
 
         return await this.employeeRepository.create(dto);
@@ -73,12 +68,11 @@ export class EmployeeService {
         const employee = await this.getEmployeeById(employee_id);
 
         if (!employee) {
-            throw new BadRequestException([
-                {
-                    message: 'Сотрудник не найден.',
-                    field: 'school_id',
-                },
-            ]);
+
+            throw new BadRequestException({
+                message: 'Сотрудник не найден.',
+                field: 'school_id',
+            });
         }
 
         return await employee.update(dto);

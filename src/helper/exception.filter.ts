@@ -43,18 +43,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
 
         if (typeof responseBody === 'object') {
 
-          let errorsMessages = []
-
-          for(let param in responseBody as object) {
-
-            if (param === 'message') {
-
-              errorsMessages.push(responseBody[param])
-            }
-          }
-
-          response.status(status).json({errorResponse: errorsMessages});
-
+          response.status(status).json(responseBody);
         } else {
 
           this.sendStatus(response, status, {message: responseBody})

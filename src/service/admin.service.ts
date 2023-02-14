@@ -1,7 +1,7 @@
-import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
+import {BadRequestException, Injectable} from '@nestjs/common';
 import {InjectModel} from "@nestjs/sequelize";
 import {Admin} from "../model/admin.model";
-import {CreateAdminDto} from "../dto/create-admin.dto";
+import {CreateAdminDto, UpdateAdminDto} from "../dto/create-admin.dto";
 
 @Injectable()
 export class AdminService {
@@ -18,7 +18,11 @@ export class AdminService {
         const admin = await this.adminRepository.findOne({where: {email}})
 
         if (!admin) {
-            throw new HttpException('Такого админа не существует',HttpStatus.BAD_REQUEST)
+
+            throw new BadRequestException({
+                message: 'Такого админа не существует',
+                field: 'email',
+            });
         }
 
         return admin
@@ -29,12 +33,16 @@ export class AdminService {
         return await this.adminRepository.create(adminDto);
     }
 
-    async update(admin_id: string, adminDto: CreateAdminDto) {
+    async update(admin_id: string, adminDto: UpdateAdminDto) {
 
         const admin = await this.adminRepository.findOne({where: {admin_id}})
 
         if (!admin) {
-            throw new HttpException('Такого админа не существует',HttpStatus.BAD_REQUEST)
+
+            throw new BadRequestException({
+                message: 'Такого админа не существует',
+                param: 'admin_id',
+            });
         }
 
         return await admin.update(adminDto);
