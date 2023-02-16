@@ -1,9 +1,9 @@
 import {ApiProperty} from "@nestjs/swagger";
-import {IsEmail, IsNumber, IsString, Length} from "class-validator";
+import {IsEmail, IsNumber, IsPhoneNumber, IsString, Length} from "class-validator";
 
 export class CreateEmployeeDto {
 
-    @ApiProperty({example:'12', description:'Айди школы'})
+    @ApiProperty({example: 2, description:'Айди школы'})
     @IsNumber()
     readonly school_id: number;
 
@@ -17,19 +17,23 @@ export class CreateEmployeeDto {
     @Length(8,16,{message: 'Пароль должен быть от 8 до 16 символов.'})
     readonly password: string;
 
-    @ApiProperty({example:'297485875', description:'Телефон сотрудника школы'})
+    @ApiProperty({example:'(29)748-58-75', description:'Телефон сотрудника школы'})
+    @IsPhoneNumber('BY',{message:"Код номера должен быть кодом используемым в РБ"})
     @IsString({message: 'Должно быть строкой.'})
     readonly phone?: string;
 
     @ApiProperty({example:'Шавлинский', description:'Фамилия сотрудника'})
+    @Length(3,20,{message: 'Фамилия должна быть от 3 до 20 символов.'})
     @IsString({message: 'Должно быть строкой.'})
     readonly fname: string;
 
     @ApiProperty({example:'Роман', description:'Имя сотрудника'})
+    @Length(3,10,{message: 'Имя должно быть от 3 до 10 символов.'})
     @IsString({message: 'Должно быть строкой.'})
     readonly name: string;
 
     @ApiProperty({example:'Игоревич', description:'Отчество сотрудника'})
+    @Length(0,20,{message: 'Отчество должно быть от 0 до 20 символов.'})
     @IsString({message: 'Должно быть строкой.'})
     readonly lname?: string;
 
@@ -40,19 +44,23 @@ export class CreateEmployeeDto {
 
 export class UpdateEmloyeeDto {
 
-    @ApiProperty({example:'297485875', description:'Телефон сотрудника школы'})
+    @ApiProperty({example:'(29)748-58-75', description:'Телефон сотрудника школы'})
+    @IsPhoneNumber('BY',{message:"Код номера должен быть кодом используемым в РБ"})
     @IsString({message: 'Должно быть строкой.'})
     readonly phone?: string;
 
     @ApiProperty({example:'Шавлинский', description:'Фамилия сотрудника'})
+    @Length(3,20,{message: 'Фамилия должна быть от 3 до 20 символов.'})
     @IsString({message: 'Должно быть строкой.'})
     readonly fname: string;
 
     @ApiProperty({example:'Роман', description:'Имя сотрудника'})
+    @Length(3,10,{message: 'Имя должно быть от 3 до 10 символов.'})
     @IsString({message: 'Должно быть строкой.'})
     readonly name: string;
 
     @ApiProperty({example:'Игоревич', description:'Отчество сотрудника'})
+    @Length(0,20,{message: 'Отчество должно быть от 0 до 20 символов.'})
     @IsString({message: 'Должно быть строкой.'})
     readonly lname?: string;
 

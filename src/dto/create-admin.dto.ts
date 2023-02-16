@@ -14,14 +14,17 @@ export class CreateAdminDto {
     readonly password: string;
 
     @ApiProperty({example: 'Шавлинский', description: 'Фамилия админа'})
+    @Length(3,20,{message: 'Фамилия должна быть от 3 до 20 символов.'})
     @IsString({message: 'Должно быть строкой.'})
     readonly fname: string
 
     @ApiProperty({example: 'Роман', description: 'Имя админа'})
+    @Length(3,10,{message: 'Имя должно быть от 3 до 10 символов.'})
     @IsString({message: 'Должно быть строкой.'})
     readonly name: string
 
     @ApiProperty({example: 'ТимЛид', description: 'Должность админа'})
+    @Length(3,10,{message: 'Должность должна быть от 3 до 10 символов.'})
     @IsString({message: 'Должно быть строкой.'})
     readonly position: string
 
@@ -33,14 +36,17 @@ export class CreateAdminDto {
 export class UpdateAdminDto {
 
     @ApiProperty({example: 'Шавлинский', description: 'Фамилия админа'})
+    @Length(3,20,{message: 'Фамилия должна быть от 3 до 20 символов.'})
     @IsString({message: 'Должно быть строкой.'})
     readonly fname: string
 
     @ApiProperty({example: 'Роман', description: 'Имя админа'})
+    @Length(3,10,{message: 'Имя должна быть от 3 до 10 символов.'})
     @IsString({message: 'Должно быть строкой.'})
     readonly name: string
 
     @ApiProperty({example: 'ТимЛид', description: 'Должность админа'})
+    @Length(3,10,{message: 'Должность должна быть от 3 до 10 символов.'})
     @IsString({message: 'Должно быть строкой.'})
     readonly position: string
 

@@ -2,7 +2,6 @@ import {Body, Controller, HttpCode, Post, Req, Res, UnauthorizedException, UseGu
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {AuthService} from "../service/auth.service";
 import {LoginDto, Token} from "../dto/auth.dto";
-import {ValidationBody} from "../pipes/valdationBody.pipe";
 import {MessageDto} from "../dto/message.dto";
 import {RefreshTokenGuard} from "../guard/refresh.token.guard";
 import {JwtService} from "@nestjs/jwt";
@@ -16,7 +15,6 @@ export class AuthController {
 
     @ApiOperation({summary: 'Логинизация'})
     @ApiResponse({status: 200, type: Token})
-    @UsePipes(ValidationBody)
     @Post('/login')
     async login(@Body() userDto: LoginDto, @Res() res) {
 
@@ -35,8 +33,7 @@ export class AuthController {
     }
 
     @ApiOperation({summary: 'Регистрация'})
-    @ApiResponse({status: 200, type: MessageDto})
-    @UsePipes(ValidationBody)
+    @ApiResponse({status: 204, type: MessageDto})
     @HttpCode(204)
     @Post('/registration')
     registration(@Body() managerDto: CreateManagerDto) {

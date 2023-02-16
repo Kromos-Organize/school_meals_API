@@ -1,5 +1,5 @@
 import {ApiProperty} from "@nestjs/swagger";
-import {IsNumber, IsString} from "class-validator";
+import {IsNumber, IsString, Max, Min} from "class-validator";
 
 export class CreateClassDto {
 
@@ -9,6 +9,8 @@ export class CreateClassDto {
 
     @ApiProperty({example:'2', description:'Номер класса'})
     @IsNumber()
+    @Min(1)
+    @Max(11)
     readonly number: number;
 
     @ApiProperty({example:'Б', description:'Буква класса'})
@@ -20,6 +22,8 @@ export class UpdateClassDto {
 
     @ApiProperty({example:'2', description:'Номер класса'})
     @IsNumber()
+    @Min(1)
+    @Max(11)
     readonly number: number;
 
     @ApiProperty({example:'Б', description:'Буква класса'})
