@@ -41,7 +41,7 @@ export const createApp = (app: INestApplication): INestApplication => {
   );
 
   const ValidatePipe = new ValidationPipe({
-    stopAtFirstError: true,
+    // stopAtFirstError: true,
     transform: true,
     exceptionFactory: exceptionFactoryFunc,
   })

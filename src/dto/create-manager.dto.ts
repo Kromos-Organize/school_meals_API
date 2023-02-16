@@ -13,27 +13,31 @@ export class CreateManagerDto {
     @Length(8,16,{message: 'Пароль должен быть от 8 до 16 символов.'})
     readonly password: string;
 
-    @ApiProperty({example:'375297485875', description:'Телефон менеджера школы'})
+    @ApiProperty({example:'(29)-748-58-75', description:'Телефон менеджера школы'})
+    @IsPhoneNumber('BY',{message:"Код номера должен быть кодом используемым в РБ"})
     @IsString({message: 'Должно быть строкой.'})
     readonly phone: string;
 }
 
 export class UpdateManagerDto {
 
-    @ApiProperty({example:'297485875', description:'Телефон менеджера'})
+    @ApiProperty({example:'(29)-748-58-75', description:'Телефон менеджера'})
     @IsString({message: 'Должно быть строкой.'})
-    // @IsPhoneNumber('BY',{message: 'Должен быть правильный формат телефона'})
+    @IsPhoneNumber('BY',{message:"Код номера должен быть кодом используемым в РБ"})
     readonly phone?: string;
 
     @ApiProperty({example:'Шавлинский', description:'Фамилия менеджера'})
+    @Length(3,20,{message: 'Фамилия должна быть от 3 до 20 символов.'})
     @IsString({message: 'Должно быть строкой.'})
     readonly fname?: string;
 
     @ApiProperty({example:'Роман', description:'Имя менеджера'})
+    @Length(3,10,{message: 'Имя должно быть от 3 до 10 символов.'})
     @IsString({message: 'Должно быть строкой.'})
     readonly name?: string;
 
     @ApiProperty({example:'Игоревич', description:'Отчество менеджера'})
+    @Length(0,20,{message: 'Отчество должно быть от 0 до 20 символов.'})
     @IsString({message: 'Должно быть строкой.'})
     readonly lname?: string;
 
@@ -41,7 +45,7 @@ export class UpdateManagerDto {
     @IsString({message: 'Должно быть строкой.'})
     readonly birthday?: string;
 
-    @ApiProperty({example:'true', description:'Aктивация менеджера'})
+    @ApiProperty({example: true, description:'Aктивация менеджера'})
     @IsBoolean({message: 'Должно быть булевым значением'})
     readonly isActive?: boolean
 }

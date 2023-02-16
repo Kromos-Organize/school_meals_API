@@ -1,5 +1,5 @@
 import {ApiProperty} from "@nestjs/swagger";
-import {IsEmail, IsString, Length} from "class-validator";
+import {IsBoolean, IsEmail, IsString, Length} from "class-validator";
 
 export class Token {
 
@@ -19,6 +19,7 @@ export class LoginDto {
     @Length(8,16,{message: 'Пароль должен быть от 8 до 16 символов.'})
     readonly password: string;
 
-    @ApiProperty({example: 'true', description: 'Заходит ли админ проекта'})
+    @ApiProperty({example: true, description: 'Заходит ли админ проекта'})
+    @IsBoolean({message: 'Должно быть булевым значением'})
     readonly isAdminDev: boolean
 }
