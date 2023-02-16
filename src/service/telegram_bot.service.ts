@@ -1,34 +1,34 @@
 import {Injectable} from '@nestjs/common';
 import * as telegramApi from 'node-telegram-bot-api';
 import {AdminService} from "./admin.service";
-import {CreateAdminDto} from "../dto/create-admin.dto";
-import {InlineKeyBoardService} from "../helper/bot/keyBoardReques";
 
 @Injectable()
 export class TelegramBotService {
 
-    constructor(private adminService: AdminService,
-                private keyBoard: InlineKeyBoardService) { }
+    constructor(private adminService: AdminService) { }
 
     private bot;
-    private teamLead: CreateAdminDto;
-    private tempDto;
+
+    async createBot() {
+
+        this.bot = new telegramApi(process.env.BOT_TOKEN, {
+            polling: {
+                interval: 400,
+                autoStart: true,
+                params: {
+                    timeout: 30
+                }
+            }
+        });
+    }
 
     async connectBot() {
         try {
-            this.bot = new telegramApi(process.env.BOT_TOKEN, {
-                polling: {
-                    interval: 400,
-                    autoStart: true,
-                    params: {
-                        timeout: 30
-                    }
-                }
-            });
 
-            this.teamLead = await this.adminService.getAdminByEmail(process.env.TEAM_LEAD_EMAIL);
-
+            await this.createBot();
             this.events();
+
+            // this.teamLead = await this.adminService.getAdminByEmail(process.env.TEAM_LEAD_EMAIL);
 
         }catch (e) {
             console.log('нет конекта с ботом')
@@ -38,9 +38,9 @@ export class TelegramBotService {
     events() {
 
         this.bot.onText(/\/start/,async (msg) => {
-
             try {
 
+                console.log(msg)
                 await this.bot.sendMessage(msg.chat.id, 'Приветствую.')
             } catch (e) {
                 console.log(e)
@@ -51,33 +51,10 @@ export class TelegramBotService {
 
         this.bot.on('message', async (msg) => {
 
-
         })
 
         this.bot.on("callback_query", async (query) => {
-            console.log('query',query)
+
         });
-    }
-
-    async sendMessageTeamLead(message:string) {
-
-        try {
-
-            await this.bot.sendMessage(this.teamLead.chat_number, message)
-        } catch (e) {
-            console.log(e)
-        }
-    }
-
-    async sendRequestTeamLead(message:string, json: string) {
-
-        try {
-
-            // const kb = this.keyBoard.createKBRequest(json);
-            // await this.bot.sendMessage(this.teamLead.chat_number,message,{reply_markup: kb.getMarkup()})
-
-        } catch (e) {
-            console.log(e)
-        }
     }
 }

@@ -4,7 +4,7 @@ import {AdminModule} from "./admin.module";
 import {InlineKeyBoardService} from "../helper/bot/keyBoardReques";
 
 @Module({
-    providers: [TelegramBotService, InlineKeyBoardService],
+    providers: [TelegramBotService],
     imports:[
         AdminModule
     ],

@@ -10,6 +10,8 @@ import {LoggerMiddleware} from "./middleware/logger.middleware";
 import {ClassModule} from "./module/class.module";
 import {allModels} from "./importModels";
 import {ManagerModule} from "./module/manager.module";
+import {TelegramBotService} from "./service/telegram_bot.service";
+import {TelegramBotModule} from "./module/telegram_bot.module";
 
 @Module({
     controllers: [],
@@ -36,15 +38,15 @@ import {ManagerModule} from "./module/manager.module";
         StudentModule,
         ClassModule,
         // RoleModule,
-        // TelegramBotModule,
+        TelegramBotModule,
     ]
 })
 export class AppModule {
 
-    // constructor(private bot: TelegramBotService) {
+    constructor(private bot: TelegramBotService) {
 
-        // bot.connectBot();
-    // }
+        bot.connectBot();
+    }
 
     configure(consumer: MiddlewareConsumer) {
         consumer.apply(LoggerMiddleware).forRoutes('*');

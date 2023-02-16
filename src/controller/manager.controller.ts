@@ -16,6 +16,7 @@ export class ManagerController {
     @ApiResponse({status: 200, type: [Manager]})
     @Get()
     getAll() {
+
         return this.managerService.getAll();
     }
 
@@ -23,6 +24,7 @@ export class ManagerController {
     @ApiResponse({status: 200, type: Manager})
     @Get(':email')
     get(@Param('email') email: string) {
+
         return this.managerService.getByEmail(email);
     }
 

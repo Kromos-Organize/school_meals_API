@@ -30,7 +30,7 @@ export class AuthService {
 
     async registration(managerDto: CreateManagerDto) {
 
-        const candidate = await this.managerService.getByEmail(managerDto.email);
+        const candidate = await this.managerService.searchByEmail(managerDto.email);
 
         if (candidate) {
 

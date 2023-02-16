@@ -1,4 +1,4 @@
-import {BadRequestException, HttpException, HttpStatus, Injectable} from "@nestjs/common";
+import {BadRequestException, Injectable} from "@nestjs/common";
 import {InjectModel} from "@nestjs/sequelize";
 import {Manager} from "../model/manager.model";
 import {CreateManagerDto, UpdateManagerDto} from "../dto/create-manager.dto";
@@ -15,10 +15,9 @@ export class ManagerService {
 
     async getByEmail(email: string){
 
-        const manager = await this.managerRepo.findOne({where: {email}})
+        const manager = await this.searchByEmail(email);
 
         if (!manager) {
-
 
             throw new BadRequestException({
                 message: 'Такого менеджера не существует',
@@ -64,5 +63,10 @@ export class ManagerService {
         const result = await this.managerRepo.destroy({where: {manager_id}})
 
         return result ? {message: "Менеджер удален"} : {message: "Менеджер не найден."}
+    }
+
+    async searchByEmail(email: string) {
+
+        return await this.managerRepo.findOne({where: {email}});
     }
 }
