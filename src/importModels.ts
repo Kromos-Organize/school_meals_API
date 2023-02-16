@@ -4,13 +4,13 @@ import {Student} from "./model/student.model";
 import {Admin} from "./model/admin.model";
 import {Class} from "./model/class.model";
 import {Manager} from "./model/manager.model";
+import {Role} from "./model/role.model";
 
 export const allModels = [
     Admin,
     Manager,
     Employee,
-    // Role,
-    // EmployeeRoles,
+    Role,
     School,
     Student,
     Class,

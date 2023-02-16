@@ -2,11 +2,20 @@ import {BadRequestException, Injectable} from "@nestjs/common";
 import {InjectModel} from "@nestjs/sequelize";
 import {Manager} from "../model/manager.model";
 import {CreateManagerDto, UpdateManagerDto} from "../dto/create-manager.dto";
+import * as bcrypt from "bcryptjs";
+import {RoleService} from "./role.service";
 
 @Injectable()
 export class ManagerService {
 
-    constructor(@InjectModel(Manager) private managerRepo: typeof Manager,) { }
+    readonly type_role;
+
+    constructor(@InjectModel(Manager) private managerRepo: typeof Manager,
+                private roleService: RoleService,
+                ) {
+
+        this.type_role = 'MANAGER';
+    }
 
     async getAll() {
 
@@ -30,17 +39,11 @@ export class ManagerService {
 
     async createManager(managerDto: CreateManagerDto) {
 
-        const manager = await this.managerRepo.findOne({where: {email:managerDto.email}})
+        const role = await this.roleService.getRoleByValue(this.type_role);
 
-        if (manager) {
+        const hashPassword = await bcrypt.hash(managerDto.password, 5);
 
-            throw new BadRequestException({
-                message: 'Менеджер существует',
-                field: 'email',
-            });
-        }
-
-        return await this.managerRepo.create(managerDto);
+        return await this.managerRepo.create({...managerDto, role_id: role.role_id, password: hashPassword});
     }
 
     async updateManager(manager_id: string, managerDto: UpdateManagerDto) {

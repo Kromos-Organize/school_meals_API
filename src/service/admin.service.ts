@@ -2,11 +2,20 @@ import {BadRequestException, Injectable} from '@nestjs/common';
 import {InjectModel} from "@nestjs/sequelize";
 import {Admin} from "../model/admin.model";
 import {CreateAdminDto, UpdateAdminDto} from "../dto/create-admin.dto";
+import {RoleService} from "./role.service";
+import * as bcrypt from "bcryptjs";
 
 @Injectable()
 export class AdminService {
 
-    constructor(@InjectModel(Admin) private adminRepository: typeof Admin) { }
+    readonly type_role;
+
+    constructor(@InjectModel(Admin) private adminRepository: typeof Admin,
+                private roleService: RoleService) {
+
+        this.type_role = 'ADMIN';
+    }
+
 
     async getAll() {
 
@@ -25,12 +34,16 @@ export class AdminService {
             });
         }
 
-        return admin
+        return admin;
     }
 
     async create(adminDto: CreateAdminDto) {
 
-        return await this.adminRepository.create(adminDto);
+        const role = await this.roleService.getRoleByValue(this.type_role);
+
+        const hashPassword = await bcrypt.hash(adminDto.password, 5);
+
+        return await this.adminRepository.create({...adminDto, role_id: role.role_id, password: hashPassword});
     }
 
     async update(admin_id: string, adminDto: UpdateAdminDto) {

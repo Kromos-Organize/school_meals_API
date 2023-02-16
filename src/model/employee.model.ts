@@ -1,16 +1,18 @@
 import {Column, DataType, ForeignKey, Model, Table} from "sequelize-typescript";
 import {ApiProperty} from "@nestjs/swagger";
 import {School} from "./school.model";
+import {Role} from "./role.model";
 
 interface EmployeeCreationAttrs {
-    school_id: number
+    school_id: number,
+    role_id: number,
     email: string,
     password: string,
     phone?: string,
     fname: string,
     name: string,
     lname?: string,
-    birthday?: string
+    birthday?: string,
 }
 
 @Table({tableName: 'employee'})
@@ -24,6 +26,10 @@ export class Employee extends Model<Employee, EmployeeCreationAttrs> {
     @Column({type: DataType.INTEGER, allowNull: false})
     @ForeignKey(() => School)
     school_id: number;
+
+    @Column({type: DataType.INTEGER, allowNull: false})
+    @ForeignKey(() => Role)
+    role_id: number
 
     @ApiProperty({example:'user@mail.ru', description:'Почтовый адрес'})
     @Column({type: DataType.STRING, unique: true, allowNull: false})

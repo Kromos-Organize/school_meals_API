@@ -3,12 +3,19 @@ import {BadRequestException, Injectable} from "@nestjs/common";
 import {InjectModel} from "@nestjs/sequelize";
 import {CreateEmployeeDto, UpdateEmloyeeDto} from "../dto/create-employee.dto";
 import {SchoolService} from "./school.service";
+import {RoleService} from "./role.service";
+import * as bcrypt from "bcryptjs";
 
 @Injectable()
 export class EmployeeService {
 
+    readonly type_role;
+
     constructor(@InjectModel(Employee) private employeeRepository: typeof Employee,
+                private roleService: RoleService,
                 private schoolService: SchoolService) {
+
+        this.type_role = 'EMPLOYEE'
     }
 
     async getAllEmployee(school_id: string) {
@@ -50,7 +57,7 @@ export class EmployeeService {
 
         await this.schoolService.get(dto.school_id);
 
-        const candidate = await this.getEmployeeByEmail(dto.email);
+        const candidate = await this.employeeRepository.findOne({where: {email: dto.email}});
 
         if (candidate) {
 
@@ -60,7 +67,11 @@ export class EmployeeService {
             });
         }
 
-        return await this.employeeRepository.create(dto);
+        const role = await this.roleService.getRoleByValue(this.type_role);
+
+        const hashPassword = await bcrypt.hash(dto.password, 5);
+
+        return await this.employeeRepository.create({...dto, role_id: role.role_id, password: hashPassword});
     }
 
     async updateEmployee(employee_id: string, dto: UpdateEmloyeeDto) {

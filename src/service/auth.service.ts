@@ -40,8 +40,7 @@ export class AuthService {
             });
         }
 
-        const hashPassword = await bcrypt.hash(managerDto.password, 5);
-        return await this.managerService.createManager({...managerDto, password: hashPassword});
+        return await this.managerService.createManager(managerDto);
     }
 
     private async generateEmployeeToken(manager: Manager) {
