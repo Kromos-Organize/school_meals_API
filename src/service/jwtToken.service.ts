@@ -12,6 +12,15 @@ export class JwtTokenService {
 
     constructor(private jwtService: JwtService) { }
 
+    private createPayload(user) {
+
+        return {
+            id: user.id,
+            role_id: user.role_id,
+            email: user.email,
+        }
+    }
+
     generateToken(user: IUserJwtPayload) {
 
         return {
@@ -20,12 +29,5 @@ export class JwtTokenService {
         }
     }
 
-    createPayload(user) {
 
-        return {
-            id: user.id,
-            role_id: user.role_id,
-            email: user.email,
-        }
-    }
 }

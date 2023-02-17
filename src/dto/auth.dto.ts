@@ -1,11 +1,10 @@
 import {ApiProperty} from "@nestjs/swagger";
 import {IsBoolean, IsEmail, IsNumber, IsString, Length} from "class-validator";
-import {IsNull} from "sequelize-typescript";
 
-export class Token {
+export class TokenDto {
 
-    @ApiProperty({example:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.........fV0sImlhdCI6MTY3NTI1MzE1NCwiZXhw', description:'Токен аутентификации'})
-    token: string
+    @ApiProperty({example:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.........', description:'Токен аутентификации'})
+    accessToken: string
 }
 
 export class LoginDto {
