@@ -1,11 +1,13 @@
-import {Body, Controller, Delete, Get, Param, Post, Put} from "@nestjs/common";
+import {Body, Controller, Delete, Get, Param, Post, Put, UseGuards} from "@nestjs/common";
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {AdminService} from "../service/admin.service";
 import {Admin} from "../model/admin.model";
 import {CreateAdminDto, UpdateAdminDto} from "../dto/create-admin.dto";
+import {AuthGuard} from "@nestjs/passport";
 
 @ApiTags('Администраторы проекта')
 @Controller('admin')
+@UseGuards(AuthGuard())
 export class AdminController {
 
     constructor(private adminService: AdminService) { }

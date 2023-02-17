@@ -1,4 +1,4 @@
-import {Module} from '@nestjs/common';
+import {forwardRef, Module} from '@nestjs/common';
 import {AuthController} from '../controller/auth.controller';
 import {AuthService} from '../service/auth.service';
 import {EmployeeModule} from "./employee.module";
@@ -22,9 +22,9 @@ const jwtFactory = {
 
 @Module({
     controllers: [AuthController],
-    providers: [AuthService, JwtStrategy, JwtTokenService, ValidateUserService],
+    providers: [AuthService,JwtStrategy, JwtTokenService, ValidateUserService],
     imports: [
-        EmployeeModule,
+        forwardRef(() => EmployeeModule),
         TelegramBotModule,
         AdminModule,
         ManagerModule,
@@ -32,13 +32,9 @@ const jwtFactory = {
         PassportModule.register({defaultStrategy: 'jwt'})
     ],
     exports: [
-        AuthService,
         JwtModule,
         JwtStrategy,
-        PassportModule,
-        EmployeeModule,
-        AdminModule,
-        ManagerModule,
+        PassportModule
     ]
 })
 export class AuthModule {

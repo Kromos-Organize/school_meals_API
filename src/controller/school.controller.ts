@@ -1,12 +1,14 @@
-import {Body, Controller, Delete, Get, Param, Post, Put} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Post, Put, UseGuards} from '@nestjs/common';
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {SchoolService} from "../service/school.service";
 import {CreateSchoolDto} from "../dto/create-school.dto";
 import {School} from "../model/school.model";
 import {MessageDto} from "../dto/message.dto";
+import {AuthGuard} from "@nestjs/passport";
 
 @ApiTags('Школа')
 @Controller('school')
+@UseGuards(AuthGuard())
 export class SchoolController {
 
     constructor(private schoolService: SchoolService) { }

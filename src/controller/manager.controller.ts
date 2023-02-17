@@ -1,12 +1,14 @@
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
-import {Body, Controller, Delete, Get, Param, Post, Put} from "@nestjs/common";
+import {Body, Controller, Delete, Get, Param, Post, Put, UseGuards} from "@nestjs/common";
 import {ManagerService} from "src/service/manager.service";
 import {Manager} from "../model/manager.model";
 import {CreateManagerDto, UpdateManagerDto} from "../dto/create-manager.dto";
 import {MessageDto} from "../dto/message.dto";
+import {AuthGuard} from "@nestjs/passport";
 
 @ApiTags('Менеджеры школы')
 @Controller('manager')
+@UseGuards(AuthGuard())
 export class ManagerController {
 
     constructor(private managerService: ManagerService) {

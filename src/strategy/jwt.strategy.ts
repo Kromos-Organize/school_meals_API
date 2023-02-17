@@ -19,7 +19,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         });
     }
 
-    async validate(payload: IUserJwtPayload) {
+    async validate(payload: IUserJwtPayload): Promise<IUserJwtPayload> {
 
         const { id, role_id, email } = payload;
 
@@ -32,6 +32,4 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
         return user;
     }
-
-
 }

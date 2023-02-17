@@ -1,12 +1,14 @@
-import {Body, Controller, Delete, Get, Param, Post, Put, Query} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards} from '@nestjs/common';
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {StudentService} from "../service/student.service";
 import {Student} from "../model/student.model";
 import {CreateStudentDto, UpdateStudentDto} from "../dto/create-student.dto";
 import {MessageDto} from "../dto/message.dto";
+import {AuthGuard} from "@nestjs/passport";
 
 @ApiTags('Ученики')
 @Controller('student')
+@UseGuards(AuthGuard())
 export class StudentController {
 
     constructor(private studentService: StudentService) { }

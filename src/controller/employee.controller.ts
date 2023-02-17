@@ -1,12 +1,14 @@
-import {Body, Controller, Delete, Get, Param, Post, Put, Query} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards} from '@nestjs/common';
 import {EmployeeService} from "../service/employee.service";
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {Employee} from "../model/employee.model";
 import {CreateEmployeeDto, UpdateEmloyeeDto} from "../dto/create-employee.dto";
 import {MessageDto} from "../dto/message.dto";
+import {AuthGuard} from "@nestjs/passport";
 
 @ApiTags('Сотрудники школы')
 @Controller('employee')
+@UseGuards(AuthGuard())
 export class EmployeeController {
 
     constructor(private employeeService: EmployeeService) {

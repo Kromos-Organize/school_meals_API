@@ -1,12 +1,14 @@
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
-import {Body, Controller, Delete, Get, Param, Post, Put, Query} from "@nestjs/common";
+import {Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards} from "@nestjs/common";
 import {ClassService} from "../service/class.service";
 import {Class} from "../model/class.model";
 import {School} from "../model/school.model";
 import {CreateClassDto, UpdateClassDto} from "../dto/create-class.dto";
+import {AuthGuard} from "@nestjs/passport";
 
 @ApiTags('Классы')
 @Controller('class')
+@UseGuards(AuthGuard())
 export class ClassController {
 
     constructor(private classService: ClassService) { }
