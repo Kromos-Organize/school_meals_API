@@ -5,13 +5,14 @@ import {SequelizeModule} from "@nestjs/sequelize";
 import {School} from "../model/school.model";
 
 @Module({
-  providers: [SchoolService],
-  controllers: [SchoolController],
-  imports: [
-    SequelizeModule.forFeature([School])
-  ],
-  exports: [
-    SchoolService
-  ]
+    providers: [SchoolService],
+    controllers: [SchoolController],
+    imports: [
+        SequelizeModule.forFeature([School]),
+    ],
+    exports: [
+        SchoolService
+    ]
 })
-export class SchoolModule {}
+export class SchoolModule {
+}

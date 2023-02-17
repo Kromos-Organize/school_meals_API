@@ -12,6 +12,7 @@ import {allModels} from "./importModels";
 import {ManagerModule} from "./module/manager.module";
 import {TelegramBotService} from "./service/telegram_bot.service";
 import {TelegramBotModule} from "./module/telegram_bot.module";
+import {RoleModule} from "./module/role.module";
 
 @Module({
     controllers: [],
@@ -37,7 +38,7 @@ import {TelegramBotModule} from "./module/telegram_bot.module";
         SchoolModule,
         StudentModule,
         ClassModule,
-        // RoleModule,
+        RoleModule,
         TelegramBotModule,
     ]
 })

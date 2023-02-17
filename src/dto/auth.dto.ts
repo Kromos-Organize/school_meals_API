@@ -1,5 +1,6 @@
 import {ApiProperty} from "@nestjs/swagger";
-import {IsBoolean, IsEmail, IsString, Length} from "class-validator";
+import {IsBoolean, IsEmail, IsNumber, IsString, Length} from "class-validator";
+import {IsNull} from "sequelize-typescript";
 
 export class Token {
 
@@ -22,4 +23,21 @@ export class LoginDto {
     @ApiProperty({example: true, description: 'Заходит ли админ проекта'})
     @IsBoolean({message: 'Должно быть булевым значением'})
     readonly isAdminDev: boolean
+}
+
+export class UserDto{
+
+    @IsNumber()
+    readonly id: number
+
+    @IsNumber()
+    readonly role_id: number
+
+    @IsString({message: 'Должно быть строкой.'})
+    @IsEmail({}, {message:'Некорректынй емейл.'})
+    readonly email: string;
+
+    @IsString({message: 'Должно быть строкой.'})
+    @Length(8,16,{message: 'Пароль должен быть от 8 до 16 символов.'})
+    readonly password: string;
 }

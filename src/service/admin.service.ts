@@ -24,7 +24,7 @@ export class AdminService {
 
     async getAdminByEmail(email: string) {
 
-        const admin = await this.adminRepository.findOne({where: {email}})
+        const admin = await this.searchByEmail(email);
 
         if (!admin) {
 
@@ -66,5 +66,10 @@ export class AdminService {
         const result = await this.adminRepository.destroy({where: {admin_id}})
 
         return result ? {message: "Админ удален"} : {message: "Админ не найден."}
+    }
+
+    async searchByEmail(email: string) {
+
+        return await this.adminRepository.findOne({where: {email}})
     }
 }

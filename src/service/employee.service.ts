@@ -25,7 +25,7 @@ export class EmployeeService {
 
     async getEmployeeByEmail(email: string) {
 
-        const employee = await this.employeeRepository.findOne({where: {email}});
+        const employee = await this.searchByEmail(email);
 
         if (!employee) {
 
@@ -35,7 +35,7 @@ export class EmployeeService {
             });
         }
 
-        return employee
+        return employee;
     }
 
     async getEmployeeById(employee_id: string) {
@@ -50,7 +50,7 @@ export class EmployeeService {
             });
         }
 
-        return employee
+        return employee;
     }
 
     async createEmployee(dto: CreateEmployeeDto) {
@@ -94,5 +94,10 @@ export class EmployeeService {
         const result = await this.employeeRepository.destroy({where: {employee_id}})
 
         return result ? {message: "Сотрудник удален"} : {message: "Сотрудник не найден."}
+    }
+
+    async searchByEmail(email: string) {
+
+        return await this.employeeRepository.findOne({where: {email}});
     }
 }
