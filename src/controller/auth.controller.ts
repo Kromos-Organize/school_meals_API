@@ -18,14 +18,15 @@ export class AuthController {
     @ApiOperation({summary: 'Логинизация'})
     @ApiResponse({status: 200, type: TokenDto})
     @Post('/login')
-    async login(@Body() userDto: LoginDto, @Res() res) {
+    async login(@Body() userDto: LoginDto, @Res({ passthrough: true }) res) {
 
         const tokens = await this.authService.login(userDto)
 
-        res.cookie('refreshToken', tokens.refreshToken, cookieConfigToken)
-            .status(200).send({
+        res.cookie('refreshToken', tokens.refreshToken, cookieConfigToken).status(200)
+
+        return {
             accessToken: tokens.accessToken,
-        });
+        }
     }
 
     @ApiOperation({summary: 'Регистрация'})
