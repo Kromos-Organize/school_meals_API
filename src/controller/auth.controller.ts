@@ -22,7 +22,7 @@ export class AuthController {
 
         const tokens = await this.authService.login(userDto)
 
-        res.cookie('refreshToken', tokens.refreshToken, cookieConfigToken).status(200)
+        res.cookie('refreshToken', tokens.refreshToken, cookieConfigToken)
 
         return {
             accessToken: tokens.accessToken,

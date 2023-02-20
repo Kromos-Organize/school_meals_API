@@ -41,7 +41,7 @@ export class ValidateUserService {
 
     async checkUser(email: string): Promise<UserDto> {
 
-        const admin = await this.adminService.getAdminByEmail(email);
+        const admin = await this.adminService.searchByEmail(email);
         const manager = await this.managerService.searchByEmail(email);
         const employee = await this.employeeService.searchByEmail(email);
 
