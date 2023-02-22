@@ -19,12 +19,10 @@ export class SchoolService {
 
         if (!school) {
 
-            throw new BadRequestException([
-                {
-                    message: 'Школа не найдена.',
-                    param: 'school_id',
-                },
-            ]);
+            throw new BadRequestException({
+                message: 'Школа не найдена.',
+                fields: ['school_id'],
+            });
         }
 
         return school;
@@ -35,12 +33,10 @@ export class SchoolService {
         const schoolCandidate = await this.schoolRepository.findOne({where: {name: dto.name, city: dto.city}})
 
         if (schoolCandidate) {
-            throw new BadRequestException([
-                {
-                    message: 'Школа по таким данным уже добавлена.',
-                    field: 'name',
-                },
-            ]);
+            throw new BadRequestException({
+                message: 'Школа по таким данным уже добавлена.',
+                fields: ['name'],
+            });
         }
 
         return await this.schoolRepository.create(dto);

@@ -58,7 +58,7 @@ export class ClassService {
 
             throw new BadRequestException({
                 message: 'Класс не найден.',
-                field: 'class_id',
+                fields: ['class_id'],
             });
         }
 

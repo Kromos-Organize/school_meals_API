@@ -1,8 +1,8 @@
-import {BadRequestException, Injectable} from "@nestjs/common";
-import {UpdateUserDto, UserRegistrationDtoType,} from "../domain/dto/create-user.dto";
+import {Injectable} from "@nestjs/common";
 import {UsersRepository} from "../infrastructure/users.repository";
 import {UsersQueryRepository} from "../infrastructure/users.query.repository";
 import {PasswordService} from "../../helpers/password/password.service";
+import {IUserModelAttr, IUserUpdateModel} from "../domain/dto/user-service.dto";
 
 @Injectable()
 export class UsersService {
@@ -20,19 +20,15 @@ export class UsersService {
 
   async getByEmail(email: string) {
 
-    const user = await this.usersQueryRepository.getUserByEmail(email);
-
-    if (!user) {
-      throw new BadRequestException({
-        message: "Такого администратора не существует",
-        param: "email",
-      });
-    }
-
-    return user;
+    return await this.usersQueryRepository.getUserByEmail(email);
   }
 
-  async createUser(inputModel: UserRegistrationDtoType) {
+  async getById(id: number) {
+
+    return await this.usersQueryRepository.getUserById(id)
+  }
+
+  async createUser(inputModel: IUserModelAttr) {
 
     const passwordHash = await this.passwordService.generateSaltAndHash(inputModel.password);
 
@@ -52,12 +48,12 @@ export class UsersService {
     return await this.usersRepository.createUser(newUser);
   }
 
-  async updateUser(id: string, managerDto: UpdateUserDto) {
+  async updateUser(id: number, userDto: IUserUpdateModel) {
 
-    return await this.usersRepository.updateUser(id, managerDto);
+    return await this.usersRepository.updateUser(id, userDto);
   }
 
-  async removeUser(id: string) {
+  async removeUser(id: number) {
 
     return await this.usersRepository.deleteUser(id);
   }

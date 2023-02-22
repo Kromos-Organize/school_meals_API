@@ -7,6 +7,7 @@ import { AuthModule } from "../auth/auth.module";
 import { UsersRepository } from "./infrastructure/users.repository";
 import { UsersQueryRepository } from "./infrastructure/users.query.repository";
 import { PasswordService } from "../helpers/password/password.service";
+import {BadCheckEntitiesException} from "../helpers/exception/BadCheckEntitiesException";
 
 @Module({
   controllers: [UsersController],
@@ -15,6 +16,7 @@ import { PasswordService } from "../helpers/password/password.service";
     UsersRepository,
     UsersQueryRepository,
     PasswordService,
+    BadCheckEntitiesException
   ],
   imports: [
     SequelizeModule.forFeature([User]),

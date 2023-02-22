@@ -22,7 +22,7 @@ export const createApp = (app: INestApplication): INestApplication => {
 
         errorsForResponse.push({
           message: e.constraints[ckey],
-          field: e.property,
+          fields: e.property,
         });
 
       });

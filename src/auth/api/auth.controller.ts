@@ -29,7 +29,7 @@ export class AuthController {
 
       throw new BadRequestException({
         message: "Администратор не существует",
-        field: "email",
+        fields: ["email"],
       });
     }
 
@@ -56,7 +56,7 @@ export class AuthController {
 
       throw new BadRequestException({
         message: "Администратор существует",
-        field: "email",
+        fields: ["email"],
       });
     }
 

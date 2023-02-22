@@ -1,12 +1,12 @@
 import {Injectable} from "@nestjs/common";
-import {
-  UserRegistrationDtoType,
-} from "../../users/domain/dto/create-user.dto";
 import {UsersService} from "../../users/application/users.service";
 import {UsersQueryRepository} from "../../users/infrastructure/users.query.repository";
 import * as bcrypt from "bcrypt";
 import {ILogin, IUser} from "../domain/dto/auth-service.dto";
 import {RoleEnum} from "../../users/domain/entities/role.enum";
+import {IUserModelAttr} from "../../users/domain/dto/user-service.dto";
+import {User} from "../../users/domain/entities/user.model";
+import {RegisterResponseDto} from "../domain/dto/auth-response.dto";
 
 @Injectable()
 export class AuthService {
@@ -31,7 +31,7 @@ export class AuthService {
 
   async registration(userDto: IUser) {
 
-    const inputModel: UserRegistrationDtoType = {
+    const inputModel: IUserModelAttr = {
       email: userDto.email,
       password: userDto.password,
       phone: userDto.phone,
@@ -44,7 +44,7 @@ export class AuthService {
     return this.responseRegister(user);
   }
 
-  responseRegister(user: any): any {
+  responseRegister(user: User): RegisterResponseDto {
 
     return {
       id: user.id,

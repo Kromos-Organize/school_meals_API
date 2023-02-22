@@ -28,7 +28,7 @@ export class AdminService {
 
             throw new BadRequestException({
                 message: 'Такого админа не существует',
-                field: 'email',
+                fields: ['email'],
             });
         }
 
@@ -52,7 +52,7 @@ export class AdminService {
 
             throw new BadRequestException({
                 message: 'Такого админа не существует',
-                param: 'admin_id',
+                fields: ['admin_id'],
             });
         }
 

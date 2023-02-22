@@ -16,4 +16,9 @@ export class UsersQueryRepository {
 
     return await this.usersRepository.findOne({ where: { email } });
   }
+
+  async getUserById(id: number) {
+
+    return await this.usersRepository.findOne({ where: { id } });
+  }
 }
