@@ -1,23 +1,5 @@
 import {ApiProperty} from "@nestjs/swagger";
-import {IsBoolean, IsEmail, IsPhoneNumber, IsString, Length,} from "class-validator";
-
-export class CreateUserDto {
-
-  @ApiProperty({ example: "user@mail.ru", description: "Почтовый адрес" })
-  @IsString({ message: "Должно быть строкой." })
-  @IsEmail({}, { message: "Некорректынй емейл." })
-  readonly email: string;
-
-  @ApiProperty({ example: "123456789", description: "Пароль менеджера школы" })
-  @IsString({ message: "Должно быть строкой." })
-  @Length(8, 16, { message: "Пароль должен быть от 8 до 16 символов." })
-  readonly password: string;
-
-  @ApiProperty({example: "(29)-748-58-75", description: "Телефон менеджера школы"})
-  @IsPhoneNumber("BY", { message: "Код номера должен быть кодом используемым в РБ" })
-  @IsString({ message: "Должно быть строкой." })
-  readonly phone: string;
-}
+import {IsBoolean, IsPhoneNumber, IsString, Length,} from "class-validator";
 
 export class UpdateUserDto {
 
@@ -66,3 +48,22 @@ export class UserRegistrationDtoType {
   birthday?: string;
   isActive?: boolean;
 }
+
+// export class UserAllDataDto extends UserRegistrationDtoType {
+//   id: number
+// }
+//
+// export class UserRegistrationDtoResponse {
+//
+//   @ApiProperty({ example: "12", description: "ID пользователя" })
+//   id: number
+//
+//   @ApiProperty({ example: "MANAGER", description: "Роль пользователя" })
+//   role: string;
+//
+//   @ApiProperty({ example: "user@mail.ru", description: "Емейл пользователя" })
+//   email: string;
+//
+//   @ApiProperty({ example: false, description: "Активация пользователя" })
+//   isActive: boolean;
+// }

@@ -1,17 +1,5 @@
-import { ApiProperty } from "@nestjs/swagger";
-import {
-  IsBoolean,
-  IsEmail,
-  IsNumber,
-  IsString,
-  Length,
-} from "class-validator";
-
-export class TokenDto {
-
-  @ApiProperty({example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.........",description: "Токен аутентификации"})
-  accessToken: string;
-}
+import {ApiProperty} from "@nestjs/swagger";
+import {IsBoolean, IsEmail, IsPhoneNumber, IsString, Length,} from "class-validator";
 
 export class LoginDto {
 
@@ -30,22 +18,20 @@ export class LoginDto {
   readonly isAdminDev: boolean;
 }
 
-export class UserDto {
+export class RegistrationDto {
 
-  @IsNumber()
-  readonly id: number;
-
-  @IsNumber()
-  readonly role_id?: number;
-
-  @IsNumber()
-  readonly role?: string;
-
+  @ApiProperty({ example: "user@mail.ru", description: "Почтовый адрес" })
   @IsString({ message: "Должно быть строкой." })
   @IsEmail({}, { message: "Некорректынй емейл." })
   readonly email: string;
 
+  @ApiProperty({ example: "123456789", description: "Пароль менеджера школы" })
   @IsString({ message: "Должно быть строкой." })
   @Length(8, 16, { message: "Пароль должен быть от 8 до 16 символов." })
   readonly password: string;
+
+  @ApiProperty({example: "(29)-748-58-75", description: "Телефон менеджера школы"})
+  @IsPhoneNumber("BY", { message: "Код номера должен быть кодом используемым в РБ" })
+  @IsString({ message: "Должно быть строкой." })
+  readonly phone: string;
 }

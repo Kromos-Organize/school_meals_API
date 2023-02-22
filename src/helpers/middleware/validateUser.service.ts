@@ -1,9 +1,8 @@
-import { Injectable, UnauthorizedException } from "@nestjs/common";
-import { LoginDto, UserDto } from "../../auth/domain/dto/auth.dto";
+import {Injectable, UnauthorizedException} from "@nestjs/common";
+import {LoginDto,} from "../../auth/domain/dto/auth-request.dto";
 import * as bcrypt from "bcrypt";
-import { AdminService } from "../../admin/application/admin.service";
-import { UsersService } from "../../users/application/users.service";
-import { UsersQueryRepository } from "../../users/infrastructure/users.query.repository";
+import {AdminService} from "../../admin/application/admin.service";
+import {UsersQueryRepository} from "../../users/infrastructure/users.query.repository";
 
 @Injectable()
 export class ValidateUserService {
@@ -36,14 +35,14 @@ export class ValidateUserService {
     return result;
   }
 
-  async checkUser(email: string): Promise<UserDto> {
+  async checkUser(email: string): Promise<any> {
     const admin = await this.adminService.getAdminByEmail(email);
     const manager = await this.userQueryRepository.getUserByEmail(email);
 
     if (admin)
       return {
         id: admin.id,
-        role_id: admin.role_id,
+        role_id: 0,
         email: admin.email,
         password: admin.password,
       };

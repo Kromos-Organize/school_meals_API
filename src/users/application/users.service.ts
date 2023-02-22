@@ -20,23 +20,21 @@ export class UsersService {
 
   async getByEmail(email: string) {
 
-    const manager = await this.usersQueryRepository.getUserByEmail(email);
+    const user = await this.usersQueryRepository.getUserByEmail(email);
 
-    if (!manager) {
+    if (!user) {
       throw new BadRequestException({
-        message: "Такого менеджера не существует",
+        message: "Такого администратора не существует",
         param: "email",
       });
     }
 
-    return manager;
+    return user;
   }
 
-  async createManager(inputModel: UserRegistrationDtoType) {
+  async createUser(inputModel: UserRegistrationDtoType) {
 
-    const passwordHash = await this.passwordService.generateSaltAndHash(
-      inputModel.password
-    );
+    const passwordHash = await this.passwordService.generateSaltAndHash(inputModel.password);
 
     const newUser = {
       school_id: null,
@@ -51,17 +49,15 @@ export class UsersService {
       isActive: inputModel.isActive,
     };
 
-    const result = await this.usersRepository.createUser(newUser);
-
-    return result;
+    return await this.usersRepository.createUser(newUser);
   }
 
-  async updateManager(id: string, managerDto: UpdateUserDto) {
+  async updateUser(id: string, managerDto: UpdateUserDto) {
 
     return await this.usersRepository.updateUser(id, managerDto);
   }
 
-  async removeManager(id: string) {
+  async removeUser(id: string) {
 
     return await this.usersRepository.deleteUser(id);
   }

@@ -1,6 +1,5 @@
 import {ApiProperty} from "@nestjs/swagger";
-import {Column, DataType, ForeignKey, Model, Table} from "sequelize-typescript";
-import {Role} from "../../../role/domain/entities/role.model";
+import {Column, DataType, Model, Table} from "sequelize-typescript";
 
 interface AdminCreationAttrs {
     role_id: number
@@ -18,10 +17,6 @@ export class Admin extends Model<Admin, AdminCreationAttrs>  {
     @ApiProperty({example:'1', description:'ID'})
     @Column({type: DataType.INTEGER, unique: true, autoIncrement: true, primaryKey: true})
     id: number;
-
-    @Column({type: DataType.INTEGER, allowNull: false})
-    @ForeignKey(() => Role)
-    role_id: number
 
     @ApiProperty({example:'user@mail.ru', description:'Почтовый адрес'})
     @Column({type: DataType.STRING, unique: true, allowNull: false})

@@ -1,17 +1,16 @@
-import { MiddlewareConsumer, Module } from "@nestjs/common";
-import { SequelizeModule } from "@nestjs/sequelize";
-import { ConfigModule } from "@nestjs/config";
-import { AuthModule } from "./auth/auth.module";
-import { SchoolModule } from "./school/school.module";
-import { StudentModule } from "./student/student.module";
-import { AdminModule } from "./admin/admin.module";
-import { LoggerMiddleware } from "./helpers/middleware/logger.middleware";
-import { ClassModule } from "./class/class.module";
-import { allModels } from "./importModels";
-import { UserModule } from "./users/userModule";
-import { TelegramBotService } from "./helpers/bot/telegram_bot.service";
-import { TelegramBotModule } from "./helpers/bot/telegram_bot.module";
-import { RoleModule } from "./role/role.module";
+import {MiddlewareConsumer, Module} from "@nestjs/common";
+import {SequelizeModule} from "@nestjs/sequelize";
+import {ConfigModule} from "@nestjs/config";
+import {AuthModule} from "./auth/auth.module";
+import {SchoolModule} from "./school/school.module";
+import {StudentModule} from "./student/student.module";
+import {AdminModule} from "./admin/admin.module";
+import {LoggerMiddleware} from "./helpers/middleware/logger.middleware";
+import {ClassModule} from "./class/class.module";
+import {allModels} from "./importModels";
+import {UserModule} from "./users/userModule";
+import {TelegramBotService} from "./helpers/bot/telegram_bot.service";
+import {TelegramBotModule} from "./helpers/bot/telegram_bot.module";
 
 @Module({
   controllers: [],
@@ -36,7 +35,6 @@ import { RoleModule } from "./role/role.module";
     SchoolModule,
     StudentModule,
     ClassModule,
-    RoleModule,
     TelegramBotModule,
   ],
 })

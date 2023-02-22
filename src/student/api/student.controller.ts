@@ -3,7 +3,6 @@ import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {StudentService} from "../application/student.service";
 import {Student} from "../domain/entities/student.model";
 import {CreateStudentDto, UpdateStudentDto} from "../domain/dto/create-student.dto";
-import {MessageDto} from "../../auth/domain/dto/message.dto";
 import {AuthGuard} from "@nestjs/passport";
 
 @ApiTags('Ученики')
@@ -46,7 +45,7 @@ export class StudentController {
     }
 
     @ApiOperation({summary: 'Удалить ученика'})
-    @ApiResponse({status: 200, type: MessageDto})
+    @ApiResponse({status: 200, type: ''})
     @Delete(':student_id')
     remove(@Param('student_id') student_id: string){
 

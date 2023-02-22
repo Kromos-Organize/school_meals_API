@@ -2,9 +2,8 @@ import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {Body, Controller, Delete, Get, Param, Post, Put,} from "@nestjs/common";
 import {UsersService} from "src/users/application/users.service";
 import {User} from "../domain/entities/user.model";
-import {CreateUserDto, UpdateUserDto, UserRegistrationDtoType,} from "../domain/dto/create-user.dto";
-import {MessageDto} from "../../auth/domain/dto/message.dto";
-import {RoleEnum} from "../../role/domain/dto/create-role.dto";
+import {UpdateUserDto, UserRegistrationDtoType,} from "../domain/dto/create-user.dto";
+import {RoleEnum} from "../domain/entities/role.enum";
 
 @ApiTags("Менеджеры школы")
 @Controller("users")
@@ -31,7 +30,7 @@ export class UsersController {
   @ApiOperation({ summary: "Создание менеджера" })
   @ApiResponse({ status: 201, type: User })
   @Post("/create")
-  create(@Body() managerDto: CreateUserDto) {
+  create(@Body() managerDto: any) {
 
     const inputModel: UserRegistrationDtoType = {
       email: managerDto.email,
@@ -41,7 +40,7 @@ export class UsersController {
       isActive: true,
     };
 
-    return this.managerService.createManager(inputModel);
+    return this.managerService.createUser(inputModel);
   }
 
   @ApiOperation({ summary: "Изменение данных менеджера" })
@@ -49,14 +48,14 @@ export class UsersController {
   @Put(":manager_id")
   update(@Param("manager_id") manager_id: string,@Body() managerDto: UpdateUserDto) {
 
-    return this.managerService.updateManager(manager_id, managerDto);
+    return this.managerService.updateUser(manager_id, managerDto);
   }
 
   @ApiOperation({ summary: "Удаление менеджера" })
-  @ApiResponse({ status: 200, type: MessageDto })
+  @ApiResponse({ status: 200, type: '' })
   @Delete(":manager_id")
   remove(@Param("manager_id") manager_id: string) {
 
-    return this.managerService.removeManager(manager_id);
+    return this.managerService.removeUser(manager_id);
   }
 }

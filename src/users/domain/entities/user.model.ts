@@ -22,11 +22,12 @@ export class User extends Model<User, UserCreationsAttr> {
   @Column({type: DataType.INTEGER, unique: true, autoIncrement: true, primaryKey: true})
   id: number;
 
-  @ApiProperty({ example: "1", description: "ID школы" })
+  @ApiProperty({ example: "1", description: "ID школы пользователя" })
   @Column({ type: DataType.INTEGER, allowNull: true })
   @ForeignKey(() => School)
   school_id: number;
 
+  @ApiProperty({ example: "MANAGER", description: "Роль пользователя" })
   @Column({ type: DataType.STRING, allowNull: false })
   role: string;
 
@@ -34,23 +35,23 @@ export class User extends Model<User, UserCreationsAttr> {
   @Column({ type: DataType.STRING, unique: true, allowNull: false })
   email: string;
 
-  @ApiProperty({ example: "123456789", description: "Пароль сотрудника" })
+  @ApiProperty({ example: "123456789", description: "Пароль пользователя" })
   @Column({ type: DataType.STRING, allowNull: false })
   password: string;
 
-  @ApiProperty({ example: "297485875", description: "Телефон сотрудника" })
+  @ApiProperty({ example: "297485875", description: "Телефон пользователя" })
   @Column({ type: DataType.STRING, allowNull: false })
   phone: string;
 
-  @ApiProperty({ example: "Шавлинский", description: "Фамилия сотрудника" })
+  @ApiProperty({ example: "Шавлинский", description: "Фамилия пользователя" })
   @Column({ type: DataType.STRING, allowNull: true })
   fname: string;
 
-  @ApiProperty({ example: "Роман", description: "Имя сотрудника" })
+  @ApiProperty({ example: "Роман", description: "Имя пользователя" })
   @Column({ type: DataType.STRING, allowNull: true })
   name: string;
 
-  @ApiProperty({ example: "Игоревич", description: "Отчество сотрудника" })
+  @ApiProperty({ example: "Игоревич", description: "Отчество пользователя" })
   @Column({ type: DataType.STRING, allowNull: true })
   lname: string;
 
@@ -58,7 +59,7 @@ export class User extends Model<User, UserCreationsAttr> {
   @Column({ type: DataType.STRING, allowNull: true })
   birthday: string;
 
-  @ApiProperty({ example: "false", description: "Активирован ли менеджер" })
+  @ApiProperty({ example: "false", description: "Активирован ли пользователь" })
   @Column({ type: DataType.BOOLEAN, allowNull: false, defaultValue: true })
   isActive: boolean;
 }

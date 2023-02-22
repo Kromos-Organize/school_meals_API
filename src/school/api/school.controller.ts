@@ -3,7 +3,6 @@ import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {SchoolService} from "../application/school.service";
 import {CreateSchoolDto} from "../domain/dto/create-school.dto";
 import {School} from "../domain/entities/school.model";
-import {MessageDto} from "../../auth/domain/dto/message.dto";
 import {AuthGuard} from "@nestjs/passport";
 
 @ApiTags('Школа')
@@ -46,7 +45,7 @@ export class SchoolController {
     }
 
     @ApiOperation({summary: 'Удалить школу'})
-    @ApiResponse({status: 200, type: MessageDto})
+    @ApiResponse({status: 200, type: ''})
     @Delete(':school_id')
     remove(@Param('school_id') school_id: string) {
 

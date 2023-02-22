@@ -1,9 +1,12 @@
 import {Injectable} from "@nestjs/common";
-import {CreateUserDto, UserRegistrationDtoType,} from "../../users/domain/dto/create-user.dto";
+import {
+  UserRegistrationDtoType,
+} from "../../users/domain/dto/create-user.dto";
 import {UsersService} from "../../users/application/users.service";
-import {RoleEnum} from "../../role/domain/dto/create-role.dto";
 import {UsersQueryRepository} from "../../users/infrastructure/users.query.repository";
 import * as bcrypt from "bcrypt";
+import {ILogin, IUser} from "../domain/dto/auth-service.dto";
+import {RoleEnum} from "../../users/domain/entities/role.enum";
 
 @Injectable()
 export class AuthService {
@@ -13,9 +16,9 @@ export class AuthService {
     private usersQueryRepository: UsersQueryRepository
   ) {}
 
-  async checkCredentials(inputModel: any) {
+  async checkCredentials(inputModel: ILogin) {
 
-    const user = await this.usersQueryRepository.getUserByEmail(inputModel.loginOrEmail);
+    const user = await this.usersQueryRepository.getUserByEmail(inputModel.email);
 
     if (!user) return false;
 
@@ -26,16 +29,28 @@ export class AuthService {
     return user.dataValues;
   }
 
-  async registration(managerDto: CreateUserDto) {
+  async registration(userDto: IUser) {
 
     const inputModel: UserRegistrationDtoType = {
-      email: managerDto.email,
-      password: managerDto.password,
-      phone: managerDto.phone,
+      email: userDto.email,
+      password: userDto.password,
+      phone: userDto.phone,
       role: RoleEnum.manager,
       isActive: false,
     };
 
-    return await this.usersService.createManager(inputModel);
+    const user = await this.usersService.createUser(inputModel);
+
+    return this.responseRegister(user);
+  }
+
+  responseRegister(user: any): any {
+
+    return {
+      id: user.id,
+      email: user.email,
+      role: user.role,
+      isActive: user.isActive
+    }
   }
 }
