@@ -1,14 +1,8 @@
-import { ApiProperty } from "@nestjs/swagger";
-import {
-  IsBoolean,
-  IsEmail,
-  IsPhoneNumber,
-  IsString,
-  Length,
-} from "class-validator";
-import { RoleEnum } from "../../../role/domain/dto/create-role.dto";
+import {ApiProperty} from "@nestjs/swagger";
+import {IsBoolean, IsEmail, IsPhoneNumber, IsString, Length,} from "class-validator";
 
 export class CreateUserDto {
+
   @ApiProperty({ example: "user@mail.ru", description: "Почтовый адрес" })
   @IsString({ message: "Должно быть строкой." })
   @IsEmail({}, { message: "Некорректынй емейл." })
@@ -19,23 +13,17 @@ export class CreateUserDto {
   @Length(8, 16, { message: "Пароль должен быть от 8 до 16 символов." })
   readonly password: string;
 
-  @ApiProperty({
-    example: "(29)-748-58-75",
-    description: "Телефон менеджера школы",
-  })
-  @IsPhoneNumber("BY", {
-    message: "Код номера должен быть кодом используемым в РБ",
-  })
+  @ApiProperty({example: "(29)-748-58-75", description: "Телефон менеджера школы"})
+  @IsPhoneNumber("BY", { message: "Код номера должен быть кодом используемым в РБ" })
   @IsString({ message: "Должно быть строкой." })
   readonly phone: string;
 }
 
 export class UpdateUserDto {
+
   @ApiProperty({ example: "(29)-748-58-75", description: "Телефон менеджера" })
   @IsString({ message: "Должно быть строкой." })
-  @IsPhoneNumber("BY", {
-    message: "Код номера должен быть кодом используемым в РБ",
-  })
+  @IsPhoneNumber("BY", { message: "Код номера должен быть кодом используемым в РБ" })
   readonly phone?: string;
 
   @ApiProperty({ example: "Шавлинский", description: "Фамилия менеджера" })
@@ -66,6 +54,7 @@ export class UpdateUserDto {
 }
 
 export class UserRegistrationDtoType {
+
   school_id?: number;
   role: string;
   email: string;

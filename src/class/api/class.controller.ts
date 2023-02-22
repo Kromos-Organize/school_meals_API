@@ -52,5 +52,4 @@ export class ClassController {
 
         return this.classService.remove(id);
     }
-
 }

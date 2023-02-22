@@ -8,14 +8,13 @@ import {
 } from "class-validator";
 
 export class TokenDto {
-  @ApiProperty({
-    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.........",
-    description: "Токен аутентификации",
-  })
+
+  @ApiProperty({example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.........",description: "Токен аутентификации"})
   accessToken: string;
 }
 
 export class LoginDto {
+
   @ApiProperty({ example: "user@mail.ru", description: "Почтовый адрес" })
   @IsString({ message: "Должно быть строкой." })
   @IsEmail({}, { message: "Некорректынй емейл." })
@@ -32,6 +31,7 @@ export class LoginDto {
 }
 
 export class UserDto {
+
   @IsNumber()
   readonly id: number;
 

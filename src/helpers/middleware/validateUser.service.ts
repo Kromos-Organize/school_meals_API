@@ -1,6 +1,6 @@
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { LoginDto, UserDto } from "../../auth/domain/dto/auth.dto";
-import * as bcrypt from "bcryptjs";
+import * as bcrypt from "bcrypt";
 import { AdminService } from "../../admin/application/admin.service";
 import { UsersService } from "../../users/application/users.service";
 import { UsersQueryRepository } from "../../users/infrastructure/users.query.repository";

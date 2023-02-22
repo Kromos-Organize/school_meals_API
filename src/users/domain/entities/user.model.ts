@@ -1,13 +1,6 @@
-import {
-  Column,
-  DataType,
-  ForeignKey,
-  Model,
-  Table,
-} from "sequelize-typescript";
-import { ApiProperty } from "@nestjs/swagger";
-import { School } from "../../../school/domain/entities/school.model";
-import { Role } from "../../../role/domain/entities/role.model";
+import {Column, DataType, ForeignKey, Model, Table,} from "sequelize-typescript";
+import {ApiProperty} from "@nestjs/swagger";
+import {School} from "../../../school/domain/entities/school.model";
 
 interface UserCreationsAttr {
   school_id?: number;
@@ -24,13 +17,9 @@ interface UserCreationsAttr {
 
 @Table({ tableName: "user" })
 export class User extends Model<User, UserCreationsAttr> {
+
   @ApiProperty({ example: "1", description: "ID" })
-  @Column({
-    type: DataType.INTEGER,
-    unique: true,
-    autoIncrement: true,
-    primaryKey: true,
-  })
+  @Column({type: DataType.INTEGER, unique: true, autoIncrement: true, primaryKey: true})
   id: number;
 
   @ApiProperty({ example: "1", description: "ID школы" })
@@ -65,10 +54,7 @@ export class User extends Model<User, UserCreationsAttr> {
   @Column({ type: DataType.STRING, allowNull: true })
   lname: string;
 
-  @ApiProperty({
-    example: "11231242355",
-    description: "Дата рождения сотрудника, unix time",
-  })
+  @ApiProperty({example: "11231242355", description: "Дата рождения сотрудника, unix time"})
   @Column({ type: DataType.STRING, allowNull: true })
   birthday: string;
 

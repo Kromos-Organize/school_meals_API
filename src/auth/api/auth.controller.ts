@@ -22,6 +22,7 @@ import { JwtService } from "../application/jwt-service";
 @ApiTags("Авторизация")
 @Controller("auth")
 export class AuthController {
+
   constructor(
     private authService: AuthService,
     private usersQueryRepository: UsersQueryRepository,
@@ -32,10 +33,13 @@ export class AuthController {
   @ApiResponse({ status: 200, type: TokenDto })
   @Post("/login")
   async login(@Body() userDto: LoginDto, @Res() res) {
+
     const user = this.authService.checkCredentials(userDto);
+
     if (!user) throw new UnauthorizedException();
 
     const tokens = await this.jwtService.createJWTTokens(user);
+
     res
       .cookie("refreshToken", tokens.refreshToken, cookieConfigToken)
       .status(200)
@@ -49,24 +53,26 @@ export class AuthController {
   @HttpCode(204)
   @Post("/registration")
   async registration(@Body() managerDto: CreateUserDto) {
-    const findUserByEmail = await this.usersQueryRepository.getUserByEmail(
-      managerDto.email
-    );
+
+    const findUserByEmail = await this.usersQueryRepository.getUserByEmail(managerDto.email);
 
     if (findUserByEmail) {
+
       throw new BadRequestException({
         message: "Менеджер существует",
         field: "email",
       });
     }
-    console.log("go to registration");
+
     return this.authService.registration(managerDto);
   }
 
   @UseGuards(RefreshTokenGuard)
   @Post("/refresh-token")
   async resendingRefreshTokens(@Req() req, @Res() res) {
+
     if (req.user) {
+
       const tokens = await this.jwtService.createJWTTokens(req.user);
 
       res
