@@ -35,13 +35,12 @@ export const createApp = (app: INestApplication): INestApplication => {
   app.use(cookieParser());
   app.enableCors(
       {
-        origin: 'http://localhost:3000',
+        origin: ['http://localhost:3000','http://dev.schoolmeals.of.by'],
         credentials: true,
       }
   );
 
   const ValidatePipe = new ValidationPipe({
-    // stopAtFirstError: true,
     transform: true,
     exceptionFactory: exceptionFactoryFunc,
   })
