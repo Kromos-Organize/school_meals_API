@@ -1,17 +1,8 @@
-import {Employee} from "./model/employee.model";
-import {School} from "./model/school.model";
-import {Student} from "./model/student.model";
-import {Admin} from "./model/admin.model";
-import {Class} from "./model/class.model";
-import {Manager} from "./model/manager.model";
-import {Role} from "./model/role.model";
+import { School } from "./school/domain/entities/school.model";
+import { Student } from "./student/domain/entities/student.model";
+import { Admin } from "./admin/domain/entities/admin.model";
+import { Class } from "./class/domain/entities/class.model";
+import { User } from "./users/domain/entities/user.model";
+import { Role } from "./role/domain/entities/role.model";
 
-export const allModels = [
-    Admin,
-    Manager,
-    Employee,
-    Role,
-    School,
-    Student,
-    Class,
-]
+export const allModels = [Admin, User, Role, School, Student, Class];
