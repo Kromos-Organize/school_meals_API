@@ -13,13 +13,13 @@ export class UsersRepository {
     return await this.usersRepository.create(newUser);
   }
 
-  async updateUser(id: number, managerDto: IUserUpdateModel) {
+  async updateUser(id: number, userDto: IUserUpdateModel) {
 
     const userInstance = await this.usersRepository.findOne({where: { id }});
 
     if (!userInstance) return false;
 
-    await userInstance.update(managerDto);
+    await userInstance.update(userDto);
 
     return await userInstance.save();
   }

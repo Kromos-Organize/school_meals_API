@@ -19,4 +19,19 @@ export class BadCheckEntitiesException {
             });
         }
     }
+
+    checkThrowAdmin(value, type: MessagesType, field: string) {
+
+        const usersMessages = {
+            'yep': "Такой админ существует",
+            'not': "Такого админа не существует"
+        }
+
+        if (value) {
+            throw new BadRequestException({
+                message: usersMessages[type],
+                fields: [field],
+            });
+        }
+    }
 }

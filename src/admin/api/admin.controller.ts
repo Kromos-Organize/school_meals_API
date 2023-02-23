@@ -1,16 +1,19 @@
-import {Body, Controller, Delete, Get, Param, Post, Put, UseGuards} from "@nestjs/common";
+import {Body, Controller, Delete, Get, Param, Post, Put, Query} from "@nestjs/common";
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {AdminService} from "../application/admin.service";
 import {Admin} from "../domain/entities/admin.model";
-import {CreateAdminDto, UpdateAdminDto} from "../domain/dto/create-admin.dto";
-import {AuthGuard} from "@nestjs/passport";
+import {CreateAdminDto, UpdateAdminDto} from "../domain/dto/admin-request.dto";
+import {AdminDeleteResponseDto} from "../domain/dto/admin-response.dto";
+import {BadCheckEntitiesException} from "../../helpers/exception/BadCheckEntitiesException";
 
 @ApiTags('Администраторы проекта')
 @Controller('admin')
-@UseGuards(AuthGuard())
 export class AdminController {
 
-    constructor(private adminService: AdminService) { }
+    constructor(
+        private adminService: AdminService,
+        private adminException: BadCheckEntitiesException
+    ) { }
 
     @ApiOperation({summary: 'Получение списка админов'})
     @ApiResponse({status: 200,type: [Admin]})
@@ -22,32 +25,48 @@ export class AdminController {
 
     @ApiOperation({summary: 'Получить данные админа'})
     @ApiResponse({status: 200,type: Admin})
-    @Get('/:email')
-    getAdminByEmail(@Param('email') email: string) {
+    @Get('/email')
+    async getAdminByEmail(@Query('email') email: string) {
 
-        return this.adminService.getAdminByEmail(email);
+        const admin = await this.adminService.getAdminByEmail(email);
+
+        this.adminException.checkThrowAdmin(!admin,'not','email');
+
+        return admin
     }
 
     @ApiOperation({summary: 'Добавить админа'})
     @ApiResponse({status: 201,type: Admin})
     @Post()
-    create(@Body() adminDto: CreateAdminDto) {
+    async create(@Body() adminDto: CreateAdminDto) {
+
+        const admin = await this.adminService.getAdminByEmail(adminDto.email);
+
+        this.adminException.checkThrowAdmin(admin,'yep','email');
 
         return this.adminService.create(adminDto);
     }
 
     @ApiOperation({summary: 'Изменить данные админа'})
     @ApiResponse({status: 200,type: Admin})
-    @Put('/:id')
-    update(@Param('id') admin_id: string, @Body() adminDto: UpdateAdminDto)  {
+    @Put('/:admin_id')
+    async update(@Param('admin_id') admin_id: number, @Body() adminDto: UpdateAdminDto)  {
+
+        const admin = await this.adminService.getAdminById(admin_id);
+
+        this.adminException.checkThrowAdmin(!admin,'not','admin_id');
 
         return this.adminService.update(admin_id, adminDto);
     }
 
     @ApiOperation({summary: 'Удалить админа'})
-    @ApiResponse({status: 200})
-    @Delete('/:id')
-    remove(@Param('id') admin_id: string) {
+    @ApiResponse({status: 200, type: AdminDeleteResponseDto})
+    @Delete('/:admin_id')
+    async remove(@Param('admin_id') admin_id: number) {
+
+        const admin = await this.adminService.getAdminById(admin_id);
+
+        this.adminException.checkThrowAdmin(!admin,'not','admin_id');
 
         return this.adminService.remove(admin_id);
     }

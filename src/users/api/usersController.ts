@@ -26,7 +26,7 @@ export class UsersController {
 
   @ApiOperation({ summary: "Получение данных сотрудника по емейлу" })
   @ApiResponse({ status: 200, type: User })
-  @Get()
+  @Get('/email')
   async get(@Query("email") email: string) {
 
     const user = await this.usersService.getByEmail(email);

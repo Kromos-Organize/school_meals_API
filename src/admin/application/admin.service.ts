@@ -1,73 +1,56 @@
-import {BadRequestException, Injectable} from '@nestjs/common';
-import {InjectModel} from "@nestjs/sequelize";
-import {Admin} from "../domain/entities/admin.model";
-import {CreateAdminDto, UpdateAdminDto} from "../domain/dto/create-admin.dto";
-import * as bcrypt from "bcrypt";
+import {Injectable} from '@nestjs/common';
+import {AdminQueryRepository} from "../infrastructure/admin.query.repository";
+import {AdminRepository} from "../infrastructure/admin.repository";
+import {PasswordService} from "../../helpers/password/password.service";
+import {RoleEnum} from "../../users/domain/entities/role.enum";
+import {IAdminCreationAttrs, IMainAttrAdmin, IUpdateAdminAttrs} from "../domain/dto/admin-service.dto";
 
 @Injectable()
 export class AdminService {
 
-    readonly type_role;
-
-    constructor(@InjectModel(Admin) private adminRepository: typeof Admin) {
-
-        this.type_role = 'ADMIN';
-    }
+    constructor(
+        private adminQueryRepository: AdminQueryRepository,
+        private adminRepository: AdminRepository,
+        private passwordService: PasswordService
+    ) { }
 
 
     async getAll() {
 
-        return this.adminRepository.findAll();
+        return this.adminQueryRepository.getAllAdmin();
+    }
+
+    async getAdminById(id: number) {
+
+        return await this.adminQueryRepository.getById(id);
     }
 
     async getAdminByEmail(email: string) {
 
-        const admin = await this.searchByEmail(email);
+        return await this.adminQueryRepository.getByEmail(email);
+    }
 
-        if (!admin) {
+    async create(adminDto: IMainAttrAdmin) {
 
-            throw new BadRequestException({
-                message: 'Такого админа не существует',
-                fields: ['email'],
-            });
+        const passwordHash = await this.passwordService.generateSaltAndHash(adminDto.password);
+
+        const newAdmin: IAdminCreationAttrs = {
+            ...adminDto,
+            password: passwordHash,
+            role: RoleEnum.admin,
+            chat_number: null
         }
 
-        return admin;
+        return await this.adminRepository.createAdmin(newAdmin);
     }
 
-    async create(adminDto: CreateAdminDto) {
+    async update(id: number, adminDto: IUpdateAdminAttrs) {
 
-
-
-        // const hashPassword = await bcrypt.hash(adminDto.password, 5);
-        //
-        // return await this.adminRepository.create({...adminDto, role_id: role.role_id, password: hashPassword});
+        return await this.adminRepository.updateAdmin(id, adminDto)
     }
 
-    async update(id: string, adminDto: UpdateAdminDto) {
+    async remove(id: number) {
 
-        const admin = await this.adminRepository.findOne({where: {id}})
-
-        if (!admin) {
-
-            throw new BadRequestException({
-                message: 'Такого админа не существует',
-                fields: ['admin_id'],
-            });
-        }
-
-        return await admin.update(adminDto);
-    }
-
-    async remove(id: string) {
-
-        const result = await this.adminRepository.destroy({where: {id}})
-
-        return result ? {message: "Админ удален"} : {message: "Админ не найден."}
-    }
-
-    async searchByEmail(email: string) {
-
-        return await this.adminRepository.findOne({where: {email}})
+        return await this.adminRepository.deleteAdmin(id)
     }
 }
