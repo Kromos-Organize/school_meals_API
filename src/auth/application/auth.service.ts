@@ -7,26 +7,28 @@ import {RoleEnum} from "../../users/domain/entities/role.enum";
 import {IUserModelAttr} from "../../users/domain/dto/user-service.dto";
 import {User} from "../../users/domain/entities/user.model";
 import {RegisterResponseDto} from "../domain/dto/auth-response.dto";
+import {AdminQueryRepository} from "../../admin/infrastructure/admin.query.repository";
 
 @Injectable()
 export class AuthService {
 
   constructor(
     private usersService: UsersService,
-    private usersQueryRepository: UsersQueryRepository
+    private usersQueryRepository: UsersQueryRepository,
+    private adminQueryRepository: AdminQueryRepository,
   ) {}
 
-  async checkCredentials(inputModel: ILogin) {
+  async checkCredentials(user: ILogin) {
 
-    const user = await this.usersQueryRepository.getUserByEmail(inputModel.email);
+    const waiting = await this.checkUserOrAdmin(user);
 
-    if (!user) return false;
+    if (!waiting) return false;
 
-    const isValid = await bcrypt.compare(inputModel.password, user.password);
+    const isValid = await bcrypt.compare(user.password, waiting.password);
 
     if (!isValid) return false;
 
-    return user.dataValues;
+    return waiting.dataValues;
   }
 
   async registration(userDto: IUser) {
@@ -52,5 +54,12 @@ export class AuthService {
       role: user.role,
       isActive: user.isActive
     }
+  }
+
+  async checkUserOrAdmin(user: ILogin) {
+
+    return user.isAdminDev
+      ? await this.adminQueryRepository.getByEmail(user.email)
+      : await this.usersQueryRepository.getUserByEmail(user.email);
   }
 }

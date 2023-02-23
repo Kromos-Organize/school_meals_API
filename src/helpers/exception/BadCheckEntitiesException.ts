@@ -5,7 +5,21 @@ type MessagesType = 'yep' | 'not'
 @Injectable()
 export class BadCheckEntitiesException {
 
-    checkThrowUsers(value, type: MessagesType, field: string) {
+    checkThrowAuth(value, type: MessagesType, fields: string[]) {
+
+        const usersMessages = {
+            'not': "Неверный логин или пароль."
+        }
+
+        if (value) {
+            throw new BadRequestException({
+                message: usersMessages[type],
+                fields: fields,
+            });
+        }
+    }
+
+    checkThrowUsers(value, type: MessagesType, fields: string[]) {
 
         const usersMessages = {
             'yep': "Такой пользователь существует",
@@ -15,12 +29,12 @@ export class BadCheckEntitiesException {
         if (value) {
             throw new BadRequestException({
                 message: usersMessages[type],
-                fields: [field],
+                fields: fields,
             });
         }
     }
 
-    checkThrowAdmin(value, type: MessagesType, field: string) {
+    checkThrowAdmin(value, type: MessagesType, fields: string[]) {
 
         const usersMessages = {
             'yep': "Такой админ существует",
@@ -30,7 +44,7 @@ export class BadCheckEntitiesException {
         if (value) {
             throw new BadRequestException({
                 message: usersMessages[type],
-                fields: [field],
+                fields: fields,
             });
         }
     }

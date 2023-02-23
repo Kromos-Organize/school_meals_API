@@ -31,7 +31,7 @@ export class UsersController {
 
     const user = await this.usersService.getByEmail(email);
 
-    this.userException.checkThrowUsers(!user, 'not', 'email');
+    this.userException.checkThrowUsers(!user, 'not', ['email']);
 
     return user;
   }
@@ -43,7 +43,7 @@ export class UsersController {
 
     const user = await this.usersService.getByEmail(userDto.email);
 
-    this.userException.checkThrowUsers(user, 'yep', 'email');
+    this.userException.checkThrowUsers(user, 'yep', ['email']);
 
     const inputModel: IUserModelAttr = {
       email: userDto.email,
@@ -63,7 +63,7 @@ export class UsersController {
 
     const user = await this.usersService.getById(user_id);
 
-    this.userException.checkThrowUsers(!user, 'not', 'user_id');
+    this.userException.checkThrowUsers(!user, 'not', ['user_id']);
 
     return this.usersService.updateUser(user_id, userDto);
   }
@@ -75,7 +75,7 @@ export class UsersController {
 
     const user = await this.usersService.getById(user_id);
 
-    this.userException.checkThrowUsers(!user, 'not', 'user_id');
+    this.userException.checkThrowUsers(!user, 'not', ['user_id']);
 
     return this.usersService.removeUser(user_id);
   }

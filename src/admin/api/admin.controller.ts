@@ -30,7 +30,7 @@ export class AdminController {
 
         const admin = await this.adminService.getAdminByEmail(email);
 
-        this.adminException.checkThrowAdmin(!admin,'not','email');
+        this.adminException.checkThrowAdmin(!admin,'not',['email']);
 
         return admin
     }
@@ -42,7 +42,7 @@ export class AdminController {
 
         const admin = await this.adminService.getAdminByEmail(adminDto.email);
 
-        this.adminException.checkThrowAdmin(admin,'yep','email');
+        this.adminException.checkThrowAdmin(admin,'yep',['email']);
 
         return this.adminService.create(adminDto);
     }
@@ -54,7 +54,7 @@ export class AdminController {
 
         const admin = await this.adminService.getAdminById(admin_id);
 
-        this.adminException.checkThrowAdmin(!admin,'not','admin_id');
+        this.adminException.checkThrowAdmin(!admin,'not',['admin_id']);
 
         return this.adminService.update(admin_id, adminDto);
     }
@@ -66,7 +66,7 @@ export class AdminController {
 
         const admin = await this.adminService.getAdminById(admin_id);
 
-        this.adminException.checkThrowAdmin(!admin,'not','admin_id');
+        this.adminException.checkThrowAdmin(!admin,'not',['admin_id']);
 
         return this.adminService.remove(admin_id);
     }

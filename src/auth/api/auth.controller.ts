@@ -1,4 +1,4 @@
-import {BadRequestException, Body, Controller, HttpCode, Post, Req, Res, UseGuards,} from "@nestjs/common";
+import {Body, Controller, HttpCode, Post, Req, Res, UseGuards,} from "@nestjs/common";
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {AuthService} from "../application/auth.service";
 import {LoginDto, RegistrationDto} from "../domain/dto/auth-request.dto";
@@ -7,6 +7,7 @@ import {cookieConfigToken} from "../../helpers/cookie.config";
 import {UsersQueryRepository} from "../../users/infrastructure/users.query.repository";
 import {JwtService} from "../application/jwt-service";
 import {LoginResponseDto, RefreshTokenResponseDto, RegisterResponseDto} from "../domain/dto/auth-response.dto";
+import {BadCheckEntitiesException} from "../../helpers/exception/BadCheckEntitiesException";
 
 @ApiTags("Авторизация")
 @Controller("auth")
@@ -15,7 +16,8 @@ export class AuthController {
   constructor(
     private authService: AuthService,
     private usersQueryRepository: UsersQueryRepository,
-    private jwtService: JwtService
+    private jwtService: JwtService,
+    private authException: BadCheckEntitiesException,
   ) {}
 
   @ApiOperation({ summary: "Логинизация" })
@@ -25,13 +27,7 @@ export class AuthController {
 
     const user = await this.authService.checkCredentials(userDto);
 
-    if (!user) {
-
-      throw new BadRequestException({
-        message: "Администратор не существует",
-        fields: ["email"],
-      });
-    }
+    this.authException.checkThrowAuth(!user, 'not',['email','password'])
 
     const tokens = await this.jwtService.createJWTTokens(user);
 
@@ -52,13 +48,7 @@ export class AuthController {
 
     const findUserByEmail = await this.usersQueryRepository.getUserByEmail(userDto.email);
 
-    if (findUserByEmail) {
-
-      throw new BadRequestException({
-        message: "Администратор существует",
-        fields: ["email"],
-      });
-    }
+    this.authException.checkThrowUsers(findUserByEmail, 'yep',['email']);
 
     return this.authService.registration(userDto);
   }

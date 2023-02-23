@@ -22,7 +22,8 @@ import {AdminQueryRepository} from "./infrastructure/admin.query.repository";
         forwardRef(() => AuthModule),
     ],
     exports: [
-        AdminService
+        AdminService,
+        AdminQueryRepository
     ]
 })
 export class AdminModule { }
