@@ -29,7 +29,9 @@ export class AuthController {
 
     this.authException.checkThrowAuth(!user, 'not',['email','password'])
 
-    const tokens = await this.jwtService.createJWTTokens(user);
+    const tokens = await this.jwtService.createJWTTokens(user, true);
+
+    if (user) delete user.password;
 
     res
       .cookie("refreshToken", tokens.refreshToken, cookieConfigToken)
@@ -61,14 +63,11 @@ export class AuthController {
 
     if (req.user) {
 
-      const tokens = await this.jwtService.createJWTTokens(req.user);
+      const tokens = await this.jwtService.createJWTTokens(req.user, false);
 
       res
-        .cookie("refreshToken", tokens.refreshToken, cookieConfigToken)
         .status(200)
-        .send({
-          accessToken: tokens.accessToken,
-        });
+        .send({accessToken: tokens.accessToken})
     }
   }
 }

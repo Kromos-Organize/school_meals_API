@@ -19,6 +19,8 @@ export class UsersRepository {
 
     if (!userInstance) return false;
 
+    if (userInstance.school_id) delete userDto.school_id;
+
     await userInstance.update(userDto);
 
     return await userInstance.save();

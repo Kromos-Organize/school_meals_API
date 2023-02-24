@@ -1,13 +1,15 @@
-import {Body, Controller, Delete, Get, Param, Post, Put, Query} from "@nestjs/common";
+import {Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards} from "@nestjs/common";
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {AdminService} from "../application/admin.service";
 import {Admin} from "../domain/entities/admin.model";
 import {CreateAdminDto, UpdateAdminDto} from "../domain/dto/admin-request.dto";
-import {AdminDeleteResponseDto} from "../domain/dto/admin-response.dto";
+import {AdminDeleteResponseDto, AdminResponse} from "../domain/dto/admin-response.dto";
 import {BadCheckEntitiesException} from "../../helpers/exception/BadCheckEntitiesException";
+import {AuthGuard} from "@nestjs/passport";
 
 @ApiTags('Администраторы проекта')
 @Controller('admin')
+@UseGuards(AuthGuard())
 export class AdminController {
 
     constructor(
@@ -16,7 +18,7 @@ export class AdminController {
     ) { }
 
     @ApiOperation({summary: 'Получение списка админов'})
-    @ApiResponse({status: 200,type: [Admin]})
+    @ApiResponse({status: 200,type: [AdminResponse]})
     @Get()
     getAll() {
 
@@ -24,7 +26,7 @@ export class AdminController {
     }
 
     @ApiOperation({summary: 'Получить данные админа'})
-    @ApiResponse({status: 200,type: Admin})
+    @ApiResponse({status: 200,type: AdminResponse})
     @Get('/email')
     async getAdminByEmail(@Query('email') email: string) {
 
@@ -32,7 +34,7 @@ export class AdminController {
 
         this.adminException.checkThrowAdmin(!admin,'not',['email']);
 
-        return admin
+        return admin;
     }
 
     @ApiOperation({summary: 'Добавить админа'})

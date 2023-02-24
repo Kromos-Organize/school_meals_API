@@ -1,31 +1,33 @@
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
-import {Body, Controller, Delete, Get, Param, Post, Put, Query,} from "@nestjs/common";
+import {Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards,} from "@nestjs/common";
 import {UsersService} from "src/users/application/users.service";
 import {User} from "../domain/entities/user.model";
 import {RoleEnum} from "../domain/entities/role.enum";
 import {RegistrationDto} from "../../auth/domain/dto/auth-request.dto";
 import {UpdateUserDto} from "../domain/dto/user-request.dto";
 import {IUserModelAttr} from "../domain/dto/user-service.dto";
-import {UserDeleteResponseDto} from "../domain/dto/user-response.dto";
+import {UserDeleteResponseDto, UserResponseDto} from "../domain/dto/user-response.dto";
 import {BadCheckEntitiesException} from "../../helpers/exception/BadCheckEntitiesException";
+import {AuthGuard} from "@nestjs/passport";
 
 @ApiTags("Сотрудники школы")
-@Controller("users")
+@Controller("user")
+@UseGuards(AuthGuard())
 export class UsersController {
 
   constructor(private usersService: UsersService,
               private userException: BadCheckEntitiesException) {}
 
-  @ApiOperation({ summary: "Получение списка сотрудников" })
-  @ApiResponse({ status: 200, type: [User] })
+  @ApiOperation({ summary: "Получение списка пользователей" })
+  @ApiResponse({ status: 200, type: [UserResponseDto] })
   @Get()
   getAll() {
 
     return this.usersService.getAll();
   }
 
-  @ApiOperation({ summary: "Получение данных сотрудника по емейлу" })
-  @ApiResponse({ status: 200, type: User })
+  @ApiOperation({ summary: "Получение данных пользователя по емейлу" })
+  @ApiResponse({ status: 200, type: UserResponseDto })
   @Get('/email')
   async get(@Query("email") email: string) {
 
@@ -36,8 +38,8 @@ export class UsersController {
     return user;
   }
 
-  @ApiOperation({ summary: "Создание сотрудника (Учителя)" })
-  @ApiResponse({ status: 201, type: User })
+  @ApiOperation({ summary: "Создание пользователя (Учителя)" })
+  @ApiResponse({ status: 201, type: UserResponseDto })
   @Post("/create")
   async create(@Body() userDto: RegistrationDto) {
 
@@ -56,8 +58,8 @@ export class UsersController {
     return this.usersService.createUser(inputModel);
   }
 
-  @ApiOperation({ summary: "Изменение данных администратора" })
-  @ApiResponse({ status: 200, type: User })
+  @ApiOperation({ summary: "Изменение данных пользователя" })
+  @ApiResponse({ status: 200, type: UserResponseDto })
   @Put(":user_id")
   async update(@Param("user_id") user_id: number, @Body() userDto: UpdateUserDto) {
 

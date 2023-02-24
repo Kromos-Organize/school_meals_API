@@ -6,12 +6,14 @@ import {UsersQueryRepository} from "../../users/infrastructure/users.query.repos
 
 @Injectable()
 export class ValidateUserService {
+
   constructor(
     private adminService: AdminService,
     private userQueryRepository: UsersQueryRepository
   ) {}
 
   async validateUser(userDto: LoginDto) {
+
     const user = await this.checkUser(userDto.email);
 
     if (user) {
@@ -30,19 +32,21 @@ export class ValidateUserService {
   }
 
   async validateByEmail(email: string) {
+
     const { password, ...result } = await this.checkUser(email);
 
     return result;
   }
 
   async checkUser(email: string): Promise<any> {
+
     const admin = await this.adminService.getAdminByEmail(email);
     const manager = await this.userQueryRepository.getUserByEmail(email);
 
     if (admin)
       return {
         id: admin.id,
-        role_id: 0,
+        role: admin.role,
         email: admin.email,
         password: admin.password,
       };

@@ -9,7 +9,7 @@ export class AdminQueryRepository {
 
     async getAllAdmin() {
 
-        return await this.adminRepository.findAll();
+        return await this.adminRepository.findAll({attributes: {exclude: ['password']}});
     }
 
     async getByEmail(email: string) {

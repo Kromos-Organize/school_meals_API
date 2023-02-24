@@ -30,7 +30,7 @@ const jwtFactory = {
         JwtModule.registerAsync(jwtFactory),
         PassportModule.register({defaultStrategy: "jwt"}),
     ],
-    exports: [JwtModule, JwtStrategy, PassportModule],
+    exports: [JwtModule, JwtService, JwtStrategy, PassportModule],
 })
 export class AuthModule {
 }

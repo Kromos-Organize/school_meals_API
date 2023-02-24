@@ -15,6 +15,7 @@ export interface IUserModelAttr {
 }
 
 export interface IUserUpdateModel {
+    school_id?: number;
     phone?: string;
     fname?: string;
     name?: string;

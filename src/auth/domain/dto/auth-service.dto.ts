@@ -10,3 +10,9 @@ export interface IUser {
     phone: string
 }
 
+export interface IPayloadJwt {
+    userId: number,
+    email:string,
+    role: string,
+}
+

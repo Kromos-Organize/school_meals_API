@@ -14,23 +14,20 @@ export class LoginResponseDto {
     @ApiProperty({ example: "user@mail.ru", description: "Емейл пользователя"})
     email: string;
 
-    @ApiProperty({ example: "12345678", description: "Пароль пользователя"})
-    password: string;
-
     @ApiProperty({ example: "(29)-222-22-22", description: "Телефон пользователя"})
     phone: string;
 
     @ApiProperty({ example: "Шавлинский", description: "Фамилия пользователя"})
-    fname?: string;
+    fname?: string | null;
 
     @ApiProperty({ example: "Роман", description: "Имя пользователя"})
-    name?: string;
+    name?:  string | null;
 
     @ApiProperty({ example: "Игоревич", description: "Отчество пользователя"})
-    lname?: string;
+    lname?:  string | null;
 
     @ApiProperty({ example: "1123313123", description: "День рождение пользователя в unix формате"})
-    birthday?: string;
+    birthday?:  string | null;
 
     @ApiProperty({ example: false, description: "Aктивация пользователя"})
     isActive?: boolean;

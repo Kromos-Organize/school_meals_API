@@ -9,7 +9,7 @@ export class UsersQueryRepository {
 
   async getAllUsers() {
 
-    return await this.usersRepository.findAll();
+    return await this.usersRepository.findAll({attributes: {exclude: ['password']}});
   }
 
   async getUserByEmail(email: string) {

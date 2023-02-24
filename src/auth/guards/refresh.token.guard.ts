@@ -5,7 +5,7 @@ import {
   UnauthorizedException,
 } from "@nestjs/common";
 import { Request } from "express";
-import { JwtService } from "@nestjs/jwt";
+import { JwtService } from "../application/jwt-service";
 import { ValidateUserService } from "../../helpers/middleware/validateUser.service";
 
 @Injectable()
@@ -25,7 +25,7 @@ export class RefreshTokenGuard implements CanActivate {
 
     const token = refToken.split(" ")[0];
 
-    const user = await this.jwtService.verify(token);
+    const user = await this.jwtService.getUserIdByRefreshToken(token);
 
     if (!user) throw new UnauthorizedException();
 
