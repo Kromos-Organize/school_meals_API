@@ -1,14 +1,14 @@
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards,} from "@nestjs/common";
 import {UsersService} from "src/users/application/users.service";
-import {User} from "../domain/entities/user.model";
 import {RoleEnum} from "../domain/entities/role.enum";
 import {RegistrationDto} from "../../auth/domain/dto/auth-request.dto";
-import {UpdateUserDto} from "../domain/dto/user-request.dto";
+import {ActiveUserDto, UpdateUserDto} from "../domain/dto/user-request.dto";
 import {IUserModelAttr} from "../domain/dto/user-service.dto";
-import {UserDeleteResponseDto, UserResponseDto} from "../domain/dto/user-response.dto";
+import {UserActivateResponseDto, UserDeleteResponseDto, UserResponseDto} from "../domain/dto/user-response.dto";
 import {BadCheckEntitiesException} from "../../helpers/exception/BadCheckEntitiesException";
 import {AuthGuard} from "@nestjs/passport";
+import {AccessActivatedUserGuard} from "../guards/accessActivated.user.guard";
 
 @ApiTags("Сотрудники школы")
 @Controller("user")
@@ -68,6 +68,18 @@ export class UsersController {
     this.userException.checkThrowUsers(!user, 'not', ['user_id']);
 
     return this.usersService.updateUser(user_id, userDto);
+  }
+
+  @ApiOperation({ summary: "Активация/Деактивация пользователя" })
+  @ApiResponse({ status: 200, type: UserActivateResponseDto })
+  @Put("/activate/:user_id")
+  async changeActiveUser(@Param("user_id") user_id: number, @Body() activeDto: ActiveUserDto) {
+
+    const user = await this.usersService.getById(user_id);
+
+    this.userException.checkThrowUsers(!user, 'not', ['user_id']);
+
+    return this.usersService.changeActiveUser(user_id, activeDto);
   }
 
   @ApiOperation({ summary: "Удаление пользователя" })

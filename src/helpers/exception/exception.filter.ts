@@ -33,6 +33,12 @@ export class HttpExceptionFilter implements ExceptionFilter {
         return;
 
       case 403:
+
+        response.status(403).json({
+          field: ['isActive'],
+          message: 'Пользователь не активирован'
+        });
+
       case 401:
 
         response.status(401).json({

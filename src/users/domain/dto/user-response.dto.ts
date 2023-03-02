@@ -39,3 +39,17 @@ export class UserDeleteResponseDto {
     id: number
 }
 
+export class UserActivateResponseDto {
+
+    @ApiProperty({ example: 11, description: "ID пользователя" })
+    id: number
+
+    @ApiProperty({ example: true, description: "Значение активации пользователя" })
+    isActive: boolean
+
+    @ApiProperty({ example: 'Пользователь активирован', description: "Сообщение об активации" })
+    message: string
+}
+
+
+
