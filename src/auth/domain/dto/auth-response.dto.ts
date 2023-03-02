@@ -27,7 +27,7 @@ export class LoginResponseDto {
     lname?:  string | null;
 
     @ApiProperty({ example: "1123313123", description: "День рождение пользователя в unix формате"})
-    birthday?:  string | null;
+    birthday?:  number | null;
 
     @ApiProperty({ example: false, description: "Aктивация пользователя"})
     isActive?: boolean;

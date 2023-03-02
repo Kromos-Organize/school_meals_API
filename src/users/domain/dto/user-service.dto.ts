@@ -7,7 +7,7 @@ export interface IUserModelAttr {
     fname?: string;
     name?: string;
     lname?: string;
-    birthday?: string;
+    birthday?: number;
     isActive?: boolean;
 }
 
@@ -17,7 +17,7 @@ export interface IUserUpdateModel {
     fname?: string;
     name?: string;
     lname?: string;
-    birthday?: string;
+    birthday?: number;
 }
 
 export interface ICheckUserReturns extends IValidateUserEmailReturns{
