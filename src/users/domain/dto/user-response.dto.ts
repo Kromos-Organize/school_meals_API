@@ -26,8 +26,8 @@ export class UserResponseDto {
     @ApiProperty({ example: "Игоревич", description: "Отчество пользователя"})
     lname: string;
 
-    @ApiProperty({example: "11231242355", description: "Дата рождения сотрудника, unix time"})
-    birthday: number;
+    @ApiProperty({example: "20.02.2022", description: "Дата рождения пользователя"})
+    birthday: Date;
 
     @ApiProperty({ example: "false", description: "Активирован ли пользователь"})
     isActive: boolean;

@@ -43,9 +43,9 @@ export class User extends Model<User, IUserModelAttr> {
   @Column({ type: DataType.STRING, allowNull: true })
   lname: string;
 
-  @ApiProperty({example: "11231242355", description: "Дата рождения сотрудника, unix time"})
-  @Column({ type: DataType.INTEGER, allowNull: true })
-  birthday: number;
+  @ApiProperty({example: "22.02.2022", description: "Дата рождения пользователя"})
+  @Column({ type: DataType.DATE, allowNull: true })
+  birthday: Date;
 
   @ApiProperty({ example: "false", description: "Активирован ли пользователь"})
   @Column({ type: DataType.BOOLEAN, allowNull: false, defaultValue: true })
