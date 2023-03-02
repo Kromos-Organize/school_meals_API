@@ -29,7 +29,7 @@ export class CreateStudentDto {
 
     @ApiProperty({example:'11231242355', description:'Дата рождения ученика, unix time'})
     @IsString({message: 'Должно быть строкой.'})
-    readonly birthday?: string;
+    readonly birthday?: number;
 
     @ApiProperty({example: false, description: 'Параметр отвечающий многодетная семья или нет'})
     @IsBoolean({message: 'Должно быть булевым значением.'})
@@ -60,5 +60,5 @@ export class UpdateStudentDto {
     @ApiProperty({example:'11231242355', description:'Дата рождения ученика, unix time'})
     @Length(12,13,{message: 'Дата должна быть от 12 до 13 символов.'})
     @IsString({message: 'Должно быть строкой.'})
-    readonly birthday?: string;
+    readonly birthday?: number;
 }
