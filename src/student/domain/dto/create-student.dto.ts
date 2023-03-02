@@ -1,5 +1,5 @@
 import {ApiProperty} from "@nestjs/swagger";
-import {IsNumber, IsString, Length} from "class-validator";
+import {IsBoolean, IsNumber, IsString, Length} from "class-validator";
 
 export class CreateStudentDto {
 
@@ -21,7 +21,7 @@ export class CreateStudentDto {
 
     @ApiProperty({example:'Игоревич', description:'Отчество ученика'})
     @IsString({message: 'Должно быть строкой.'})
-    readonly lname: string;
+    readonly lname?: string;
 
     @ApiProperty({example:'{"мама":"(29)748-58-75", "папа: (29)748-58-75"}', description:'Телефон родителей, JSON.stringify'})
     @IsString({message: 'Должно быть строкой.'})
@@ -30,6 +30,10 @@ export class CreateStudentDto {
     @ApiProperty({example:'11231242355', description:'Дата рождения ученика, unix time'})
     @IsString({message: 'Должно быть строкой.'})
     readonly birthday?: string;
+
+    @ApiProperty({example: false, description: 'Параметр отвечающий многодетная семья или нет'})
+    @IsBoolean({message: 'Должно быть булевым значением.'})
+    readonly isLargeFamilies: boolean
 }
 
 export class UpdateStudentDto {
