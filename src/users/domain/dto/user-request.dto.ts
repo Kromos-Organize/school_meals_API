@@ -29,8 +29,11 @@ export class UpdateUserDto {
     @ApiProperty({example: "11231242355", description: "Дата рождения пользователя, unix time"})
     @IsString({ message: "Должно быть строкой." })
     readonly birthday?: string;
+}
+
+export class ActiveUserDto {
 
     @ApiProperty({ example: true, description: "Aктивация пользователя" })
     @IsBoolean({ message: "Должно быть булевым значением" })
-    readonly isActive?: boolean;
+    readonly isActive: boolean;
 }

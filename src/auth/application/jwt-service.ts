@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import {Injectable} from "@nestjs/common";
 import * as jwt from "jsonwebtoken";
 import {IPayloadJwt} from "../domain/dto/auth-service.dto";
 
@@ -22,14 +22,14 @@ export class JwtService {
 
   createPayload(user: any): IPayloadJwt {
 
-    return { userId: user.id, role: user.role, email: user.email }
+    return { id: user.id, role: user.role, email: user.email }
   }
 
-  async getUserIdByAccessToken(token: string) {
+  async getUserIdByAccessToken(token: string): Promise<any> {
 
     try {
 
-      const result: any = jwt.verify(token, process.env.ACCESS_JWT_SECRET);
+      const result: any = await jwt.verify(token, process.env.ACCESS_JWT_SECRET);
 
       return result.userId;
 
@@ -39,13 +39,13 @@ export class JwtService {
     }
   }
 
-  async getUserIdByRefreshToken(token: string) {
+  async getUserIdByRefreshToken(token: string): Promise<any> {
 
     try {
 
-      const result: any = jwt.verify(token, process.env.REFRESH_JWT_SECRET);
+      const result: any = await jwt.verify(token, process.env.REFRESH_JWT_SECRET);
 
-      return result;
+      return result.userId;
 
     } catch (error) {
 

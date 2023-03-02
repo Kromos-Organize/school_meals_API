@@ -1,6 +1,3 @@
-import {ApiProperty} from "@nestjs/swagger";
-import {IsPhoneNumber, IsString, Length} from "class-validator";
-
 export interface IUserModelAttr {
     school_id?: number;
     role: string;
@@ -21,11 +18,18 @@ export interface IUserUpdateModel {
     name?: string;
     lname?: string;
     birthday?: string;
-    isActive?: boolean;
 }
 
-export interface IRegisterUser {
-    email: string;
+export interface ICheckUserReturns extends IValidateUserEmailReturns{
     password: string;
-    phone: string;
+}
+
+export interface IValidateUserEmailReturns {
+    id: number
+    email: string;
+    role: string;
+}
+
+export interface IActiveUser {
+    isActive: boolean
 }

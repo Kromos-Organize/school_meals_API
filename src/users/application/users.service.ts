@@ -2,7 +2,8 @@ import {Injectable} from "@nestjs/common";
 import {UsersRepository} from "../infrastructure/users.repository";
 import {UsersQueryRepository} from "../infrastructure/users.query.repository";
 import {PasswordService} from "../../helpers/password/password.service";
-import {IUserModelAttr, IUserUpdateModel} from "../domain/dto/user-service.dto";
+import {IActiveUser, IUserModelAttr, IUserUpdateModel} from "../domain/dto/user-service.dto";
+import {UserActivateResponseDto} from "../domain/dto/user-response.dto";
 
 @Injectable()
 export class UsersService {
@@ -51,6 +52,26 @@ export class UsersService {
   async updateUser(id: number, userDto: IUserUpdateModel) {
 
     return await this.usersRepository.updateUser(id, userDto);
+  }
+
+  async changeActiveUser(id: number, activeDto: IActiveUser) {
+
+    const activatedUser = await this.usersRepository.changeActivateUser(id, activeDto);
+
+    if (activatedUser) {
+
+      const message = `Пользователь ${!activatedUser.isActive ? 'де' : ''}активирован`
+
+      const resultActivated: UserActivateResponseDto = {
+        id: activatedUser.id,
+        isActive: activatedUser.isActive,
+        message: message
+      }
+
+      return resultActivated;
+    }
+
+    return false;
   }
 
   async removeUser(id: number) {

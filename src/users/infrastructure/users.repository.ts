@@ -1,7 +1,7 @@
 import {Injectable} from "@nestjs/common";
 import {InjectModel} from "@nestjs/sequelize";
 import {User} from "../domain/entities/user.model";
-import {IUserModelAttr, IUserUpdateModel} from "../domain/dto/user-service.dto";
+import {IActiveUser, IUserModelAttr, IUserUpdateModel} from "../domain/dto/user-service.dto";
 
 @Injectable()
 export class UsersRepository {
@@ -22,6 +22,17 @@ export class UsersRepository {
     if (userInstance.school_id) delete userDto.school_id;
 
     await userInstance.update(userDto);
+
+    return await userInstance.save();
+  }
+
+  async changeActivateUser(id: number, activeDto: IActiveUser) {
+
+    const userInstance = await this.usersRepository.findOne({where: { id }});
+
+    if (!userInstance) return false;
+
+    await userInstance.update(activeDto);
 
     return await userInstance.save();
   }

@@ -3,6 +3,10 @@ import {LoginDto,} from "../../auth/domain/dto/auth-request.dto";
 import * as bcrypt from "bcrypt";
 import {AdminService} from "../../admin/application/admin.service";
 import {UsersQueryRepository} from "../../users/infrastructure/users.query.repository";
+import {
+  ICheckUserReturns,
+  IValidateUserEmailReturns,
+} from "../../users/domain/dto/user-service.dto";
 
 @Injectable()
 export class ValidateUserService {
@@ -31,14 +35,14 @@ export class ValidateUserService {
     });
   }
 
-  async validateByEmail(email: string) {
+  async validateByEmail(email: string): Promise<IValidateUserEmailReturns> {
 
     const { password, ...result } = await this.checkUser(email);
 
     return result;
   }
 
-  async checkUser(email: string): Promise<any> {
+  async checkUser(email: string): Promise<ICheckUserReturns> {
 
     const admin = await this.adminService.getAdminByEmail(email);
     const manager = await this.userQueryRepository.getUserByEmail(email);

@@ -8,6 +8,7 @@ import {UsersQueryRepository} from "../../users/infrastructure/users.query.repos
 import {JwtService} from "../application/jwt-service";
 import {LoginResponseDto, RefreshTokenResponseDto, RegisterResponseDto} from "../domain/dto/auth-response.dto";
 import {BadCheckEntitiesException} from "../../helpers/exception/BadCheckEntitiesException";
+import {IsActiveUserAuthGuard} from "../guards/isActive-user.auth.guard";
 
 @ApiTags("Авторизация")
 @Controller("auth")
@@ -20,6 +21,7 @@ export class AuthController {
     private authException: BadCheckEntitiesException,
   ) {}
 
+  @UseGuards(IsActiveUserAuthGuard)
   @ApiOperation({ summary: "Логинизация" })
   @ApiResponse({ status: 200, type: LoginResponseDto })
   @Post("/login")
