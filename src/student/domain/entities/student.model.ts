@@ -8,9 +8,10 @@ interface StudentCreationAttrs {
     class_id: number,
     fname: string,
     name: string,
-    lname: string,
+    lname?: string,
     phoneParents?: string,
     birthday?: string
+    isLargeFamilies: boolean
 }
 
 @Table({tableName: 'student'})
@@ -39,7 +40,7 @@ export class Student extends Model<Student, StudentCreationAttrs> {
     name: string;
 
     @ApiProperty({example:'Игоревич', description:'Отчество ученика'})
-    @Column({type: DataType.STRING, allowNull: false})
+    @Column({type: DataType.STRING, allowNull: true})
     lname: string;
 
     @ApiProperty({example:'{"мама":"375297485875", "папа:375297485875"}', description:'Телефон родителей, JSON.stringify'})
@@ -49,4 +50,8 @@ export class Student extends Model<Student, StudentCreationAttrs> {
     @ApiProperty({example:'11231242355', description:'Дата рождения ученика, unix time'})
     @Column({type: DataType.STRING, allowNull: true})
     birthday: string;
+
+    @ApiProperty({example: false, description: 'Параметр отвечающий многодетная семья или нет'})
+    @Column({type: DataType.BOOLEAN, allowNull: false, defaultValue: false})
+    isLargeFamilies: boolean
 }
