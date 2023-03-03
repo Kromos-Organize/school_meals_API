@@ -13,7 +13,7 @@ export class Class extends Model<Class,ClassCreationAttrs> {
 
     @ApiProperty({example:'1', description:'ID'})
     @Column({type: DataType.INTEGER, unique: true, autoIncrement: true, primaryKey: true})
-    id: number;
+    class_id: number;
 
     @ApiProperty({example:'1', description:'ID школы'})
     @Column({type: DataType.INTEGER, allowNull: false})

@@ -1,5 +1,5 @@
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
-import {Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards,} from "@nestjs/common";
+import {Body, Controller, Delete, Get, HttpCode, Param, Post, Put, Query, UseGuards,} from "@nestjs/common";
 import {UsersService} from "src/users/application/users.service";
 import {RoleEnum} from "../domain/entities/role.enum";
 import {RegistrationDto} from "../../auth/domain/dto/auth-request.dto";
@@ -8,7 +8,6 @@ import {IUserModelAttr} from "../domain/dto/user-service.dto";
 import {UserActivateResponseDto, UserDeleteResponseDto, UserResponseDto} from "../domain/dto/user-response.dto";
 import {BadCheckEntitiesException} from "../../helpers/exception/BadCheckEntitiesException";
 import {AuthGuard} from "@nestjs/passport";
-import {AccessActivatedUserGuard} from "../guards/accessActivated.user.guard";
 
 @ApiTags("Сотрудники школы")
 @Controller("user")
@@ -20,6 +19,7 @@ export class UsersController {
 
   @ApiOperation({ summary: "Получение списка пользователей" })
   @ApiResponse({ status: 200, type: [UserResponseDto] })
+  @HttpCode(200)
   @Get()
   getAll() {
 
@@ -28,6 +28,7 @@ export class UsersController {
 
   @ApiOperation({ summary: "Получение данных пользователя по емейлу" })
   @ApiResponse({ status: 200, type: UserResponseDto })
+  @HttpCode(200)
   @Get('/email')
   async get(@Query("email") email: string) {
 
@@ -40,6 +41,7 @@ export class UsersController {
 
   @ApiOperation({ summary: "Создание пользователя (Учителя)" })
   @ApiResponse({ status: 201, type: UserResponseDto })
+  @HttpCode(201)
   @Post("/create")
   async create(@Body() userDto: RegistrationDto) {
 
@@ -60,6 +62,7 @@ export class UsersController {
 
   @ApiOperation({ summary: "Изменение данных пользователя" })
   @ApiResponse({ status: 200, type: UserResponseDto })
+  @HttpCode(200)
   @Put(":user_id")
   async update(@Param("user_id") user_id: number, @Body() userDto: UpdateUserDto) {
 
@@ -72,6 +75,7 @@ export class UsersController {
 
   @ApiOperation({ summary: "Активация/Деактивация пользователя" })
   @ApiResponse({ status: 200, type: UserActivateResponseDto })
+  @HttpCode(200)
   @Put("/activate/:user_id")
   async changeActiveUser(@Param("user_id") user_id: number, @Body() activeDto: ActiveUserDto) {
 
@@ -84,6 +88,7 @@ export class UsersController {
 
   @ApiOperation({ summary: "Удаление пользователя" })
   @ApiResponse({ status: 200, type: UserDeleteResponseDto})
+  @HttpCode(200)
   @Delete(":user_id")
   async remove(@Param("user_id") user_id: number) {
 

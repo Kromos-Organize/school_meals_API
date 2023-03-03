@@ -48,4 +48,49 @@ export class BadCheckEntitiesException {
             });
         }
     }
+
+    checkThrowSchool(value, type: MessagesType, fields: string[]) {
+
+        const usersMessages = {
+            'yep': "Школа уже существует",
+            'not': "Школа не найдена"
+        }
+
+        if (value) {
+            throw new BadRequestException({
+                message: usersMessages[type],
+                fields: fields,
+            });
+        }
+    }
+
+    checkThrowClass(value, type: MessagesType, fields: string[]) {
+
+        const usersMessages = {
+            'yep': "Класс уже существует",
+            'not': "Класс не найден"
+        }
+
+        if (value) {
+            throw new BadRequestException({
+                message: usersMessages[type],
+                fields: fields,
+            });
+        }
+    }
+
+    checkThrowStudent(value, type: MessagesType, fields: string[]) {
+
+        const usersMessages = {
+            'yep': "Ученик уже добавлен",
+            'not': "Ученик не найден"
+        }
+
+        if (value) {
+            throw new BadRequestException({
+                message: usersMessages[type],
+                fields: fields,
+            });
+        }
+    }
 }

@@ -1,55 +1,90 @@
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
-import {Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards} from "@nestjs/common";
+import {Body, Controller, Delete, Get, HttpCode, Param, Post, Put, Query, UseGuards} from "@nestjs/common";
 import {ClassService} from "../application/class.service";
 import {Class} from "../domain/entities/class.model";
-import {School} from "../../school/domain/entities/school.model";
-import {CreateClassDto, UpdateClassDto} from "../domain/dto/create-class.dto";
 import {AuthGuard} from "@nestjs/passport";
+import {CreateClassDto, UpdateClassDto} from "../domain/dto/class-request.dto";
+import {ClassDeleteResponseDto} from "../domain/dto/class-response.dto";
+import {SchoolService} from "../../school/application/school.service";
+import {BadCheckEntitiesException} from "../../helpers/exception/BadCheckEntitiesException";
 
 @ApiTags('Классы')
 @Controller('class')
 @UseGuards(AuthGuard())
 export class ClassController {
 
-    constructor(private classService: ClassService) { }
+    constructor(
+        private schoolService: SchoolService,
+        private classService: ClassService,
+        private classException: BadCheckEntitiesException,
+    ) { }
 
     @ApiOperation({summary: 'Получить список классов'})
     @ApiResponse({status: 200, type: [Class]})
+    @HttpCode(200)
     @Get()
-    getAll(@Query('school_id') school_id: number) {
+    async getAll(@Query('school_id') school_id: number) {
+
+        const school = await this.schoolService.get(school_id);
+
+        this.classException.checkThrowSchool(!school, 'not', ['school_id'])
 
         return this.classService.getAll(school_id);
     }
 
     @ApiOperation({summary: 'Получить данные класса'})
     @ApiResponse({status: 200, type: Class})
+    @HttpCode(200)
     @Get(':class_id')
-    get(@Param('class_id') class_id: number){
+    async get(@Param('class_id') class_id: number){
 
-        return this.classService.get(class_id);
+        const classSchool =  await this.classService.getClassById(class_id)
+
+        this.classException.checkThrowSchool(!classSchool, 'not', ['class_id'])
+
+        return classSchool;
     }
 
     @ApiOperation({summary: 'Добавить класс'})
     @ApiResponse({status: 201, type: Class})
+    @HttpCode(201)
     @Post()
-    create(@Body() classDto: CreateClassDto) {
+    async create(@Body() classDto: CreateClassDto) {
+
+        const school = await this.schoolService.get(classDto.school_id);
+
+        this.classException.checkThrowSchool(!school, 'not', ['school_id']);
+
+        const classSchool = await this.classService.getClassByParams(classDto);
+
+        this.classException.checkThrowClass(classSchool, 'yep', ['school_id', 'number', 'type']);
 
         return this.classService.create(classDto);
     }
 
     @ApiOperation({summary: 'Обновить данные класса'})
     @ApiResponse({status: 200, type: Class})
+    @HttpCode(200)
     @Put(':class_id')
-    update(@Param('class_id') id: number, @Body() classDto: UpdateClassDto) {
+    async update(@Param('class_id') class_id: number, @Body() classDto: UpdateClassDto) {
 
-        return this.classService.update(id, classDto);
+        const classSchool =  await this.classService.getClassById(class_id)
+
+        this.classException.checkThrowSchool(!classSchool, 'not', ['class_id'])
+
+        return this.classService.update(class_id, classDto);
     }
 
     @ApiOperation({summary: 'Удалить класс'})
-    @ApiResponse({status: 200, type: School})
+    @ApiResponse({status: 200, type: ClassDeleteResponseDto})
+    @HttpCode(200)
     @Delete(':class_id')
-    remove(@Param('class_id') id: number) {
+    async remove(@Param('class_id') class_id: number) {
 
-        return this.classService.remove(id);
+        const classSchool =  await this.classService.getClassById(class_id)
+
+        this.classException.checkThrowSchool(!classSchool, 'not', ['class_id'])
+
+        return this.classService.remove(class_id);
     }
 }

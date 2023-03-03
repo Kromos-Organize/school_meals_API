@@ -1,67 +1,43 @@
-import {BadRequestException, Injectable} from "@nestjs/common";
-import {InjectModel} from "@nestjs/sequelize";
-import {Class} from "../domain/entities/class.model";
-import {CreateClassDto, UpdateClassDto} from "../domain/dto/create-class.dto";
-import {SchoolService} from "../../school/application/school.service";
+import {Injectable} from "@nestjs/common";
+import {ICreateClass, IUpdateClass} from "../domain/dto/class-service.dto";
+import {ClassQueryRepository} from "../infrastructure/class.query.repository";
+import {ClassRepository} from "../infrastructure/class.repository";
 
 @Injectable()
 export class ClassService {
 
-    constructor(@InjectModel(Class) private classRepo: typeof Class,
-                private schoolService: SchoolService) { }
+    constructor(
+        private classQueryRepository: ClassQueryRepository,
+        private classRepository: ClassRepository
+    ) { }
 
-    async getAll(id: number) {
+    async getAll(school_id: number) {
 
-        return await this.classRepo.findAll({where: {id}})
+        return await this.classQueryRepository.getAll(school_id);
     }
 
-    async get(id: number) {
+    async getClassById(class_id: number) {
 
-        return await this.searchClass(id);
+        return await this.classQueryRepository.getClass(class_id);
     }
 
-    async create(classDto: CreateClassDto) {
+    async getClassByParams(classParams: ICreateClass) {
 
-        await this.schoolService.get(classDto.school_id);
-        const candidateClass = await this.classRepo.findOne({where: {...classDto}});
-
-        if (candidateClass) {
-
-            throw new BadRequestException({
-                message: 'Такой класс существует.',
-                fields: ['number','type'],
-            });
-        }
-
-        return await this.classRepo.create(classDto);
+        return await this.classQueryRepository.getClassParam(classParams);
     }
 
-    async update(class_id: number, classDto: UpdateClassDto) {
+    async create(classDto: ICreateClass) {
 
-        const classSchool = await this.searchClass(class_id);
-
-        return await classSchool.update(classDto);
+        return await this.classRepository.createClass(classDto);
     }
 
-    async remove(id: number) {
+    async update(class_id: number, classDto: IUpdateClass) {
 
-        const result = await this.classRepo.destroy({where: {id}})
-
-        return result ? {message: "Класс удален"} : {message: "Класс не найден."}
+        return await this.classRepository.updateClass(class_id, classDto);
     }
 
-    async searchClass(id: number) {
+    async remove(class_id: number) {
 
-        const classSchool = await this.classRepo.findOne({where: {id}})
-
-        if (!classSchool) {
-
-            throw new BadRequestException({
-                message: 'Класс не найден.',
-                fields: ['class_id'],
-            });
-        }
-
-        return classSchool
+        return await this.classRepository.removeClass(class_id);
     }
 }
