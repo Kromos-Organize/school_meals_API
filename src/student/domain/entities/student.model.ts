@@ -2,24 +2,14 @@ import {Column, DataType, ForeignKey, Model, Table} from "sequelize-typescript";
 import {ApiProperty} from "@nestjs/swagger";
 import {School} from "../../../school/domain/entities/school.model";
 import {Class} from "../../../class/domain/entities/class.model";
-
-interface StudentCreationAttrs {
-    school_id: number,
-    class_id: number,
-    fname: string,
-    name: string,
-    lname?: string,
-    phoneParents?: string,
-    birthday?: Date
-    isLargeFamilies: boolean
-}
+import {StudentCreationAttrs} from "../dto/student-service.dto";
 
 @Table({tableName: 'student'})
 export class Student extends Model<Student, StudentCreationAttrs> {
 
     @ApiProperty({example:'1', description:'ID'})
     @Column({type: DataType.INTEGER, unique: true, autoIncrement: true, primaryKey: true})
-    id: number;
+    student_id: number;
 
     @ApiProperty({example:'1', description:'ID школы'})
     @Column({type: DataType.INTEGER, allowNull: true})

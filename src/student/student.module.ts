@@ -6,9 +6,16 @@ import {Student} from "./domain/entities/student.model";
 import {SchoolModule} from "../school/school.module";
 import {ClassModule} from "../class/class.module";
 import {AuthModule} from "../auth/auth.module";
+import {BadCheckEntitiesException} from "../helpers/exception/BadCheckEntitiesException";
+import {StudentQueryRepository} from "./infrastructure/student.query.repository";
+import {StudentRepository} from "./infrastructure/student.repository";
 
 @Module({
-    providers: [StudentService],
+    providers: [
+        StudentQueryRepository,
+        StudentRepository,
+        StudentService,
+        BadCheckEntitiesException],
     controllers: [StudentController],
     imports: [
         SequelizeModule.forFeature([Student]),

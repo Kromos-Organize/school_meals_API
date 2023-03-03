@@ -1,58 +1,46 @@
 import {BadRequestException, Injectable} from '@nestjs/common';
 import {InjectModel} from "@nestjs/sequelize";
 import {School} from "../domain/entities/school.model";
-import {CreateSchoolDto} from "../domain/dto/create-school.dto";
+import {SchoolCreateDto} from "../domain/dto/school-request.dto";
+import {SchoolQueryRepository} from "../infrastructure/school.query.repository";
+import {SchoolRepository} from "../infrastructure/school.repository";
+import {ISchoolCreationAttrs, ISchoolParam, ISchoolUpdate} from "../domain/dto/school-service.dto";
 
 @Injectable()
 export class SchoolService {
 
-    constructor(@InjectModel(School) private schoolRepository: typeof School) { }
+    constructor(
+        private schoolQueryRepository: SchoolQueryRepository,
+        private schoolRepository: SchoolRepository,
+    ) { }
 
     async getAllSchool() {
 
-        return await this.schoolRepository.findAll();
+        return await this.schoolQueryRepository.getAllSchools();
     }
 
-    async get(id: number) {
+    async getSchoolById(school_id: number) {
 
-        const school = await this.schoolRepository.findOne({where: {id}})
-
-        if (!school) {
-
-            throw new BadRequestException({
-                message: 'Школа не найдена.',
-                fields: ['school_id'],
-            });
-        }
-
-        return school;
+       return await this.schoolQueryRepository.getSchoolById(school_id);
     }
 
-    async createSchool(dto: CreateSchoolDto) {
+    async getSchoolByParam(schoolParam: ISchoolParam) {
 
-        const schoolCandidate = await this.schoolRepository.findOne({where: {name: dto.name, city: dto.city}})
-
-        if (schoolCandidate) {
-            throw new BadRequestException({
-                message: 'Школа по таким данным уже добавлена.',
-                fields: ['name'],
-            });
-        }
-
-        return await this.schoolRepository.create(dto);
+        return await this.schoolQueryRepository.getSchoolByParam(schoolParam);
     }
 
-    async updateSchool(id: number, schoolDto: CreateSchoolDto) {
+    async createSchool(schoolDto: ISchoolCreationAttrs) {
 
-        const school = await this.get(id);
-
-        return await school.update(schoolDto);
+        return await this.schoolRepository.createSchool(schoolDto);
     }
 
-    async removeSchool(id: string) {
+    async updateSchool(school_id: number, schoolDto: ISchoolUpdate) {
 
-        const result = await this.schoolRepository.destroy({where: {id}});
+        return await this.schoolRepository.updateSchool(school_id, schoolDto)
+    }
 
-        return result ? {message: "Школа удалена."} : {message: "Школа не найдена."}
+    async removeSchool(school_id: number) {
+
+        return await this.schoolRepository.removeSchool(school_id);
     }
 }

@@ -1,4 +1,4 @@
-import {Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards} from "@nestjs/common";
+import {Body, Controller, Delete, Get, HttpCode, Param, Post, Put, Query, UseGuards} from "@nestjs/common";
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {AdminService} from "../application/admin.service";
 import {Admin} from "../domain/entities/admin.model";
@@ -19,6 +19,7 @@ export class AdminController {
 
     @ApiOperation({summary: 'Получение списка админов'})
     @ApiResponse({status: 200,type: [AdminResponse]})
+    @HttpCode(200)
     @Get()
     getAll() {
 
@@ -27,6 +28,7 @@ export class AdminController {
 
     @ApiOperation({summary: 'Получить данные админа'})
     @ApiResponse({status: 200,type: AdminResponse})
+    @HttpCode(200)
     @Get('/email')
     async getAdminByEmail(@Query('email') email: string) {
 
@@ -39,6 +41,7 @@ export class AdminController {
 
     @ApiOperation({summary: 'Добавить админа'})
     @ApiResponse({status: 201,type: Admin})
+    @HttpCode(201)
     @Post()
     async create(@Body() adminDto: CreateAdminDto) {
 
@@ -51,6 +54,7 @@ export class AdminController {
 
     @ApiOperation({summary: 'Изменить данные админа'})
     @ApiResponse({status: 200,type: Admin})
+    @HttpCode(200)
     @Put('/:admin_id')
     async update(@Param('admin_id') admin_id: number, @Body() adminDto: UpdateAdminDto)  {
 
@@ -63,6 +67,7 @@ export class AdminController {
 
     @ApiOperation({summary: 'Удалить админа'})
     @ApiResponse({status: 200, type: AdminDeleteResponseDto})
+    @HttpCode(200)
     @Delete('/:admin_id')
     async remove(@Param('admin_id') admin_id: number) {
 
