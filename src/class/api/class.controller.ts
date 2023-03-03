@@ -25,7 +25,7 @@ export class ClassController {
     @Get()
     async getAll(@Query('school_id') school_id: number) {
 
-        const school = await this.schoolService.get(school_id);
+        const school = await this.schoolService.getSchoolById(school_id);
 
         this.classException.checkThrowSchool(!school, 'not', ['school_id'])
 
@@ -51,7 +51,7 @@ export class ClassController {
     @Post()
     async create(@Body() classDto: CreateClassDto) {
 
-        const school = await this.schoolService.get(classDto.school_id);
+        const school = await this.schoolService.getSchoolById(classDto.school_id);
 
         this.classException.checkThrowSchool(!school, 'not', ['school_id']);
 

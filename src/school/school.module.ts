@@ -5,9 +5,17 @@ import {SequelizeModule} from "@nestjs/sequelize";
 import {School} from "./domain/entities/school.model";
 import {AuthModule} from "../auth/auth.module";
 import {UserModule} from "../users/userModule";
+import {BadCheckEntitiesException} from "../helpers/exception/BadCheckEntitiesException";
+import {SchoolRepository} from "./infrastructure/school.repository";
+import {SchoolQueryRepository} from "./infrastructure/school.query.repository";
 
 @Module({
-    providers: [SchoolService],
+    providers: [
+        SchoolRepository,
+        SchoolQueryRepository,
+        SchoolService,
+        BadCheckEntitiesException
+    ],
     controllers: [SchoolController],
     imports: [
         SequelizeModule.forFeature([School]),

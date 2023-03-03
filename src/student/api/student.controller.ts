@@ -26,7 +26,7 @@ export class StudentController {
     @Get()
     async getStudentToClass(@Query('school_id') school_id: number, @Query('class_id') class_id: number) {
 
-        const school = await this.schoolService.get(school_id);
+        const school = await this.schoolService.getSchoolById(school_id);
         const classSchool = await this.classService.getClassById(class_id);
 
         this.studentException.checkThrowSchool(!school,'not',['school_id']);
@@ -54,7 +54,7 @@ export class StudentController {
     @Post()
     async create(@Body() studentDto: StudentRequestDto) {
 
-        const school = await this.schoolService.get(studentDto.school_id);
+        const school = await this.schoolService.getSchoolById(studentDto.school_id);
         const classSchool = await this.classService.getClassById(studentDto.class_id);
         const student = await this.studentService.getStudentByParam({
             school_id: studentDto.school_id,
