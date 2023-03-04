@@ -31,3 +31,10 @@ export interface IUpdateStudent{
     birthday?: Date
     isLargeFamilies?: boolean
 }
+
+export interface IPhoneParentsModel {
+    phone_id: number
+    student_id: number
+    m_phone: number
+    f_phone: number
+}
