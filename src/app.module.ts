@@ -1,6 +1,6 @@
 import {MiddlewareConsumer, Module} from "@nestjs/common";
 import {SequelizeModule} from "@nestjs/sequelize";
-import {ConfigModule} from "@nestjs/config";
+import {ConfigModule, ConfigService} from "@nestjs/config";
 import {AuthModule} from "./auth/auth.module";
 import {SchoolModule} from "./school/school.module";
 import {StudentModule} from "./student/student.module";
@@ -11,13 +11,26 @@ import {allModels} from "./importModels";
 import {UserModule} from "./users/userModule";
 import {TelegramBotService} from "./helpers/bot/telegram_bot.service";
 import {TelegramBotModule} from "./helpers/bot/telegram_bot.module";
+import {ThrottlerGuard, ThrottlerModule} from "@nestjs/throttler";
+import {APP_GUARD} from "@nestjs/core";
 
 @Module({
   controllers: [],
-  providers: [],
+  providers: [{
+    provide: APP_GUARD,
+    useClass: ThrottlerGuard
+  }],
   imports: [
     ConfigModule.forRoot({
       envFilePath: `.${process.env.NODE_ENV}.env`,
+    }),
+    ThrottlerModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        ttl: config.get('THROTTLE_TTL'),
+        limit: config.get('THROTTLE_LIMIT'),
+      }),
     }),
     SequelizeModule.forRoot({
       dialect: "postgres",
