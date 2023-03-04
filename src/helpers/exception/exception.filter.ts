@@ -42,7 +42,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
       case 401:
 
         response.status(401).json({
-          field: ['accessToken'],
+          field: ['accessToken','refreshToken'],
           message: 'Вы не авторизованы'
         });
 

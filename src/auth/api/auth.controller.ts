@@ -37,7 +37,6 @@ export class AuthController {
 
     res
       .cookie("refreshToken", tokens.refreshToken, cookieConfigToken)
-      .status(200)
       .send({
         ...user,
         accessToken: tokens.accessToken,
@@ -67,9 +66,7 @@ export class AuthController {
 
       const tokens = await this.jwtService.createJWTTokens(req.user, false);
 
-      res
-        .status(200)
-        .send({accessToken: tokens.accessToken})
+      res.send({accessToken: tokens.accessToken})
     }
   }
 }
