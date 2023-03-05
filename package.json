@@ -28,6 +28,7 @@
     "@nestjs/platform-express": "^9.0.0",
     "@nestjs/sequelize": "^9.0.0",
     "@nestjs/swagger": "^6.1.4",
+    "@nestjs/throttler": "^4.0.0",
     "@types/cookie-parser": "^1.4.3",
     "bcrypt": "^5.1.0",
     "bot-brother": "^2.1.5",
