@@ -23,16 +23,27 @@ export class StudentRequestDto {
     @IsString({message: 'Должно быть строкой.'})
     readonly lname?: string;
 
-    @ApiProperty({example:'{"мама":"(29)748-58-75", "папа: (29)748-58-75"}', description:'Телефон родителей, JSON.stringify'})
-    @IsString({message: 'Должно быть строкой.'})
-    readonly phoneParents?: string; // может быть вынести в отдельную таблицу
-
     @ApiProperty({example:'20.02.2022', description:'Дата рождения ученика'})
     @IsString({message: 'Должно быть строкой.'})
     readonly birthday?: Date;
 
     @ApiProperty({example: false, description: 'Параметр отвечающий многодетная семья или нет'})
-    readonly isLargeFamilies?: boolean
+    readonly isLargeFamilies?: boolean;
+
+    @ApiProperty({
+        example: '{"мама":"(29)748-58-75", "папа: (29)748-58-75"}',
+        description: 'Телефон родителей, JSON.stringify',
+    })
+    @IsString({ message: 'Должно быть строкой.' })
+    readonly phoneParents: string;
+
+    get m_phone(): string {
+        return Object.values(JSON.parse(this.phoneParents))[0].toString();
+    }
+
+    get f_phone(): string {
+        return Object.values(JSON.parse(this.phoneParents))[1].toString();
+    }
 }
 
 export class UpdateStudentDto {
@@ -52,15 +63,25 @@ export class UpdateStudentDto {
     @IsString({message: 'Должно быть строкой.'})
     readonly lname?: string;
 
-    @ApiProperty({example:'{"мама":"375297485875", "папа:375297485875"}', description:'Телефон родителей, JSON.stringify'})
-    @IsString({message: 'Должно быть строкой.'})
-    readonly phoneParents?: string;
-
     @ApiProperty({example:'20.02.2022', description:'Дата рождения ученика'})
     @Length(12,13,{message: 'Дата должна быть от 12 до 13 символов.'})
     @IsString({message: 'Должно быть строкой.'})
     readonly birthday?: Date;
 
     @ApiProperty({example: false, description: 'Параметр отвечающий многодетная семья или нет'})
-    readonly isLargeFamilies?: boolean
+    readonly isLargeFamilies?: boolean;
+
+    @ApiProperty({ example: '{"мама":"375297485875", "папа:375297485875"}', description: 'Телефон родителей, JSON.stringify'})
+    @IsString({ message: 'Должно быть строкой.' })
+    readonly phoneParents: string;
+
+    get m_phone(): string {
+
+        return Object.values(JSON.parse(this.phoneParents))[0].toString();
+    }
+
+    get f_phone(): string {
+
+        return Object.values(JSON.parse(this.phoneParents))[1].toString();
+    }
 }
