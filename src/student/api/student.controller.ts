@@ -1,12 +1,26 @@
-import {Body, Controller, Delete, Get, HttpCode, Param, Post, Put, Query, UseGuards} from '@nestjs/common';
-import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
-import {StudentService} from "../application/student.service";
-import {Student} from "../domain/entities/student.model";
-import {StudentRequestDto, UpdateStudentDto} from "../domain/dto/student-request.dto";
+import {
+    Body,
+    Controller,
+    Delete,
+    Get,
+    HttpCode,
+    Param,
+    Post,
+    Put,
+    Query,
+    UseGuards,
+} from '@nestjs/common';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { StudentService } from '../application/student.service';
+import { Student } from '../domain/entities/student.model';
+import {
+    StudentRequestDto,
+    UpdateStudentDto,
+} from '../domain/dto/student-request.dto';
+import { BadCheckEntitiesException } from '../../helpers/exception/BadCheckEntitiesException';
+import { SchoolService } from '../../school/application/school.service';
+import { ClassService } from '../../class/application/class.service';
 import {AuthGuard} from "@nestjs/passport";
-import {BadCheckEntitiesException} from "../../helpers/exception/BadCheckEntitiesException";
-import {SchoolService} from "../../school/application/school.service";
-import {ClassService} from "../../class/application/class.service";
 
 @ApiTags('Ученики')
 @Controller('student')
@@ -17,8 +31,8 @@ export class StudentController {
         private schoolService: SchoolService,
         private classService: ClassService,
         private studentService: StudentService,
-        private studentException: BadCheckEntitiesException
-    ) { }
+        private studentException: BadCheckEntitiesException,
+    ) {}
 
     @ApiOperation({summary: 'Получение списка учеников класса'})
     @ApiResponse({status: 200, type: [Student]})
@@ -45,7 +59,7 @@ export class StudentController {
 
         this.studentException.checkThrowStudent(!student,'not',['student_id']);
 
-        return student_id;
+        return student;
     }
 
     @ApiOperation({summary: 'Добавление ученика в класс'})
@@ -60,7 +74,7 @@ export class StudentController {
             school_id: studentDto.school_id,
             class_id: studentDto.class_id,
             fname: studentDto.fname,
-            name: studentDto.name
+            name: studentDto.name,
         });
 
         this.studentException.checkThrowSchool(!school,'not',['school_id']);
@@ -87,11 +101,11 @@ export class StudentController {
     @ApiResponse({status: 200, type: ''})
     @HttpCode(200)
     @Delete(':student_id')
-    async remove(@Param('student_id') student_id: number){
+    async remove(@Param('student_id') student_id: number) {
 
         const student = await this.studentService.getStudentById(student_id);
 
-        this.studentException.checkThrowStudent(!student,'not',['student_id']);
+        this.studentException.checkThrowStudent(!student, 'not', ['student_id']);
 
         return this.studentService.removeStudent(student_id);
     }

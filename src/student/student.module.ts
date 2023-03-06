@@ -9,20 +9,21 @@ import {AuthModule} from "../auth/auth.module";
 import {BadCheckEntitiesException} from "../helpers/exception/BadCheckEntitiesException";
 import {StudentQueryRepository} from "./infrastructure/student.query.repository";
 import {StudentRepository} from "./infrastructure/student.repository";
+import { PhoneParentsModel } from './domain/entities/phone-parents.model';
 
 @Module({
     providers: [
         StudentQueryRepository,
         StudentRepository,
         StudentService,
-        BadCheckEntitiesException],
+        BadCheckEntitiesException,
+    ],
     controllers: [StudentController],
     imports: [
-        SequelizeModule.forFeature([Student]),
+        SequelizeModule.forFeature([Student, PhoneParentsModel]),
         SchoolModule,
         ClassModule,
-        forwardRef(() => AuthModule)
-    ]
+        forwardRef(() => AuthModule),
+    ],
 })
-export class StudentModule {
-}
+export class StudentModule {}
