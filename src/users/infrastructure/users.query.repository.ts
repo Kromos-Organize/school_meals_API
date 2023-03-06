@@ -21,4 +21,9 @@ export class UsersQueryRepository {
 
     return await this.usersRepository.findOne({ where: { id } });
   }
+
+  async getUserModeration() {
+
+    return await this.usersRepository.findAll({ where: { isActive: false } });
+  }
 }
