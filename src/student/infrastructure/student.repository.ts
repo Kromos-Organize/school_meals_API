@@ -52,8 +52,8 @@ export class StudentRepository {
             await studentInstance.update(studentDto, { transaction: transaction });
 
             const phoneUpdates = {
-                m_phone: studentDto.m_phone,
-                f_phone: studentDto.f_phone,
+                m_phone: studentDto.phoneParents.m_phone,
+                f_phone: studentDto.phoneParents.f_phone,
             }
 
             await this.parentsPhoneModel.update( phoneUpdates , {where: { student_id, }, transaction, }, );

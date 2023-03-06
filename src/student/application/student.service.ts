@@ -2,7 +2,7 @@ import {Injectable} from '@nestjs/common';
 import {UpdateStudentDto} from "../domain/dto/student-request.dto";
 import {StudentQueryRepository} from "../infrastructure/student.query.repository";
 import {StudentRepository} from "../infrastructure/student.repository";
-import {IParamStudent, StudentCreationAttrs} from "../domain/dto/student-service.dto";
+import {IParamStudent, IUpdateStudent, StudentCreationAttrs} from "../domain/dto/student-service.dto";
 
 @Injectable()
 export class StudentService {
@@ -31,8 +31,6 @@ export class StudentService {
 
         const newStudent: StudentCreationAttrs = {
             ...studentDto,
-            m_phone: studentDto.m_phone,
-            f_phone: studentDto.f_phone,
             isLargeFamilies: false,
         };
 
@@ -41,7 +39,15 @@ export class StudentService {
 
     async updateStudent(student_id: number, studentDto: UpdateStudentDto) {
 
-        return await this.studentRepository.updateStudent(student_id, studentDto);
+        const updateStudent: IUpdateStudent = {
+            ...studentDto,
+           phoneParents:{
+               m_phone: studentDto.m_phone,
+               f_phone: studentDto.f_phone,
+           }
+        }
+
+        return await this.studentRepository.updateStudent(student_id, updateStudent);
     }
 
     async removeStudent(student_id: number) {
