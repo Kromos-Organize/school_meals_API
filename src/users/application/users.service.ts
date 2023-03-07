@@ -29,6 +29,11 @@ export class UsersService {
     return await this.usersQueryRepository.getUserById(id)
   }
 
+  async getUserModeration() {
+
+    return await this.usersQueryRepository.getUserModeration()
+  }
+
   async createUser(inputModel: IUserModelAttr) {
 
     const passwordHash = await this.passwordService.generateSaltAndHash(inputModel.password);

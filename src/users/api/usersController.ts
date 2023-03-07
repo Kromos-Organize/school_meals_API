@@ -11,7 +11,7 @@ import {AuthGuard} from "@nestjs/passport";
 
 @ApiTags("Сотрудники школы")
 @Controller("user")
-@UseGuards(AuthGuard())
+// @UseGuards(AuthGuard())
 export class UsersController {
 
   constructor(private usersService: UsersService,
@@ -37,6 +37,15 @@ export class UsersController {
     this.userException.checkThrowUsers(!user, 'not', ['email']);
 
     return user;
+  }
+
+  @ApiOperation({ summary: "Получение списка пользователя для модерации" })
+  @ApiResponse({ status: 200, type: [UserResponseDto] })
+  @HttpCode(200)
+  @Get('/moderation')
+  async getUserModeration() {
+
+    return await this.usersService.getUserModeration();
   }
 
   @ApiOperation({ summary: "Создание пользователя (Учителя)" })
