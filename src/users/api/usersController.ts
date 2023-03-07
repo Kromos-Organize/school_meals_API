@@ -11,7 +11,7 @@ import {AuthGuard} from "@nestjs/passport";
 
 @ApiTags("Сотрудники школы")
 @Controller("user")
-// @UseGuards(AuthGuard())
+@UseGuards(AuthGuard())
 export class UsersController {
 
   constructor(private usersService: UsersService,
