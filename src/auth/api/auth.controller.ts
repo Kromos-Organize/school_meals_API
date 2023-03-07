@@ -1,4 +1,13 @@
-import {Body, Controller, HttpCode, Post, Req, Res, UseGuards,} from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  HttpCode, HttpStatus,
+  Post,
+  Req,
+  Res,
+  UnauthorizedException,
+  UseGuards,
+} from "@nestjs/common";
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {AuthService} from "../application/auth.service";
 import {LoginDto, RegistrationDto} from "../domain/dto/auth-request.dto";
@@ -9,6 +18,7 @@ import {JwtService} from "../application/jwt-service";
 import {LoginResponseDto, RefreshTokenResponseDto, RegisterResponseDto} from "../domain/dto/auth-response.dto";
 import {BadCheckEntitiesException} from "../../helpers/exception/BadCheckEntitiesException";
 import {IsActiveUserAuthGuard} from "../guards/isActive-user.auth.guard";
+import {Cookies} from "../../helpers/param-decorators/custom-decorators";
 
 @ApiTags("Авторизация")
 @Controller("auth")
@@ -68,5 +78,19 @@ export class AuthController {
 
       res.send({accessToken: tokens.accessToken})
     }
+  }
+
+  @UseGuards(RefreshTokenGuard)
+  @ApiOperation({ summary: "выход из системы" })
+  @ApiResponse({ status: 204, type: RefreshTokenResponseDto })
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Post("/logout")
+  async logout(@Cookies() refreshToken: string, @Res() res) {
+
+    if(!refreshToken) {
+      throw new UnauthorizedException()
+    }
+
+    res.clearCookie('refreshToken');
   }
 }
