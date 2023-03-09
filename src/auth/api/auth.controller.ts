@@ -82,8 +82,7 @@ export class AuthController {
 
   @UseGuards(RefreshTokenGuard)
   @ApiOperation({ summary: "выход из системы" })
-  @ApiResponse({ status: 204, type: RefreshTokenResponseDto })
-  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiResponse({ status: 201, type: '' })
   @Post("/logout")
   async logout(@Cookies() refreshToken: string, @Res() res) {
 
@@ -91,6 +90,6 @@ export class AuthController {
       throw new UnauthorizedException()
     }
 
-    res.clearCookie('refreshToken');
+    res.clearCookie('refreshToken').sendStatus(204);
   }
 }
