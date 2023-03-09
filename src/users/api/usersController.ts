@@ -1,5 +1,5 @@
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
-import {Body, Controller, Delete, Get, HttpCode, Param, Post, Put, Query, UseGuards,} from "@nestjs/common";
+import {Body, Controller, Delete, Get, HttpCode, Param, Post, Put, UseGuards,} from "@nestjs/common";
 import {UsersService} from "src/users/application/users.service";
 import {RoleEnum} from "../domain/entities/role.enum";
 import {RegistrationDto} from "../../auth/domain/dto/auth-request.dto";
@@ -29,7 +29,7 @@ export class UsersController {
   @ApiOperation({ summary: "Получение данных пользователя" })
   @ApiResponse({ status: 200, type: UserResponseDto })
   @HttpCode(200)
-  @Get('/:user_id')
+  @Get('/user/:user_id')
   async get(@Param("user_id") user_id: number) {
 
     const user = await this.usersService.getById(user_id);

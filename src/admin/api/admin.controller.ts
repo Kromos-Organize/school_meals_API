@@ -1,4 +1,4 @@
-import {Body, Controller, Delete, Get, HttpCode, Param, Post, Put, Query, UseGuards} from "@nestjs/common";
+import {Body, Controller, Delete, Get, HttpCode, Param, Post, Put, UseGuards} from "@nestjs/common";
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {AdminService} from "../application/admin.service";
 import {Admin} from "../domain/entities/admin.model";
@@ -36,9 +36,7 @@ export class AdminController {
 
         this.adminException.checkThrowAdmin(!admin,'not',['user_id']);
 
-        const {password, ...datAdmin} = admin
-
-        return datAdmin.dataValues;
+        return admin;
     }
 
     @ApiOperation({summary: 'Добавить админа'})
