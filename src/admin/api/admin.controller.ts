@@ -29,14 +29,16 @@ export class AdminController {
     @ApiOperation({summary: 'Получить данные админа'})
     @ApiResponse({status: 200,type: AdminResponse})
     @HttpCode(200)
-    @Get('/email')
-    async getAdminByEmail(@Query('email') email: string) {
+    @Get('/:user_id')
+    async getAdminByEmail(@Param('user_id') user_id: number) {
 
-        const admin = await this.adminService.getAdminByEmail(email);
+        const admin = await this.adminService.getAdminById(user_id);
 
-        this.adminException.checkThrowAdmin(!admin,'not',['email']);
+        this.adminException.checkThrowAdmin(!admin,'not',['user_id']);
 
-        return admin;
+        const {password, ...datAdmin} = admin
+
+        return datAdmin.dataValues;
     }
 
     @ApiOperation({summary: 'Добавить админа'})

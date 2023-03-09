@@ -26,15 +26,15 @@ export class UsersController {
     return this.usersService.getAll();
   }
 
-  @ApiOperation({ summary: "Получение данных пользователя по емейлу" })
+  @ApiOperation({ summary: "Получение данных пользователя" })
   @ApiResponse({ status: 200, type: UserResponseDto })
   @HttpCode(200)
-  @Get('/email')
-  async get(@Query("email") email: string) {
+  @Get('/:user_id')
+  async get(@Param("user_id") user_id: number) {
 
-    const user = await this.usersService.getByEmail(email);
+    const user = await this.usersService.getById(user_id);
 
-    this.userException.checkThrowUsers(!user, 'not', ['email']);
+    this.userException.checkThrowUsers(!user, 'not', ['user_id']);
 
     return user;
   }
