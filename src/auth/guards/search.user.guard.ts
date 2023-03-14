@@ -9,7 +9,7 @@ import { UsersQueryRepository } from "../../users/infrastructure/users.query.rep
 import { JwtService } from "../application/jwt-service";
 
 @Injectable()
-export class BearerAuthGuard implements CanActivate {
+export class SearchUserGuard implements CanActivate {
 
   constructor(
     private usersQueryRepository: UsersQueryRepository,
@@ -20,19 +20,15 @@ export class BearerAuthGuard implements CanActivate {
 
     const req: Request = context.switchToHttp().getRequest();
 
-    if (!req.headers.authorization) throw new UnauthorizedException();
-
     const token = req.headers.authorization.split(" ")[1];
 
     const userId = await this.jwtService.getUserIdByAccessToken(token);
 
     const user = await this.usersQueryRepository.getUserById(userId);
 
-    if (!user) throw new UnauthorizedException();
-
     if (userId) {
 
-      req.user = user;
+      req.user = user.dataValues;
 
       return true;
     }

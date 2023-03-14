@@ -1,11 +1,13 @@
-import {Body, Controller, Delete, Get, HttpCode, Param, Post, Put, UseGuards} from '@nestjs/common';
+import {Body, Controller, Delete, Get, HttpCode, Param, Post, Put, Req, UseGuards} from '@nestjs/common';
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {SchoolService} from "../application/school.service";
-import {SchoolCreateDto} from "../domain/dto/school-request.dto";
+import {SchoolCreateDto, SchoolUpdateDto} from "../domain/dto/school-request.dto";
 import {School} from "../domain/entities/school.model";
 import {AuthGuard} from "@nestjs/passport";
 import {BadCheckEntitiesException} from "../../helpers/exception/BadCheckEntitiesException";
 import {SchoolDeleteResponseDto} from "../domain/dto/school-reponse.dto";
+import {SearchUserGuard} from "../../auth/guards/search.user.guard";
+import {UsersService} from "../../users/application/users.service";
 
 @ApiTags('Школа')
 @Controller('school')
@@ -14,7 +16,8 @@ export class SchoolController {
 
     constructor(
         private schoolService: SchoolService,
-        private schoolException: BadCheckEntitiesException
+        private schoolException: BadCheckEntitiesException,
+        private userService: UsersService
     ) { }
 
     @ApiOperation({summary: 'Получить список школ'})
@@ -39,24 +42,27 @@ export class SchoolController {
         return school;
     }
 
+    @UseGuards(SearchUserGuard)
     @ApiOperation({summary: 'Добавить школу'})
     @ApiResponse({status: 200, type: School})
     @HttpCode(201)
     @Post()
-    async create(@Body() schoolDto: SchoolCreateDto) {
+    async create(@Body() schoolDto: SchoolCreateDto, @Req() req) {
 
         const school = await this.schoolService.getSchoolByParam(schoolDto);
+        const user = await this.userService.getById(req.user.id);
 
         this.schoolException.checkThrowSchool(school, 'yep',['name', 'city', 'street' ,'homeNumber']);
+        this.schoolException.checkThrowSchool(user.school_id, 'yep',['school_id']);
 
-        return this.schoolService.createSchool(schoolDto);
+        return this.schoolService.createSchool(req.user.id, schoolDto);
     }
 
     @ApiOperation({summary: 'Изменить данные школы'})
     @ApiResponse({status: 200, type: School})
     @HttpCode(200)
     @Put(':school_id')
-    async update(@Param('school_id') school_id: number, @Body() schoolDto: SchoolCreateDto) {
+    async update(@Param('school_id') school_id: number, @Body() schoolDto: SchoolUpdateDto) {
 
         const school = await this.schoolService.getSchoolById(school_id);
 
