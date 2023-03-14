@@ -1,10 +1,8 @@
-import {BadRequestException, Injectable} from '@nestjs/common';
-import {InjectModel} from "@nestjs/sequelize";
-import {School} from "../domain/entities/school.model";
-import {SchoolCreateDto} from "../domain/dto/school-request.dto";
+import {Injectable} from '@nestjs/common';
 import {SchoolQueryRepository} from "../infrastructure/school.query.repository";
 import {SchoolRepository} from "../infrastructure/school.repository";
 import {ISchoolCreationAttrs, ISchoolParam, ISchoolUpdate} from "../domain/dto/school-service.dto";
+import {UsersService} from "../../users/application/users.service";
 
 @Injectable()
 export class SchoolService {
@@ -12,6 +10,7 @@ export class SchoolService {
     constructor(
         private schoolQueryRepository: SchoolQueryRepository,
         private schoolRepository: SchoolRepository,
+        private userService: UsersService,
     ) { }
 
     async getAllSchool() {
@@ -29,9 +28,13 @@ export class SchoolService {
         return await this.schoolQueryRepository.getSchoolByParam(schoolParam);
     }
 
-    async createSchool(schoolDto: ISchoolCreationAttrs) {
+    async createSchool(userId: number, schoolDto: ISchoolCreationAttrs) {
 
-        return await this.schoolRepository.createSchool(schoolDto);
+        const newSchool = await this.schoolRepository.createSchool(schoolDto);
+
+        await this.userService.updateUser(userId, {school_id: newSchool.school_id})
+
+        return newSchool;
     }
 
     async updateSchool(school_id: number, schoolDto: ISchoolUpdate) {

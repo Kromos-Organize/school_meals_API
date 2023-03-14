@@ -31,7 +31,7 @@ export class JwtService {
 
       const result: any = await jwt.verify(token, process.env.ACCESS_JWT_SECRET);
 
-      return result.userId;
+      return result.id;
 
     } catch (error) {
 

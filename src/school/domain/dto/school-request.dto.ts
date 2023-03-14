@@ -35,15 +35,12 @@ export class SchoolCreateDto {
 export class SchoolUpdateDto{
 
     @ApiProperty({example:'Средняя школа №15', description:'Название школы'})
-
     readonly name?: string;
 
     @ApiProperty({example:'Минская', description:'Область'})
-
     readonly region?: string;
 
     @ApiProperty({example:'Минский район', description:'Район'})
-
     readonly area?: string;
 
     @ApiProperty({example:'Минск', description:'Город/Посёлок/Деревня'})
