@@ -1,7 +1,4 @@
-import {BadRequestException, Injectable} from '@nestjs/common';
-import {InjectModel} from "@nestjs/sequelize";
-import {School} from "../domain/entities/school.model";
-import {SchoolCreateDto} from "../domain/dto/school-request.dto";
+import {Injectable} from '@nestjs/common';
 import {SchoolQueryRepository} from "../infrastructure/school.query.repository";
 import {SchoolRepository} from "../infrastructure/school.repository";
 import {ISchoolCreationAttrs, ISchoolParam, ISchoolUpdate} from "../domain/dto/school-service.dto";

@@ -11,12 +11,12 @@ export class StudentQueryRepository {
 
     async getAllStudentToClass(school_id: number, class_id: number) {
 
-        return this.studentRepository.findAll({ include: { model: PhoneParentsModel }, where: { school_id, class_id }, });
+        return await this.studentRepository.findAll({ include: { model: PhoneParentsModel }, where: { school_id, class_id }, });
     }
 
     async getStudentById(student_id: number) {
 
-        return this.studentRepository.findAll({include: { model: PhoneParentsModel }, where: { student_id }, });
+        return await this.studentRepository.findAll({include: { model: PhoneParentsModel }, where: { student_id }, });
     }
 
     async getStudentByParams(studentParam: IParamStudent) {

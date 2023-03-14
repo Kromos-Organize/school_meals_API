@@ -93,4 +93,34 @@ export class BadCheckEntitiesException {
             });
         }
     }
+
+    checkThrowMenu(value, type: MessagesType, fields: string[]) {
+
+        const usersMessages = {
+            'yep': "Меню уже добавлено",
+            'not': "Меню не найдено"
+        }
+
+        if (value) {
+            throw new BadRequestException({
+                message: usersMessages[type],
+                fields: fields,
+            });
+        }
+    }
+    checkThrowTypeMenu(value, type: MessagesType, fields: string[]) {
+
+        const usersMessages = {
+            'yep': "Тип меню уже добавлен",
+            'not': "Тип меню не найден"
+        }
+
+        if (value) {
+            throw new BadRequestException({
+                message: usersMessages[type],
+                fields: fields,
+            });
+        }
+    }
+
 }

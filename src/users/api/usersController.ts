@@ -9,7 +9,7 @@ import {UserActivateResponseDto, UserDeleteResponseDto, UserResponseDto} from ".
 import {BadCheckEntitiesException} from "../../helpers/exception/BadCheckEntitiesException";
 import {AuthGuard} from "@nestjs/passport";
 
-@ApiTags("Сотрудники школы")
+@ApiTags("Пользователи")
 @Controller("user")
 @UseGuards(AuthGuard())
 export class UsersController {
