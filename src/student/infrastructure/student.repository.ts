@@ -10,8 +10,7 @@ export class StudentRepository {
 
     constructor(
         @InjectModel(Student) private studentRepository: typeof Student,
-        @InjectModel(PhoneParentsModel)
-        private parentsPhoneModel: typeof PhoneParentsModel,
+        @InjectModel(PhoneParentsModel) private parentsPhoneModel: typeof PhoneParentsModel,
         private sequelize: Sequelize,
     ) {}
 

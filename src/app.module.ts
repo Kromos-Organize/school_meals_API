@@ -13,6 +13,8 @@ import {TelegramBotService} from "./helpers/bot/telegram_bot.service";
 import {TelegramBotModule} from "./helpers/bot/telegram_bot.module";
 import {ThrottlerGuard, ThrottlerModule} from "@nestjs/throttler";
 import {APP_GUARD} from "@nestjs/core";
+import {MenuModule} from "./menu/menu.module";
+import {TypeMenuModule} from "./typeMenu/typeMenu.module";
 
 @Module({
   controllers: [],
@@ -41,6 +43,7 @@ import {APP_GUARD} from "@nestjs/core";
       database: process.env.POSTGRES_DB_NAME,
       models: allModels,
       autoLoadModels: true,
+      synchronize: true,
     }),
     AuthModule,
     AdminModule,
@@ -49,6 +52,8 @@ import {APP_GUARD} from "@nestjs/core";
     StudentModule,
     ClassModule,
     TelegramBotModule,
+    MenuModule,
+    TypeMenuModule,
   ],
 })
 export class AppModule {
