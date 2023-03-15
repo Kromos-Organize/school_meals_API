@@ -23,3 +23,7 @@ export class MenuQueryRepository {
     }
 }
 
+
+// пример поиска промежутка
+// const dateReq = parseISO(date.toString());
+// return await this.menuRepository.findOne({ where: { school_id, type_id, date:{ [Op.between]: [startOfDay(dateReq), endOfDay(dateReq)]} }});

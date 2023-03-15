@@ -1,10 +1,10 @@
 import {Column, DataType, ForeignKey, HasOne, Model, Table} from "sequelize-typescript";
-import {ITypeMenuCreateAttr} from "../dto/menu-service.dto";
 import {ApiProperty} from "@nestjs/swagger";
 import {School} from "../../../school/domain/entities/school.model";
-import {Menu} from "./menu.model";
+import {Menu} from "../../../menu/domain/entity/menu.model";
+import {ITypeMenuCreateAttr} from "../dto/typeMenu-service.dto";
 
-@Table({tableName: 'school'})
+@Table({tableName: 'type_menu'})
 export class TypeMenu extends Model<TypeMenu, ITypeMenuCreateAttr> {
 
     @ApiProperty({example: '1', description: 'ID'})

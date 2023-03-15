@@ -1,8 +1,7 @@
 import {Injectable} from "@nestjs/common";
 import {InjectModel} from "@nestjs/sequelize";
 import {TypeMenu} from "../domain/entity/type-menu.model";
-import {ITypeMenuCreateAttr, ITypeMenuUpdate} from "../domain/dto/menu-service.dto";
-
+import {ITypeMenuCreateAttr, ITypeMenuUpdate} from "../domain/dto/typeMenu-service.dto";
 
 @Injectable()
 export class TypeMenuRepository {
