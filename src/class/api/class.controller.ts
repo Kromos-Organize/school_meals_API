@@ -16,7 +16,7 @@ export class ClassController {
     constructor(
         private schoolService: SchoolService,
         private classService: ClassService,
-        private classException: BadCheckEntitiesException,
+        private badException: BadCheckEntitiesException,
     ) { }
 
     @ApiOperation({summary: 'Получить список классов'})
@@ -27,7 +27,7 @@ export class ClassController {
 
         const school = await this.schoolService.getSchoolById(school_id);
 
-        this.classException.checkThrowSchool(!school, 'not', ['school_id'])
+        this.badException.checkAndGenerateException(!school, 'school','not', ['school_id'])
 
         return this.classService.getAll(school_id);
     }
@@ -40,7 +40,7 @@ export class ClassController {
 
         const classSchool =  await this.classService.getClassById(class_id)
 
-        this.classException.checkThrowSchool(!classSchool, 'not', ['class_id'])
+        this.badException.checkAndGenerateException(!classSchool, 'class', 'not', ['class_id'])
 
         return classSchool;
     }
@@ -53,11 +53,11 @@ export class ClassController {
 
         const school = await this.schoolService.getSchoolById(classDto.school_id);
 
-        this.classException.checkThrowSchool(!school, 'not', ['school_id']);
+        this.badException.checkAndGenerateException(!school, 'school','not', ['school_id']);
 
         const classSchool = await this.classService.getClassByParams(classDto);
 
-        this.classException.checkThrowClass(classSchool, 'yep', ['school_id', 'number', 'type']);
+        this.badException.checkAndGenerateException(classSchool, 'class','yep', ['school_id', 'number', 'type']);
 
         return this.classService.create(classDto);
     }
@@ -70,7 +70,7 @@ export class ClassController {
 
         const classSchool =  await this.classService.getClassById(class_id)
 
-        this.classException.checkThrowSchool(!classSchool, 'not', ['class_id'])
+        this.badException.checkAndGenerateException(!classSchool, 'class','not', ['class_id'])
 
         return this.classService.update(class_id, classDto);
     }
@@ -83,7 +83,7 @@ export class ClassController {
 
         const classSchool =  await this.classService.getClassById(class_id)
 
-        this.classException.checkThrowSchool(!classSchool, 'not', ['class_id'])
+        this.badException.checkAndGenerateException(!classSchool, 'class','not', ['class_id'])
 
         return this.classService.remove(class_id);
     }

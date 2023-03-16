@@ -24,7 +24,7 @@ export class IsActiveUserAuthGuard implements CanActivate {
 
         const user = await this.usersQueryRepository.getUserByEmail(email);
 
-        this.badException.checkThrowUsers(!user,'not',['email'])
+        this.badException.checkAndGenerateException(!user,'user', 'not',['email']);
 
         if (user.isActive) {
 

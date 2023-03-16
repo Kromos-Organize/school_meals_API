@@ -15,7 +15,7 @@ import {AuthGuard} from "@nestjs/passport";
 export class UsersController {
 
   constructor(private usersService: UsersService,
-              private userException: BadCheckEntitiesException) {}
+              private badException: BadCheckEntitiesException) {}
 
   @ApiOperation({ summary: "Получение списка пользователей" })
   @ApiResponse({ status: 200, type: [UserResponseDto] })
@@ -34,7 +34,7 @@ export class UsersController {
 
     const user = await this.usersService.getById(user_id);
 
-    this.userException.checkThrowUsers(!user, 'not', ['user_id']);
+    this.badException.checkAndGenerateException(!user, 'user', 'not',['user_id']);
 
     return user;
   }
@@ -56,7 +56,7 @@ export class UsersController {
 
     const user = await this.usersService.getByEmail(userDto.email);
 
-    this.userException.checkThrowUsers(user, 'yep', ['email']);
+    this.badException.checkAndGenerateException(user, 'user', 'yep', ['email']);
 
     const inputModel: IUserModelAttr = {
       email: userDto.email,
@@ -77,7 +77,7 @@ export class UsersController {
 
     const user = await this.usersService.getById(user_id);
 
-    this.userException.checkThrowUsers(!user, 'not', ['user_id']);
+    this.badException.checkAndGenerateException(!user, 'user', 'not', ['user_id']);
 
     return this.usersService.updateUser(user_id, userDto);
   }
@@ -90,7 +90,7 @@ export class UsersController {
 
     const user = await this.usersService.getById(user_id);
 
-    this.userException.checkThrowUsers(!user, 'not', ['user_id']);
+    this.badException.checkAndGenerateException(!user, 'user', 'not', ['user_id']);
 
     return this.usersService.changeActiveUser(user_id, activeDto);
   }
@@ -103,7 +103,7 @@ export class UsersController {
 
     const user = await this.usersService.getById(user_id);
 
-    this.userException.checkThrowUsers(!user, 'not', ['user_id']);
+    this.badException.checkAndGenerateException(!user, 'user', 'not', ['user_id']);
 
     return this.usersService.removeUser(user_id);
   }

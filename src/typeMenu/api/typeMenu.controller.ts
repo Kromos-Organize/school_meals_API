@@ -16,7 +16,7 @@ export class TypeMenuController{
     constructor(
         private typeMenuService: TypeMenuService,
         private schoolService: SchoolService,
-        private menuBadException: BadCheckEntitiesException,
+        private badException: BadCheckEntitiesException,
     ) { }
 
     @ApiOperation({summary: 'Получить список типов меню для школы'})
@@ -27,7 +27,7 @@ export class TypeMenuController{
 
         const school = await this.schoolService.getSchoolById(school_id);
 
-        this.menuBadException.checkThrowSchool(!school, 'not', ['school_id']);
+        this.badException.checkAndGenerateException(!school, 'school','not', ['school_id']);
 
         return await this.typeMenuService.getAllTypeMenuBySchool(school_id);
     }
@@ -40,7 +40,7 @@ export class TypeMenuController{
 
         const typeMenu = await this.typeMenuService.getTypeMenuById(type_id);
 
-        this.menuBadException.checkThrowTypeMenu(!typeMenu, 'not', ['type_id']);
+        this.badException.checkAndGenerateException(!typeMenu, 'typeMenu','not', ['type_id']);
 
         return typeMenu;
     }
@@ -53,7 +53,7 @@ export class TypeMenuController{
 
         const typeMenu = await this.typeMenuService.getTypeMenuByName(typeMenuDto.school_id, typeMenuDto.type_menu);
 
-        this.menuBadException.checkThrowTypeMenu(typeMenu, 'yep', ['school_id', 'type_menu']);
+        this.badException.checkAndGenerateException(typeMenu, 'typeMenu','yep', ['school_id', 'type_menu']);
 
         return this.typeMenuService.createTypeMenu(typeMenuDto);
     }
@@ -66,7 +66,7 @@ export class TypeMenuController{
 
         const typeMenu = await this.typeMenuService.getTypeMenuById(type_id);
 
-        this.menuBadException.checkThrowTypeMenu(!typeMenu, 'not', ['type_id']);
+        this.badException.checkAndGenerateException(!typeMenu, 'typeMenu','not', ['type_id']);
 
         return this.typeMenuService.updateTypeMenu(type_id, updateTypeMenuDto);
     }
@@ -79,7 +79,7 @@ export class TypeMenuController{
 
         const typeMenu = await this.typeMenuService.getTypeMenuById(type_id);
 
-        this.menuBadException.checkThrowTypeMenu(!typeMenu, 'not', ['type_id']);
+        this.badException.checkAndGenerateException(!typeMenu, 'typeMenu','not', ['type_id']);
 
         return this.typeMenuService.removeTypeMenu(type_id);
     }

@@ -1,13 +1,4 @@
-import {
-  Body,
-  Controller,
-  HttpCode, HttpStatus,
-  Post,
-  Req,
-  Res,
-  UnauthorizedException,
-  UseGuards,
-} from "@nestjs/common";
+import {Body, Controller, HttpCode, Post, Req, Res, UnauthorizedException, UseGuards,} from "@nestjs/common";
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {AuthService} from "../application/auth.service";
 import {LoginDto, RegistrationDto} from "../domain/dto/auth-request.dto";
@@ -28,7 +19,7 @@ export class AuthController {
     private authService: AuthService,
     private usersQueryRepository: UsersQueryRepository,
     private jwtService: JwtService,
-    private authException: BadCheckEntitiesException,
+    private badException: BadCheckEntitiesException,
   ) {}
 
   @UseGuards(IsActiveUserAuthGuard)
@@ -39,7 +30,7 @@ export class AuthController {
 
     const user = await this.authService.checkCredentials(userDto);
 
-    this.authException.checkThrowAuth(!user, 'not',['email','password'])
+    this.badException.checkAndGenerateException(!user, 'auth', 'incorrectAuth',['email','password']);
 
     const tokens = await this.jwtService.createJWTTokens(user, true);
 
@@ -61,7 +52,7 @@ export class AuthController {
 
     const findUserByEmail = await this.usersQueryRepository.getUserByEmail(userDto.email);
 
-    this.authException.checkThrowUsers(findUserByEmail, 'yep',['email']);
+    this.badException.checkAndGenerateException(findUserByEmail,"user", 'yep',['email'])
 
     return this.authService.registration(userDto);
   }
@@ -85,6 +76,8 @@ export class AuthController {
   @ApiResponse({ status: 201, type: '' })
   @Post("/logout")
   async logout(@Cookies() refreshToken: string, @Res() res) {
+
+    this.badException.checkAndGenerateException(!refreshToken, "auth", 'notAuth',['email'])
 
     if(!refreshToken) {
       throw new UnauthorizedException()

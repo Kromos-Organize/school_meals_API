@@ -14,7 +14,7 @@ export class AdminController {
 
     constructor(
         private adminService: AdminService,
-        private adminException: BadCheckEntitiesException
+        private badException: BadCheckEntitiesException
     ) { }
 
     @ApiOperation({summary: 'Получение списка админов'})
@@ -34,7 +34,7 @@ export class AdminController {
 
         const admin = await this.adminService.getAdminById(user_id);
 
-        this.adminException.checkThrowAdmin(!admin,'not',['user_id']);
+        this.badException.checkAndGenerateException(!admin,'admin','not',['user_id']);
 
         return admin;
     }
@@ -47,7 +47,7 @@ export class AdminController {
 
         const admin = await this.adminService.getAdminByEmail(adminDto.email);
 
-        this.adminException.checkThrowAdmin(admin,'yep',['email']);
+        this.badException.checkAndGenerateException(admin, 'admin','yep',['email']);
 
         return this.adminService.create(adminDto);
     }
@@ -60,7 +60,7 @@ export class AdminController {
 
         const admin = await this.adminService.getAdminById(admin_id);
 
-        this.adminException.checkThrowAdmin(!admin,'not',['admin_id']);
+        this.badException.checkAndGenerateException(!admin, 'admin','not',['admin_id']);
 
         return this.adminService.update(admin_id, adminDto);
     }
@@ -73,7 +73,7 @@ export class AdminController {
 
         const admin = await this.adminService.getAdminById(admin_id);
 
-        this.adminException.checkThrowAdmin(!admin,'not',['admin_id']);
+        this.badException.checkAndGenerateException(!admin, 'admin','not',['admin_id']);
 
         return this.adminService.remove(admin_id);
     }

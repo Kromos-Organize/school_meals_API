@@ -31,7 +31,7 @@ export class StudentController {
         private schoolService: SchoolService,
         private classService: ClassService,
         private studentService: StudentService,
-        private studentException: BadCheckEntitiesException,
+        private badException: BadCheckEntitiesException,
     ) {}
 
     @ApiOperation({summary: 'Получение списка учеников класса'})
@@ -43,8 +43,8 @@ export class StudentController {
         const school = await this.schoolService.getSchoolById(school_id);
         const classSchool = await this.classService.getClassById(class_id);
 
-        this.studentException.checkThrowSchool(!school,'not',['school_id']);
-        this.studentException.checkThrowClass(!classSchool,'not',['classSchool']);
+        this.badException.checkAndGenerateException(!school, 'school','not',['school_id']);
+        this.badException.checkAndGenerateException(!classSchool, 'class','not',['classSchool']);
 
         return this.studentService.getStudentToClass(school_id, class_id);
     }
@@ -57,7 +57,7 @@ export class StudentController {
 
         const student = await this.studentService.getStudentById(student_id);
 
-        this.studentException.checkThrowStudent(!student,'not',['student_id']);
+        this.badException.checkAndGenerateException(!student, 'student','not',['student_id']);
 
         return student;
     }
@@ -77,9 +77,9 @@ export class StudentController {
             name: studentDto.name,
         });
 
-        this.studentException.checkThrowSchool(!school,'not',['school_id']);
-        this.studentException.checkThrowClass(!classSchool,'not',['classSchool']);
-        this.studentException.checkThrowStudent(student,'yep',['school_id', 'class_id', 'fname', 'name']);
+        this.badException.checkAndGenerateException(!school, 'school','not',['school_id']);
+        this.badException.checkAndGenerateException(!classSchool, 'class','not',['classSchool']);
+        this.badException.checkAndGenerateException(student, 'student','yep',['school_id', 'class_id', 'fname', 'name']);
 
         return this.studentService.create(studentDto);
     }
@@ -92,7 +92,7 @@ export class StudentController {
 
         const student = await this.studentService.getStudentById(student_id);
 
-        this.studentException.checkThrowStudent(!student,'not',['student_id']);
+        this.badException.checkAndGenerateException(!student, 'student','not',['student_id']);
 
         return this.studentService.updateStudent(student_id, studentDto);
     }
@@ -105,7 +105,7 @@ export class StudentController {
 
         const student = await this.studentService.getStudentById(student_id);
 
-        this.studentException.checkThrowStudent(!student, 'not', ['student_id']);
+        this.badException.checkAndGenerateException(!student, 'student','not', ['student_id']);
 
         return this.studentService.removeStudent(student_id);
     }

@@ -14,7 +14,7 @@ export class SchoolController {
 
     constructor(
         private schoolService: SchoolService,
-        private schoolException: BadCheckEntitiesException
+        private badException: BadCheckEntitiesException
     ) { }
 
     @ApiOperation({summary: 'Получить список школ'})
@@ -34,7 +34,7 @@ export class SchoolController {
 
         const school = await this.schoolService.getSchoolById(school_id);
 
-        this.schoolException.checkThrowSchool(!school, 'not',['school_id']);
+        this.badException.checkAndGenerateException(!school, 'school','not',['school_id']);
 
         return school;
     }
@@ -47,7 +47,7 @@ export class SchoolController {
 
         const school = await this.schoolService.getSchoolByParam(schoolDto);
 
-        this.schoolException.checkThrowSchool(school, 'yep',['name', 'city', 'street' ,'homeNumber']);
+        this.badException.checkAndGenerateException(school, 'school','yep',['name', 'city', 'street' ,'homeNumber']);
 
         return this.schoolService.createSchool(schoolDto);
     }
@@ -60,7 +60,7 @@ export class SchoolController {
 
         const school = await this.schoolService.getSchoolById(school_id);
 
-        this.schoolException.checkThrowSchool(!school, 'not',['school_id']);
+        this.badException.checkAndGenerateException(!school, 'school','not',['school_id']);
 
         return this.schoolService.updateSchool(school_id, schoolDto);
     }
@@ -73,7 +73,7 @@ export class SchoolController {
 
         const school = await this.schoolService.getSchoolById(school_id);
 
-        this.schoolException.checkThrowSchool(!school, 'not',['school_id']);
+        this.badException.checkAndGenerateException(!school, 'school','not',['school_id']);
 
         return this.schoolService.removeSchool(school_id);
     }
