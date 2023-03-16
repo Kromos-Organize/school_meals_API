@@ -45,7 +45,7 @@ export class AccessActivatedUserGuard implements CanActivate {
 
         const user = await this.usersQueryRepository.getUserById(user_id);
 
-        if (!user) this.badException.checkThrowUsers(!user,'not',['user_id']);
+        this.badException.checkAndGenerateException(!user, 'user', 'not', ['user_id']);
 
         return user;
     }

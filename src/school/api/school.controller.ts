@@ -16,7 +16,7 @@ export class SchoolController {
 
     constructor(
         private schoolService: SchoolService,
-        private schoolException: BadCheckEntitiesException,
+        private badException: BadCheckEntitiesException,
         private userService: UsersService
     ) { }
 
@@ -37,7 +37,7 @@ export class SchoolController {
 
         const school = await this.schoolService.getSchoolById(school_id);
 
-        this.schoolException.checkThrowSchool(!school, 'not',['school_id']);
+        this.badException.checkAndGenerateException(!school, 'school','not',['school_id']);
 
         return school;
     }
@@ -52,8 +52,8 @@ export class SchoolController {
         const school = await this.schoolService.getSchoolByParam(schoolDto);
         const user = await this.userService.getById(req.user.id);
 
-        this.schoolException.checkThrowSchool(school, 'yep',['name', 'city', 'street' ,'homeNumber']);
-        this.schoolException.checkThrowSchool(user.school_id, 'yep',['school_id']);
+        this.badException.checkAndGenerateException(school, 'school', 'yep',['name', 'city', 'street' ,'homeNumber']);
+        this.badException.checkAndGenerateException(user.school_id, 'school', 'yep',['school_id']);
 
         return this.schoolService.createSchool(req.user.id, schoolDto);
     }
@@ -66,7 +66,7 @@ export class SchoolController {
 
         const school = await this.schoolService.getSchoolById(school_id);
 
-        this.schoolException.checkThrowSchool(!school, 'not',['school_id']);
+        this.badException.checkAndGenerateException(!school, 'school','not',['school_id']);
 
         return this.schoolService.updateSchool(school_id, schoolDto);
     }
@@ -79,7 +79,7 @@ export class SchoolController {
 
         const school = await this.schoolService.getSchoolById(school_id);
 
-        this.schoolException.checkThrowSchool(!school, 'not',['school_id']);
+        this.badException.checkAndGenerateException(!school, 'school','not',['school_id']);
 
         return this.schoolService.removeSchool(school_id);
     }

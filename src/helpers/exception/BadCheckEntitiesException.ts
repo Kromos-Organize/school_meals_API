@@ -1,126 +1,44 @@
 import {BadRequestException, Injectable} from "@nestjs/common";
 
-type MessagesType = 'yep' | 'not'
+type MessagesKeyType = 'yep' | 'not' | 'notAuth' | 'incorrectAuth'
+type EntityKeyType = 'auth' | 'admin' | 'user' | 'school' | 'class' | 'student' | 'menu' | 'typeMenu'
+
+type MessageType = {
+    [key in MessagesKeyType]: string
+}
+
+type EntityType = {
+    [key in EntityKeyType]: string
+}
 
 @Injectable()
 export class BadCheckEntitiesException {
 
-    checkThrowAuth(value, type: MessagesType, fields: string[]) {
+    private messages: MessageType = {
+        yep: "существует",
+        not: "не существует",
+        incorrectAuth: "Неверный логин или пароль.",
+        notAuth: "Вы не авторизованы"
+    }
 
-        const usersMessages = {
-            'not': "Неверный логин или пароль."
-        }
+    private entity: EntityType = {
+        admin: 'Админ',
+        auth: '',
+        user: 'Пользователь',
+        school: 'Школа',
+        class: 'Класс',
+        student: 'Ученик',
+        menu: 'Меню',
+        typeMenu: 'Тип меню',
+    }
+
+    checkAndGenerateException(value, entityType: EntityKeyType, type: MessagesKeyType, fields: string[]) {
 
         if (value) {
             throw new BadRequestException({
-                message: usersMessages[type],
-                fields: fields,
+                message: `${this.entity[entityType]} ${this.messages[type]}`,
+                fields,
             });
         }
     }
-
-    checkThrowUsers(value, type: MessagesType, fields: string[]) {
-
-        const usersMessages = {
-            'yep': "Такой пользователь существует",
-            'not': "Такого пользователя не существует"
-        }
-
-        if (value) {
-            throw new BadRequestException({
-                message: usersMessages[type],
-                fields: fields,
-            });
-        }
-    }
-
-    checkThrowAdmin(value, type: MessagesType, fields: string[]) {
-
-        const usersMessages = {
-            'yep': "Такой админ существует",
-            'not': "Такого админа не существует"
-        }
-
-        if (value) {
-            throw new BadRequestException({
-                message: usersMessages[type],
-                fields: fields,
-            });
-        }
-    }
-
-    checkThrowSchool(value, type: MessagesType, fields: string[]) {
-
-        const usersMessages = {
-            'yep': "Школа уже существует",
-            'not': "Школа не найдена"
-        }
-
-        if (value) {
-            throw new BadRequestException({
-                message: usersMessages[type],
-                fields: fields,
-            });
-        }
-    }
-
-    checkThrowClass(value, type: MessagesType, fields: string[]) {
-
-        const usersMessages = {
-            'yep': "Класс уже существует",
-            'not': "Класс не найден"
-        }
-
-        if (value) {
-            throw new BadRequestException({
-                message: usersMessages[type],
-                fields: fields,
-            });
-        }
-    }
-
-    checkThrowStudent(value, type: MessagesType, fields: string[]) {
-
-        const usersMessages = {
-            'yep': "Ученик уже добавлен",
-            'not': "Ученик не найден"
-        }
-
-        if (value) {
-            throw new BadRequestException({
-                message: usersMessages[type],
-                fields: fields,
-            });
-        }
-    }
-
-    checkThrowMenu(value, type: MessagesType, fields: string[]) {
-
-        const usersMessages = {
-            'yep': "Меню уже добавлено",
-            'not': "Меню не найдено"
-        }
-
-        if (value) {
-            throw new BadRequestException({
-                message: usersMessages[type],
-                fields: fields,
-            });
-        }
-    }
-    checkThrowTypeMenu(value, type: MessagesType, fields: string[]) {
-
-        const usersMessages = {
-            'yep': "Тип меню уже добавлен",
-            'not': "Тип меню не найден"
-        }
-
-        if (value) {
-            throw new BadRequestException({
-                message: usersMessages[type],
-                fields: fields,
-            });
-        }
-    }
-
 }

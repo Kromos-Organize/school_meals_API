@@ -18,7 +18,7 @@ export class MenuController{
         private menuService: MenuService,
         private TypeMenuService: TypeMenuService,
         private schoolService: SchoolService,
-        private menuBadException: BadCheckEntitiesException,
+        private badException: BadCheckEntitiesException,
     ) { }
 
     @ApiOperation({summary: 'Получить список меню для школы на день.'})
@@ -29,7 +29,7 @@ export class MenuController{
 
         const school = await this.schoolService.getSchoolById(school_id);
 
-        this.menuBadException.checkThrowSchool(!school, 'not', ['school_id']);
+        this.badException.checkAndGenerateException(!school, 'school','not', ['school_id']);
 
         return this.menuService.getAllMenuBySchoolDate(school_id, date);
     }
@@ -42,7 +42,7 @@ export class MenuController{
 
         const menu = await this.menuService.getMenuById(menu_id);
 
-        this.menuBadException.checkThrowMenu(!menu,'not', ['menu_id']);
+        this.badException.checkAndGenerateException(!menu, 'menu','not', ['menu_id']);
 
         return menu;
     }
@@ -55,9 +55,9 @@ export class MenuController{
 
         const menu = await this.menuService.getMenuBySchoolType(menuDto.school_id, menuDto.type_id, menuDto.date);
         const typeMenu = await this.TypeMenuService.getTypeMenuById(menuDto.type_id);
-        console.log(menu)
-        this.menuBadException.checkThrowMenu(menu,'yep',['school_id', 'type_id','date']);
-        this.menuBadException.checkThrowMenu(!typeMenu,'not',['type_id']);
+
+        this.badException.checkAndGenerateException(menu, 'menu','yep',['school_id', 'type_id','date']);
+        this.badException.checkAndGenerateException(!typeMenu, 'typeMenu','not',['type_id']);
 
         return this.menuService.createMenu(menuDto);
     }
@@ -70,7 +70,7 @@ export class MenuController{
 
         const menu = await this.menuService.getMenuById(menu_id);
 
-        this.menuBadException.checkThrowMenu(!menu,'not', ['menu_id']);
+        this.badException.checkAndGenerateException(!menu,'menu','not', ['menu_id']);
 
         return await this.menuService.updateMenu(menu_id, updateMenu);
     }
@@ -83,7 +83,7 @@ export class MenuController{
 
         const menu = await this.menuService.getMenuById(menu_id);
 
-        this.menuBadException.checkThrowMenu(!menu,'not', ['menu_id']);
+        this.badException.checkAndGenerateException(!menu, 'menu','not', ['menu_id']);
 
         return this.menuService.removeMenu(menu_id);
     }
