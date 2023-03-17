@@ -29,7 +29,7 @@ export class UsersController {
   @ApiOperation({ summary: "Получение данных пользователя" })
   @ApiResponse({ status: 200, type: UserResponseDto })
   @HttpCode(200)
-  @Get('/user/:user_id')
+  @Get('/one/:user_id')
   async get(@Param("user_id") user_id: number) {
 
     const user = await this.usersService.getById(user_id);

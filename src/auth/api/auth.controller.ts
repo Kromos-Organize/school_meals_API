@@ -67,7 +67,7 @@ export class AuthController {
 
       const tokens = await this.jwtService.createJWTTokens(req.user, false);
 
-      res.send({accessToken: tokens.accessToken})
+      res.send({id: req.user.id, role: req.user.role, accessToken: tokens.accessToken,})
     }
   }
 
