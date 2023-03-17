@@ -22,10 +22,10 @@ export class AccessActivatedUserGuard implements CanActivate {
 
         const changedUser = await this.checkUserForActivate(+req.params.user_id);
 
-        if (requesting.role === RoleEnum.admin || requesting.role === RoleEnum.manager) return true;
+        if (requesting.role === RoleEnum.s_admin || requesting.role === RoleEnum.admin) return true;
 
-        if (requesting.role === RoleEnum.employee && changedUser.role === RoleEnum.manager) throw new BadRequestException('нет доступа');
-        if (requesting.role === RoleEnum.manager && changedUser.role === RoleEnum.manager) throw new BadRequestException('нет доступа');
+        if (requesting.role === RoleEnum.employee && changedUser.role === RoleEnum.admin) throw new BadRequestException('нет доступа');
+        if (requesting.role === RoleEnum.admin && changedUser.role === RoleEnum.admin) throw new BadRequestException('нет доступа');
     }
 
     async checkToken(refreshToken: string): Promise<IPayloadJwt> {

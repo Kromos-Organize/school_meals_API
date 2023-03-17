@@ -37,7 +37,7 @@ export class AdminService {
         const newAdmin: IAdminCreationAttrs = {
             ...adminDto,
             password: passwordHash,
-            role: RoleEnum.admin,
+            role: RoleEnum.s_admin,
             chat_number: null
         }
 

@@ -37,7 +37,7 @@ export class AuthService {
       email: userDto.email,
       password: userDto.password,
       phone: userDto.phone,
-      role: RoleEnum.manager,
+      role: RoleEnum.admin,
       isActive: false,
     };
 
