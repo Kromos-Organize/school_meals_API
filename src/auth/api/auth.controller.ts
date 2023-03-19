@@ -38,6 +38,7 @@ export class AuthController {
     @ApiOperation({summary: "Логинизация"})
     @ApiResponse({status: 200, type: LoginResponseDto, description: 'Успешный вход в систему'})
     @ApiResponse({status: 400, type: LoginErrorResult, description: 'Некорректные логин/пароль'})
+    @ApiResponse({status: 403, type: '', description: 'Пользователь не активирован'})
     @Post("/login")
     async login(@Body() userDto: LoginDto, @Res() res) {
 
