@@ -20,7 +20,8 @@ import {
 import { BadCheckEntitiesException } from '../../helpers/exception/BadCheckEntitiesException';
 import { SchoolService } from '../../school/application/school.service';
 import { ClassService } from '../../class/application/class.service';
-import {AuthGuard} from "@nestjs/passport";
+import { AuthGuard } from "@nestjs/passport";
+import { StudentQueryDto } from "../domain/dto/school-query.dto";
 
 @ApiTags('Ученики')
 @Controller('student')
@@ -38,15 +39,15 @@ export class StudentController {
     @ApiResponse({status: 200, type: [Student]})
     @HttpCode(200)
     @Get()
-    async getStudentToClass(@Query('school_id') school_id: number, @Query('class_id') class_id: number) {
+    async getStudentToClass(@Query() query: StudentQueryDto) {
 
-        const school = await this.schoolService.getSchoolById(school_id);
-        const classSchool = await this.classService.getClassById(class_id);
+        const school = await this.schoolService.getSchoolById(query.school_id);
+        const classSchool = await this.classService.getClassById(query.class_id);
 
         this.badException.checkAndGenerateException(!school, 'school','not',['school_id']);
         this.badException.checkAndGenerateException(!classSchool, 'class','not',['classSchool']);
 
-        return this.studentService.getStudentToClass(school_id, class_id);
+        return this.studentService.getStudentToClass(query.school_id, query.class_id);
     }
 
     @ApiOperation({summary: 'Получить данные ученика'})
