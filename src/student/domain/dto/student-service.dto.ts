@@ -4,11 +4,9 @@ export interface StudentCreationAttrs {
     fname: string,
     name: string,
     lname?: string,
-    phoneParents?: string,
+    phoneParents?: any,
     birthday?: Date,
     isLargeFamilies?: boolean,
-    m_phone?: string,
-    f_phone?: string,
 }
 
 export interface IParamStudent{
@@ -34,7 +32,7 @@ export interface IUpdateStudent{
     isLargeFamilies?: boolean,
 }
 
-export interface IPhoneParentsModel {
+export interface IPhoneParents {
     phone_id: number,
     student_id: number,
     m_phone: string,

@@ -42,8 +42,8 @@ export class StudentService {
         const updateStudent: IUpdateStudent = {
             ...studentDto,
            phoneParents:{
-               m_phone: studentDto.m_phone,
-               f_phone: studentDto.f_phone,
+               m_phone: studentDto.phoneParents.m_phone,
+               f_phone: studentDto.phoneParents.f_phone,
            }
         }
 

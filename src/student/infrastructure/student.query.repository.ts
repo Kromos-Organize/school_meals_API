@@ -2,7 +2,7 @@ import {Injectable, Scope} from "@nestjs/common";
 import {Student} from "../domain/entities/student.model";
 import {InjectModel} from "@nestjs/sequelize";
 import {IParamStudent} from "../domain/dto/student-service.dto";
-import { PhoneParentsModel } from '../domain/entities/phone-parents.model';
+import { PhoneParents } from '../domain/entities/phone-parents.model';
 
 @Injectable({ scope: Scope.DEFAULT })
 export class StudentQueryRepository {
@@ -11,12 +11,12 @@ export class StudentQueryRepository {
 
     async getAllStudentToClass(school_id: number, class_id: number) {
 
-        return await this.studentRepository.findAll({ include: { model: PhoneParentsModel }, where: { school_id, class_id }, });
+        return await this.studentRepository.findAll({ include: { model: PhoneParents }, where: { school_id, class_id }, });
     }
 
     async getStudentById(student_id: number) {
 
-        return await this.studentRepository.findAll({include: { model: PhoneParentsModel }, where: { student_id }, });
+        return await this.studentRepository.findAll({include: { model: PhoneParents }, where: { student_id }, });
     }
 
     async getStudentByParams(studentParam: IParamStudent) {

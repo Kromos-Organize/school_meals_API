@@ -10,7 +10,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { School } from '../../../school/domain/entities/school.model';
 import { Class } from '../../../class/domain/entities/class.model';
 import { StudentCreationAttrs } from '../dto/student-service.dto';
-import { PhoneParentsModel } from './phone-parents.model';
+import { PhoneParents } from './phone-parents.model';
 
 @Table({ tableName: 'student' })
 export class Student extends Model<Student, StudentCreationAttrs> {
@@ -49,6 +49,6 @@ export class Student extends Model<Student, StudentCreationAttrs> {
     @Column({ type: DataType.BOOLEAN, allowNull: false, defaultValue: false })
     isLargeFamilies: boolean;
 
-    @HasOne(() => PhoneParentsModel)
-    phoneParents: PhoneParentsModel;
+    @HasOne(() => PhoneParents)
+    phoneParents: PhoneParents;
 }
