@@ -8,8 +8,7 @@ import {IUserModelAttr} from "../domain/dto/user-service.dto";
 import {UserActivateResponseDto, UserDeleteResponseDto, UserResponseDto} from "../domain/dto/user-response.dto";
 import {BadCheckEntitiesException} from "../../helpers/exception/BadCheckEntitiesException";
 import {AuthGuard} from "@nestjs/passport";
-import {GetUserErrorResult} from "../domain/dto/BadRequestErrorsDTOs/get-user-error";
-import {CreateUserErrorResult} from "../domain/dto/BadRequestErrorsDTOs/create-user-error";
+import {BadRequestResult} from "../../helpers/exception/badRequestResult";
 
 @ApiTags("Пользователи")
 @Controller("user")
@@ -36,7 +35,7 @@ export class UsersController {
     @ApiOperation({summary: "Получение данных пользователя"})
     @ApiBearerAuth()
     @ApiResponse({status: 200, type: UserResponseDto, description: 'Успешное получение данных пользователя'})
-    @ApiResponse({status: 400, type: GetUserErrorResult, description: 'Пользователь не найден'})
+    @ApiResponse({status: 400, type: BadRequestResult, description: 'Пользователь не найден'})
     @ApiResponse({status: 401, description: 'Некорректный аксесс-токен'})
     @HttpCode(200)
     @Get('/one/:user_id')
@@ -65,7 +64,7 @@ export class UsersController {
     @ApiOperation({summary: "Создание пользователя (Учителя)"})
     @ApiBearerAuth()
     @ApiResponse({status: 201, type: UserResponseDto, description: 'Успешное создание пользователя (Учителя)'})
-    @ApiResponse({status: 400, type: CreateUserErrorResult, description: 'Пользователь уже существует'})
+    @ApiResponse({status: 400, type: BadRequestResult, description: 'Пользователь уже существует'})
     @ApiResponse({status: 401, description: 'Некорректный аксесс-токен'})
     @HttpCode(201)
     @Post("/create")
@@ -90,7 +89,7 @@ export class UsersController {
     @ApiOperation({summary: "Изменение данных пользователя"})
     @ApiBearerAuth()
     @ApiResponse({status: 200, type: UserResponseDto, description: 'Успешное изменение данных пользователя'})
-    @ApiResponse({status: 400, type: GetUserErrorResult, description: 'Пользователь не существует'})
+    @ApiResponse({status: 400, type: BadRequestResult, description: 'Пользователь не существует'})
     @ApiResponse({status: 401, description: 'Некорректный аксесс-токен'})
     @HttpCode(200)
     @Put(":user_id")
@@ -107,7 +106,7 @@ export class UsersController {
     @ApiOperation({summary: "Активация/Деактивация пользователя"})
     @ApiBearerAuth()
     @ApiResponse({status: 200, type: UserActivateResponseDto, description: 'Успешная активация/деактивация пользователя'})
-    @ApiResponse({status: 400, type: GetUserErrorResult, description: 'Пользователь не существует'})
+    @ApiResponse({status: 400, type: BadRequestResult, description: 'Пользователь не существует'})
     @ApiResponse({status: 401, description: 'Некорректный аксесс-токен'})
     @HttpCode(200)
     @Put("/activate/:user_id")
@@ -124,7 +123,7 @@ export class UsersController {
     @ApiOperation({summary: "Удаление пользователя"})
     @ApiBearerAuth()
     @ApiResponse({status: 200, type: UserDeleteResponseDto, description: 'Успешное удаление пользователя'})
-    @ApiResponse({status: 400, type: GetUserErrorResult, description: 'Пользователь не существует'})
+    @ApiResponse({status: 400, type: BadRequestResult, description: 'Пользователь не существует'})
     @ApiResponse({status: 401, description: 'Некорректный аксесс-токен'})
     @HttpCode(200)
     @Delete(":user_id")

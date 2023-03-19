@@ -19,8 +19,8 @@ import {LoginResponseDto, RefreshTokenResponseDto, RegisterResponseDto} from "..
 import {BadCheckEntitiesException} from "../../helpers/exception/BadCheckEntitiesException";
 import {IsActiveUserAuthGuard} from "../guards/isActive-user.auth.guard";
 import {Cookies} from "../../helpers/param-decorators/custom-decorators";
-import {LoginErrorResult} from "../domain/dto/BadRequestErrorsDTOs/login-error";
-import {RegistrationErrorResult} from "../domain/dto/BadRequestErrorsDTOs/registration-error";
+import {BadRequestResult} from "../../helpers/exception/badRequestResult";
+
 
 @ApiTags("Авторизация")
 @Controller("auth")
@@ -37,7 +37,7 @@ export class AuthController {
     @UseGuards(IsActiveUserAuthGuard)
     @ApiOperation({summary: "Логинизация"})
     @ApiResponse({status: 200, type: LoginResponseDto, description: 'Успешный вход в систему'})
-    @ApiResponse({status: 400, type: LoginErrorResult, description: 'Некорректные логин/пароль'})
+    @ApiResponse({status: 400, type: BadRequestResult, description: 'Некорректные логин/пароль'})
     @ApiResponse({status: 403, type: '', description: 'Пользователь не активирован'})
     @Post("/login")
     async login(@Body() userDto: LoginDto, @Res() res) {
@@ -60,7 +60,7 @@ export class AuthController {
 
     @ApiOperation({summary: "Регистрация"})
     @ApiResponse({status: 201, type: RegisterResponseDto, description: 'Успешная регистрация пользователя'})
-    @ApiResponse({status: 400, type: RegistrationErrorResult, description: 'Некорректный email'})
+    @ApiResponse({status: 400, type: BadRequestResult, description: 'Некорректный email'})
     @HttpCode(201)
     @Post("/registration")
     async registration(@Body() userDto: RegistrationDto) {

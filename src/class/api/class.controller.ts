@@ -1,4 +1,4 @@
-import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
+import {ApiBearerAuth, ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {Body, Controller, Delete, Get, HttpCode, Param, Post, Put, Query, UseGuards} from "@nestjs/common";
 import {ClassService} from "../application/class.service";
 import {Class} from "../domain/entities/class.model";
@@ -7,6 +7,7 @@ import {CreateClassDto, UpdateClassDto} from "../domain/dto/class-request.dto";
 import {ClassDeleteResponseDto} from "../domain/dto/class-response.dto";
 import {SchoolService} from "../../school/application/school.service";
 import {BadCheckEntitiesException} from "../../helpers/exception/BadCheckEntitiesException";
+import {BadRequestResult} from "../../helpers/exception/badRequestResult";
 
 @ApiTags('Классы')
 @Controller('class')
@@ -20,7 +21,10 @@ export class ClassController {
     ) { }
 
     @ApiOperation({summary: 'Получить список классов'})
-    @ApiResponse({status: 200, type: [Class]})
+    @ApiBearerAuth()
+    @ApiResponse({status: 200, type: [Class], description: 'Успешное получение списка классов'})
+    @ApiResponse({status: 400, type: BadRequestResult, description: 'Школа не существует'})
+    @ApiResponse({status: 401, description: 'Некорректный аксесс-токен'})
     @HttpCode(200)
     @Get()
     async getAll(@Query('school_id') school_id: number) {
@@ -33,7 +37,10 @@ export class ClassController {
     }
 
     @ApiOperation({summary: 'Получить данные класса'})
-    @ApiResponse({status: 200, type: Class})
+    @ApiBearerAuth()
+    @ApiResponse({status: 200, type: Class, description: 'Успешное получение данных класса'})
+    @ApiResponse({status: 400, type: BadRequestResult, description: 'Класс не существует'})
+    @ApiResponse({status: 401, description: 'Некорректный аксесс-токен'})
     @HttpCode(200)
     @Get(':class_id')
     async get(@Param('class_id') class_id: number){
@@ -46,7 +53,10 @@ export class ClassController {
     }
 
     @ApiOperation({summary: 'Добавить класс'})
-    @ApiResponse({status: 201, type: Class})
+    @ApiBearerAuth()
+    @ApiResponse({status: 201, type: Class, description: 'Успешное добавление класса'})
+    @ApiResponse({status: 400, type: BadRequestResult, description: 'Школа не существует / Класс уже существует'})
+    @ApiResponse({status: 401, description: 'Некорректный аксесс-токен'})
     @HttpCode(201)
     @Post()
     async create(@Body() classDto: CreateClassDto) {
@@ -63,7 +73,10 @@ export class ClassController {
     }
 
     @ApiOperation({summary: 'Обновить данные класса'})
-    @ApiResponse({status: 200, type: Class})
+    @ApiBearerAuth()
+    @ApiResponse({status: 200, type: Class, description: 'Успешное обновление данных класса'})
+    @ApiResponse({status: 400, type: BadRequestResult, description: 'Класс не существует'})
+    @ApiResponse({status: 401, description: 'Некорректный аксесс-токен'})
     @HttpCode(200)
     @Put(':class_id')
     async update(@Param('class_id') class_id: number, @Body() classDto: UpdateClassDto) {
@@ -76,7 +89,10 @@ export class ClassController {
     }
 
     @ApiOperation({summary: 'Удалить класс'})
-    @ApiResponse({status: 200, type: ClassDeleteResponseDto})
+    @ApiBearerAuth()
+    @ApiResponse({status: 200, type: ClassDeleteResponseDto, description: 'Успешное удаление класса'})
+    @ApiResponse({status: 400, type: BadRequestResult, description: 'Класс не существует'})
+    @ApiResponse({status: 401, description: 'Некорректный аксесс-токен'})
     @HttpCode(200)
     @Delete(':class_id')
     async remove(@Param('class_id') class_id: number) {

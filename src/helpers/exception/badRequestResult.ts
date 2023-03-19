@@ -1,6 +1,6 @@
 import {ApiProperty} from "@nestjs/swagger";
 
-export class LoginErrorResult {
+export class BadRequestResult {
     @ApiProperty({
         example: 'Неверный логин или пароль',
         description: "Краткое сообщение об ошибке"
