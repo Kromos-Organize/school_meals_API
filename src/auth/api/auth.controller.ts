@@ -20,6 +20,8 @@ import {BadCheckEntitiesException} from "../../helpers/exception/BadCheckEntitie
 import {IsActiveUserAuthGuard} from "../guards/isActive-user.auth.guard";
 import {Cookies} from "../../helpers/param-decorators/custom-decorators";
 import {BadRequestResult} from "../../helpers/exception/badRequestResult";
+import {UnauthorizedResult} from "../../helpers/exception/unauthorizedResult";
+import {ForbiddenResult} from "../../helpers/exception/forbiddenResult";
 
 
 @ApiTags("Авторизация")
@@ -37,8 +39,8 @@ export class AuthController {
     @UseGuards(IsActiveUserAuthGuard)
     @ApiOperation({summary: "Логинизация"})
     @ApiResponse({status: 200, type: LoginResponseDto, description: 'Успешный вход в систему'})
-    @ApiResponse({status: 400, type: BadRequestResult, description: 'Некорректные логин/пароль'})
-    @ApiResponse({status: 403, type: '', description: 'Пользователь не активирован'})
+    @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage('auth', 'incorrectAuth')})
+    @ApiResponse({status: 403, type: ForbiddenResult, description: 'Пользователь не активирован'})
     @Post("/login")
     async login(@Body() userDto: LoginDto, @Res() res) {
 
@@ -60,7 +62,7 @@ export class AuthController {
 
     @ApiOperation({summary: "Регистрация"})
     @ApiResponse({status: 201, type: RegisterResponseDto, description: 'Успешная регистрация пользователя'})
-    @ApiResponse({status: 400, type: BadRequestResult, description: 'Некорректный email'})
+    @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage("user", 'yep')})
     @HttpCode(201)
     @Post("/registration")
     async registration(@Body() userDto: RegistrationDto) {
@@ -76,7 +78,7 @@ export class AuthController {
     @ApiCookieAuth()
     @ApiOperation({summary: "Обновление токена"})
     @ApiResponse({status: 200, type: RefreshTokenResponseDto, description: 'Успешное обновление токенов'})
-    @ApiResponse({status: 401, description: 'Некорректный рефреш-токен'})
+    @ApiResponse({status: 401, type: UnauthorizedResult, description: 'Некорректный рефреш-токен'})
     @Post("/refresh-token")
     async resendingRefreshTokens(@Req() req, @Res() res) {
 
@@ -92,7 +94,8 @@ export class AuthController {
     @ApiCookieAuth()
     @ApiOperation({summary: "Выход из системы"})
     @ApiResponse({status: 201, type: '', description: 'Успешный выход из системы'})
-    @ApiResponse({status: 401, description: 'Некорректный рефреш-токен'})
+    @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage("auth", 'notAuth')})
+    @ApiResponse({status: 401, type: UnauthorizedResult, description: 'Некорректный рефреш-токен'})
     @Post("/logout")
     async logout(@Cookies() refreshToken: string, @Res() res) {
 

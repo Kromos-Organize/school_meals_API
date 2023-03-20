@@ -14,14 +14,14 @@ type EntityType = {
 @Injectable()
 export class BadCheckEntitiesException {
 
-    private messages: MessageType = {
+    static readonly messages: MessageType = {
         yep: "существует",
         not: "не существует",
         incorrectAuth: "Неверный логин или пароль.",
         notAuth: "Вы не авторизованы"
     }
 
-    private entity: EntityType = {
+     static readonly entity: EntityType = {
         admin: 'Админ',
         auth: '',
         user: 'Пользователь',
@@ -32,11 +32,15 @@ export class BadCheckEntitiesException {
         typeMenu: 'Тип меню',
     }
 
+    static errorMessage(entityType: EntityKeyType, type: MessagesKeyType) {
+        return `${BadCheckEntitiesException.entity[entityType]} ${BadCheckEntitiesException.messages[type]}`
+    }
+
     checkAndGenerateException(value, entityType: EntityKeyType, type: MessagesKeyType, fields: string[]) {
 
         if (value) {
             throw new BadRequestException({
-                message: `${this.entity[entityType]} ${this.messages[type]}`,
+                message: BadCheckEntitiesException.errorMessage(entityType, type),
                 fields,
             });
         }

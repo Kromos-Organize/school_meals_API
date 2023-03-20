@@ -9,6 +9,8 @@ import {AuthGuard} from "@nestjs/passport";
 import {BadRequestResult} from "../../helpers/exception/badRequestResult";
 
 @ApiTags('Администраторы проекта')
+@ApiBearerAuth()
+@ApiResponse({status: 401, description: 'Некорректный аксесс-токен'})
 @Controller('admin')
 @UseGuards(AuthGuard())
 export class AdminController {
@@ -16,13 +18,10 @@ export class AdminController {
     constructor(
         private adminService: AdminService,
         private badException: BadCheckEntitiesException
-    ) {
-    }
+    ) { }
 
     @ApiOperation({summary: 'Получение списка админов'})
-    @ApiBearerAuth()
     @ApiResponse({status: 200, type: [AdminResponse], description: 'Успешное получение списка админов'})
-    @ApiResponse({status: 401, description: 'Некорректный аксесс-токен'})
     @HttpCode(200)
     @Get()
     getAll() {
@@ -31,10 +30,8 @@ export class AdminController {
     }
 
     @ApiOperation({summary: 'Получить данные админа'})
-    @ApiBearerAuth()
     @ApiResponse({status: 200, type: AdminResponse, description: 'Успешное получение данных админа'})
-    @ApiResponse({status: 400, type: BadRequestResult, description: 'Администратор не существует'})
-    @ApiResponse({status: 401, description: 'Некорректный аксесс-токен'})
+    @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage('admin', 'not')})
     @HttpCode(200)
     @Get('/:user_id')
     async getAdminByEmail(@Param('user_id') user_id: number) {
@@ -47,10 +44,8 @@ export class AdminController {
     }
 
     @ApiOperation({summary: 'Добавить админа'})
-    @ApiBearerAuth()
     @ApiResponse({status: 201, type: Admin, description: 'Успешное добавление админа'})
-    @ApiResponse({status: 400, type: BadRequestResult, description: 'Администратор уже существует'})
-    @ApiResponse({status: 401, description: 'Некорректный аксесс-токен'})
+    @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage('admin', 'yep')})
     @HttpCode(201)
     @Post()
     async create(@Body() adminDto: CreateAdminDto) {
@@ -63,10 +58,8 @@ export class AdminController {
     }
 
     @ApiOperation({summary: 'Изменить данные админа'})
-    @ApiBearerAuth()
     @ApiResponse({status: 200, type: Admin, description: 'Успешное изменение данных админа'})
-    @ApiResponse({status: 400, type: BadRequestResult, description: 'Администратор не существует'})
-    @ApiResponse({status: 401, description: 'Некорректный аксесс-токен'})
+    @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage('admin', 'not')})
     @HttpCode(200)
     @Put('/:admin_id')
     async update(@Param('admin_id') admin_id: number, @Body() adminDto: UpdateAdminDto) {
@@ -79,10 +72,8 @@ export class AdminController {
     }
 
     @ApiOperation({summary: 'Удалить админа'})
-    @ApiBearerAuth()
     @ApiResponse({status: 200, type: AdminDeleteResponseDto, description: 'Успешное удаление админа'})
-    @ApiResponse({status: 400, type: BadRequestResult, description: 'Администратор не существует'})
-    @ApiResponse({status: 401, description: 'Некорректный аксесс-токен'})
+    @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage('admin', 'not')})
     @HttpCode(200)
     @Delete('/:admin_id')
     async remove(@Param('admin_id') admin_id: number) {

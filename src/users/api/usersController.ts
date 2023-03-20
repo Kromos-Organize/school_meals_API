@@ -11,6 +11,8 @@ import {AuthGuard} from "@nestjs/passport";
 import {BadRequestResult} from "../../helpers/exception/badRequestResult";
 
 @ApiTags("Пользователи")
+@ApiBearerAuth()
+@ApiResponse({status: 401, description: 'Некорректный аксесс-токен'})
 @Controller("user")
 @UseGuards(AuthGuard())
 export class UsersController {
@@ -21,9 +23,7 @@ export class UsersController {
 
 
     @ApiOperation({summary: "Получение списка пользователей"})
-    @ApiBearerAuth()
     @ApiResponse({status: 200, type: [UserResponseDto], description: 'Успешное получение списка пользователей'})
-    @ApiResponse({status: 401, description: 'Некорректный аксесс-токен'})
     @HttpCode(200)
     @Get()
     getAll() {
@@ -33,10 +33,8 @@ export class UsersController {
 
 
     @ApiOperation({summary: "Получение данных пользователя"})
-    @ApiBearerAuth()
     @ApiResponse({status: 200, type: UserResponseDto, description: 'Успешное получение данных пользователя'})
-    @ApiResponse({status: 400, type: BadRequestResult, description: 'Пользователь не найден'})
-    @ApiResponse({status: 401, description: 'Некорректный аксесс-токен'})
+    @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage('user', 'not')})
     @HttpCode(200)
     @Get('/one/:user_id')
     async get(@Param("user_id") user_id: number) {
@@ -50,9 +48,7 @@ export class UsersController {
 
 
     @ApiOperation({summary: "Получение списка пользователя для модерации"})
-    @ApiBearerAuth()
     @ApiResponse({status: 200, type: [UserResponseDto], description: 'Успешное получение списка пользователей для модерации"'})
-    @ApiResponse({status: 401, description: 'Некорректный аксесс-токен'})
     @HttpCode(200)
     @Get('/moderation')
     async getUserModeration() {
@@ -62,10 +58,8 @@ export class UsersController {
 
 
     @ApiOperation({summary: "Создание пользователя (Учителя)"})
-    @ApiBearerAuth()
     @ApiResponse({status: 201, type: UserResponseDto, description: 'Успешное создание пользователя (Учителя)'})
-    @ApiResponse({status: 400, type: BadRequestResult, description: 'Пользователь уже существует'})
-    @ApiResponse({status: 401, description: 'Некорректный аксесс-токен'})
+    @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage('user', 'yep')})
     @HttpCode(201)
     @Post("/create")
     async create(@Body() userDto: RegistrationDto) {
@@ -87,10 +81,8 @@ export class UsersController {
 
 
     @ApiOperation({summary: "Изменение данных пользователя"})
-    @ApiBearerAuth()
     @ApiResponse({status: 200, type: UserResponseDto, description: 'Успешное изменение данных пользователя'})
-    @ApiResponse({status: 400, type: BadRequestResult, description: 'Пользователь не существует'})
-    @ApiResponse({status: 401, description: 'Некорректный аксесс-токен'})
+    @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage('user', 'not')})
     @HttpCode(200)
     @Put(":user_id")
     async update(@Param("user_id") user_id: number, @Body() userDto: UpdateUserDto) {
@@ -104,10 +96,8 @@ export class UsersController {
 
 
     @ApiOperation({summary: "Активация/Деактивация пользователя"})
-    @ApiBearerAuth()
     @ApiResponse({status: 200, type: UserActivateResponseDto, description: 'Успешная активация/деактивация пользователя'})
-    @ApiResponse({status: 400, type: BadRequestResult, description: 'Пользователь не существует'})
-    @ApiResponse({status: 401, description: 'Некорректный аксесс-токен'})
+    @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage('user', 'not')})
     @HttpCode(200)
     @Put("/activate/:user_id")
     async changeActiveUser(@Param("user_id") user_id: number, @Body() activeDto: ActiveUserDto) {
@@ -121,10 +111,8 @@ export class UsersController {
 
 
     @ApiOperation({summary: "Удаление пользователя"})
-    @ApiBearerAuth()
     @ApiResponse({status: 200, type: UserDeleteResponseDto, description: 'Успешное удаление пользователя'})
-    @ApiResponse({status: 400, type: BadRequestResult, description: 'Пользователь не существует'})
-    @ApiResponse({status: 401, description: 'Некорректный аксесс-токен'})
+    @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage('user', 'not')})
     @HttpCode(200)
     @Delete(":user_id")
     async remove(@Param("user_id") user_id: number) {

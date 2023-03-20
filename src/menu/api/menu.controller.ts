@@ -11,6 +11,8 @@ import {TypeMenuService} from "../../typeMenu/application/typeMenu.service";
 import {BadRequestResult} from "../../helpers/exception/badRequestResult";
 
 @ApiTags('Меню')
+@ApiBearerAuth()
+@ApiResponse({status: 401, description: 'Некорректный аксесс-токен'})
 @Controller('menu')
 @UseGuards(AuthGuard())
 export class MenuController{
@@ -23,10 +25,8 @@ export class MenuController{
     ) { }
 
     @ApiOperation({summary: 'Получить список меню для школы на день.'})
-    @ApiBearerAuth()
     @ApiResponse({status: 200, type: [Menu], description: 'Успешное получение списка меню для школы на день'})
-    @ApiResponse({status: 400, type: BadRequestResult, description: 'Школа не существует'})
-    @ApiResponse({status: 401, description: 'Некорректный аксесс-токен'})
+    @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage('school','not')})
     @HttpCode(200)
     @Get()
     async getAllMenuBySchool(@Query('school_id') school_id: number, @Query('date') date: Date) {
@@ -39,10 +39,8 @@ export class MenuController{
     }
 
     @ApiOperation({summary: 'Получить меню по id'})
-    @ApiBearerAuth()
     @ApiResponse({status: 200, type: Menu, description: 'Успешное получение меню по id'})
-    @ApiResponse({status: 400, type: BadRequestResult, description: 'Меню не существует'})
-    @ApiResponse({status: 401, description: 'Некорректный аксесс-токен'})
+    @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage('menu','not')})
     @HttpCode(200)
     @Get('/:menu_id')
     async getMenuById(@Param('menu_id') menu_id: number) {
@@ -55,10 +53,8 @@ export class MenuController{
     }
 
     @ApiOperation({summary: 'Создать меню для школы'})
-    @ApiBearerAuth()
     @ApiResponse({status: 200, type: Menu, description: 'Успешное создание меню для школы'})
-    @ApiResponse({status: 400, type: BadRequestResult, description: 'Меню уже существует / Тип меню не существует'})
-    @ApiResponse({status: 401, description: 'Некорректный аксесс-токен'})
+    @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage('menu','yep') + ' / ' + BadCheckEntitiesException.errorMessage('typeMenu','not')})
     @HttpCode(201)
     @Post()
     async createMenu(@Body() menuDto: MenuCreateDto) {
@@ -73,10 +69,8 @@ export class MenuController{
     }
 
     @ApiOperation({summary: 'Обновить меню'})
-    @ApiBearerAuth()
     @ApiResponse({status: 200, type: Menu, description: 'Успешное обновление меню'})
-    @ApiResponse({status: 400, type: BadRequestResult, description: 'Меню не существует'})
-    @ApiResponse({status: 401, description: 'Некорректный аксесс-токен'})
+    @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage('menu','not')})
     @HttpCode(200)
     @Put('/:menu_id')
     async updateMenu(@Param('menu_id') menu_id: number, @Body() updateMenu: UpdateMenuDto){
@@ -89,10 +83,8 @@ export class MenuController{
     }
 
     @ApiOperation({summary: 'Удалить меню'})
-    @ApiBearerAuth()
     @ApiResponse({status: 201, type: MenuDeleteDto, description: 'Успешное удаление меню'})
-    @ApiResponse({status: 400, type: BadRequestResult, description: 'Меню не существует'})
-    @ApiResponse({status: 401, description: 'Некорректный аксесс-токен'})
+    @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage('menu','not')})
     @HttpCode(201)
     @Delete('/:menu_id')
     async removeMenu(@Param('menu_id') menu_id: number) {

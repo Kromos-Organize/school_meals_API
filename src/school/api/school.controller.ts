@@ -11,6 +11,8 @@ import {UsersService} from "../../users/application/users.service";
 import {BadRequestResult} from "../../helpers/exception/badRequestResult";
 
 @ApiTags('Школа')
+@ApiBearerAuth()
+@ApiResponse({status: 401, description: 'Некорректный аксесс-токен'})
 @Controller('school')
 @UseGuards(AuthGuard())
 export class SchoolController {
@@ -22,9 +24,7 @@ export class SchoolController {
     ) { }
 
     @ApiOperation({summary: 'Получить список школ'})
-    @ApiBearerAuth()
     @ApiResponse({status: 200, type: [School], description: 'Успешное получение списка школ'})
-    @ApiResponse({status: 401, description: 'Некорректный аксесс-токен'})
     @HttpCode(200)
     @Get()
     getAll() {
@@ -33,10 +33,8 @@ export class SchoolController {
     }
 
     @ApiOperation({summary: 'Получить данные школы'})
-    @ApiBearerAuth()
     @ApiResponse({status: 200, type: School, description: 'Успешное получение данных школы'})
-    @ApiResponse({status: 400, type: BadRequestResult, description: 'Школа не существует'})
-    @ApiResponse({status: 401, description: 'Некорректный аксесс-токен'})
+    @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage('school','not')})
     @HttpCode(200)
     @Get(':school_id')
     async get(@Param('school_id') school_id: number) {
@@ -50,10 +48,8 @@ export class SchoolController {
 
     @UseGuards(SearchUserGuard)
     @ApiOperation({summary: 'Добавить школу'})
-    @ApiBearerAuth()
     @ApiResponse({status: 200, type: School, description: 'Успешное добавление школы'})
-    @ApiResponse({status: 400, type: BadRequestResult, description: 'Школа уже существует'})
-    @ApiResponse({status: 401, description: 'Некорректный аксесс-токен'})
+    @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage('school', 'yep')})
     @HttpCode(201)
     @Post()
     async create(@Body() schoolDto: SchoolCreateDto, @Req() req) {
@@ -68,10 +64,8 @@ export class SchoolController {
     }
 
     @ApiOperation({summary: 'Изменить данные школы'})
-    @ApiBearerAuth()
     @ApiResponse({status: 200, type: School, description: 'Успешное изменение данных школы'})
-    @ApiResponse({status: 400, type: BadRequestResult, description: 'Школа не существует'})
-    @ApiResponse({status: 401, description: 'Некорректный аксесс-токен'})
+    @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage('school','not')})
     @HttpCode(200)
     @Put(':school_id')
     async update(@Param('school_id') school_id: number, @Body() schoolDto: SchoolUpdateDto) {
@@ -84,10 +78,8 @@ export class SchoolController {
     }
 
     @ApiOperation({summary: 'Удалить школу'})
-    @ApiBearerAuth()
     @ApiResponse({status: 200, type: SchoolDeleteResponseDto, description: 'Успешное удаление школы'})
-    @ApiResponse({status: 400, type: BadRequestResult, description: 'Школа не существует'})
-    @ApiResponse({status: 401, description: 'Некорректный аксесс-токен'})
+    @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage('school','not')})
     @HttpCode(200)
     @Delete(':school_id')
     async remove(@Param('school_id') school_id: number) {
