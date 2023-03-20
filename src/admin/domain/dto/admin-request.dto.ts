@@ -1,5 +1,9 @@
 import {ApiProperty} from "@nestjs/swagger";
 import {IsEmail, IsString, Length} from "class-validator";
+import {PartialType} from "@nestjs/mapped-types";
+import {UserParamDto} from "../../../users/domain/dto/user-request.dto";
+
+export class ParamAdminDto extends PartialType(UserParamDto) {}
 
 export class CreateAdminDto {
 

@@ -5,7 +5,7 @@ import {SchoolService} from "../../school/application/school.service";
 import {BadCheckEntitiesException} from "../../helpers/exception/BadCheckEntitiesException";
 import {TypeMenuService} from "../application/typeMenu.service";
 import {TypeMenu} from "../domain/entity/type-menu.model";
-import {CreateTypeMenuDto, UpdateTypeMenuDto} from "../domain/dto/typeMenu-request.dto";
+import {CreateTypeMenuDto, TypeMenuDto, TypeMenuParamDto, UpdateTypeMenuDto} from "../domain/dto/typeMenu-request.dto";
 import {TypeMenuDeleteDto} from "../domain/dto/typeMenu-response.dto";
 
 @ApiTags('Тип Меню')
@@ -23,22 +23,22 @@ export class TypeMenuController{
     @ApiResponse({status: 200, type: [TypeMenu]})
     @HttpCode(200)
     @Get()
-    async getAllTypeMenuBySchool(@Query('school_id') school_id: number){
+    async getAllTypeMenuBySchool(@Query() queryDto: TypeMenuDto){
 
-        const school = await this.schoolService.getSchoolById(school_id);
+        const school = await this.schoolService.getSchoolById(queryDto.school_id);
 
         this.badException.checkAndGenerateException(!school, 'school','not', ['school_id']);
 
-        return await this.typeMenuService.getAllTypeMenuBySchool(school_id);
+        return await this.typeMenuService.getAllTypeMenuBySchool(queryDto.school_id);
     }
 
     @ApiOperation({summary: 'Получить данные типа меню'})
     @ApiResponse({status: 200, type: TypeMenu})
     @HttpCode(200)
     @Get(':type_id')
-    async getTypeMenuById(@Param('type_id') type_id: number){
+    async getTypeMenuById(@Param() paramDto: TypeMenuParamDto){
 
-        const typeMenu = await this.typeMenuService.getTypeMenuById(type_id);
+        const typeMenu = await this.typeMenuService.getTypeMenuById(paramDto.type_id);
 
         this.badException.checkAndGenerateException(!typeMenu, 'typeMenu','not', ['type_id']);
 
@@ -62,25 +62,25 @@ export class TypeMenuController{
     @ApiResponse({status: 200, type: TypeMenu})
     @HttpCode(200)
     @Put(':type_id')
-    async updateTypeMenu(@Param('type_id') type_id: number ,@Body() updateTypeMenuDto: UpdateTypeMenuDto) {
+    async updateTypeMenu(@Param() paramDto: TypeMenuParamDto, @Body() updateTypeMenuDto: UpdateTypeMenuDto) {
 
-        const typeMenu = await this.typeMenuService.getTypeMenuById(type_id);
+        const typeMenu = await this.typeMenuService.getTypeMenuById(paramDto.type_id);
 
         this.badException.checkAndGenerateException(!typeMenu, 'typeMenu','not', ['type_id']);
 
-        return this.typeMenuService.updateTypeMenu(type_id, updateTypeMenuDto);
+        return this.typeMenuService.updateTypeMenu(paramDto.type_id, updateTypeMenuDto);
     }
 
     @ApiOperation({summary: 'Удалить тип меню'})
     @ApiResponse({status: 200, type: TypeMenuDeleteDto})
     @HttpCode(200)
     @Delete(':type_id')
-    async removeTypeMenu(@Param('type_id') type_id: number){
+    async removeTypeMenu(@Param() paramDto: TypeMenuParamDto){
 
-        const typeMenu = await this.typeMenuService.getTypeMenuById(type_id);
+        const typeMenu = await this.typeMenuService.getTypeMenuById(paramDto.type_id);
 
         this.badException.checkAndGenerateException(!typeMenu, 'typeMenu','not', ['type_id']);
 
-        return this.typeMenuService.removeTypeMenu(type_id);
+        return this.typeMenuService.removeTypeMenu(paramDto.type_id);
     }
 }

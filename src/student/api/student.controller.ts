@@ -14,6 +14,8 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { StudentService } from '../application/student.service';
 import { Student } from '../domain/entities/student.model';
 import {
+    StudentParamDto,
+    StudentQueryDto,
     StudentRequestDto,
     UpdateStudentDto,
 } from '../domain/dto/student-request.dto';
@@ -21,7 +23,6 @@ import { BadCheckEntitiesException } from '../../helpers/exception/BadCheckEntit
 import { SchoolService } from '../../school/application/school.service';
 import { ClassService } from '../../class/application/class.service';
 import { AuthGuard } from "@nestjs/passport";
-import { StudentQueryDto } from "../domain/dto/school-query.dto";
 
 @ApiTags('Ученики')
 @Controller('student')
@@ -54,9 +55,9 @@ export class StudentController {
     @ApiResponse({status: 200, type: Student})
     @HttpCode(200)
     @Get(':student_id')
-    async getStudentById(@Param('student_id') student_id: number) {
+    async getStudentById(@Param() paramDto: StudentParamDto) {
 
-        const student = await this.studentService.getStudentById(student_id);
+        const student = await this.studentService.getStudentById(paramDto.student_id);
 
         this.badException.checkAndGenerateException(!student, 'student','not',['student_id']);
 
@@ -89,25 +90,25 @@ export class StudentController {
     @ApiResponse({status: 200, type: Student})
     @HttpCode(200)
     @Put(':student_id')
-    async update(@Param('student_id') student_id: number, @Body() studentDto: UpdateStudentDto) {
+    async update(@Param() paramDto: StudentParamDto, @Body() studentDto: UpdateStudentDto) {
 
-        const student = await this.studentService.getStudentById(student_id);
+        const student = await this.studentService.getStudentById(paramDto.student_id);
 
         this.badException.checkAndGenerateException(!student, 'student','not',['student_id']);
 
-        return this.studentService.updateStudent(student_id, studentDto);
+        return this.studentService.updateStudent(paramDto.student_id, studentDto);
     }
 
     @ApiOperation({summary: 'Удалить ученика'})
     @ApiResponse({status: 200, type: ''})
     @HttpCode(200)
     @Delete(':student_id')
-    async remove(@Param('student_id') student_id: number) {
+    async remove(@Param() paramDto: StudentParamDto) {
 
-        const student = await this.studentService.getStudentById(student_id);
+        const student = await this.studentService.getStudentById(paramDto.student_id);
 
         this.badException.checkAndGenerateException(!student, 'student','not', ['student_id']);
 
-        return this.studentService.removeStudent(student_id);
+        return this.studentService.removeStudent(paramDto.student_id);
     }
 }

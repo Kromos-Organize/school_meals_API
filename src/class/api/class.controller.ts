@@ -3,7 +3,7 @@ import {Body, Controller, Delete, Get, HttpCode, Param, Post, Put, Query, UseGua
 import {ClassService} from "../application/class.service";
 import {Class} from "../domain/entities/class.model";
 import {AuthGuard} from "@nestjs/passport";
-import {CreateClassDto, UpdateClassDto} from "../domain/dto/class-request.dto";
+import {ClassParamDto, ClassQueryDto, CreateClassDto, UpdateClassDto} from "../domain/dto/class-request.dto";
 import {ClassDeleteResponseDto} from "../domain/dto/class-response.dto";
 import {SchoolService} from "../../school/application/school.service";
 import {BadCheckEntitiesException} from "../../helpers/exception/BadCheckEntitiesException";
@@ -23,22 +23,24 @@ export class ClassController {
     @ApiResponse({status: 200, type: [Class]})
     @HttpCode(200)
     @Get()
-    async getAll(@Query('school_id') school_id: number) {
+    async getAll(@Query() queryDto: ClassQueryDto) {
 
-        const school = await this.schoolService.getSchoolById(school_id);
+        const school = await this.schoolService.getSchoolById(queryDto.school_id);
 
         this.badException.checkAndGenerateException(!school, 'school','not', ['school_id'])
 
-        return this.classService.getAll(school_id);
+        return this.classService.getAll(queryDto.school_id);
     }
 
     @ApiOperation({summary: 'Получить данные класса'})
     @ApiResponse({status: 200, type: Class})
     @HttpCode(200)
     @Get(':class_id')
-    async get(@Param('class_id') class_id: number){
+    async get(@Param() paramDto: ClassParamDto){
 
-        const classSchool =  await this.classService.getClassById(class_id)
+        console.log(paramDto)
+
+        const classSchool =  await this.classService.getClassById(paramDto.class_id)
 
         this.badException.checkAndGenerateException(!classSchool, 'class', 'not', ['class_id'])
 
@@ -66,25 +68,25 @@ export class ClassController {
     @ApiResponse({status: 200, type: Class})
     @HttpCode(200)
     @Put(':class_id')
-    async update(@Param('class_id') class_id: number, @Body() classDto: UpdateClassDto) {
+    async update(@Param() paramDto: ClassParamDto, @Body() classDto: UpdateClassDto) {
 
-        const classSchool =  await this.classService.getClassById(class_id)
+        const classSchool =  await this.classService.getClassById(paramDto.class_id)
 
         this.badException.checkAndGenerateException(!classSchool, 'class','not', ['class_id'])
 
-        return this.classService.update(class_id, classDto);
+        return this.classService.update(paramDto.class_id, classDto);
     }
 
     @ApiOperation({summary: 'Удалить класс'})
     @ApiResponse({status: 200, type: ClassDeleteResponseDto})
     @HttpCode(200)
     @Delete(':class_id')
-    async remove(@Param('class_id') class_id: number) {
+    async remove(@Param() paramDto: ClassParamDto) {
 
-        const classSchool =  await this.classService.getClassById(class_id)
+        const classSchool =  await this.classService.getClassById(paramDto.class_id)
 
         this.badException.checkAndGenerateException(!classSchool, 'class','not', ['class_id'])
 
-        return this.classService.remove(class_id);
+        return this.classService.remove(paramDto.class_id);
     }
 }

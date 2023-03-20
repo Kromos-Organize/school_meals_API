@@ -1,5 +1,9 @@
 import {ApiProperty} from "@nestjs/swagger";
 import {IsNumber, IsString, Length} from "class-validator";
+import {TypeMenuDto} from "../../../typeMenu/domain/dto/typeMenu-request.dto";
+
+export class SchoolParamDto extends TypeMenuDto {
+}
 
 export class SchoolCreateDto {
 

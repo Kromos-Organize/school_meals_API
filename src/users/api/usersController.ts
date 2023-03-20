@@ -3,7 +3,7 @@ import {Body, Controller, Delete, Get, HttpCode, Param, Post, Put, UseGuards,} f
 import {UsersService} from "src/users/application/users.service";
 import {RoleEnum} from "../domain/entities/role.enum";
 import {RegistrationDto} from "../../auth/domain/dto/auth-request.dto";
-import {ActiveUserDto, UpdateUserDto} from "../domain/dto/user-request.dto";
+import {ActiveUserDto, UpdateUserDto, UserParamDto} from "../domain/dto/user-request.dto";
 import {IUserModelAttr} from "../domain/dto/user-service.dto";
 import {UserActivateResponseDto, UserDeleteResponseDto, UserResponseDto} from "../domain/dto/user-response.dto";
 import {BadCheckEntitiesException} from "../../helpers/exception/BadCheckEntitiesException";
@@ -30,9 +30,9 @@ export class UsersController {
   @ApiResponse({ status: 200, type: UserResponseDto })
   @HttpCode(200)
   @Get('/one/:user_id')
-  async get(@Param("user_id") user_id: number) {
+  async get(@Param() paramDto: UserParamDto) {
 
-    const user = await this.usersService.getById(user_id);
+    const user = await this.usersService.getById(paramDto.user_id);
 
     this.badException.checkAndGenerateException(!user, 'user', 'not',['user_id']);
 
@@ -73,38 +73,38 @@ export class UsersController {
   @ApiResponse({ status: 200, type: UserResponseDto })
   @HttpCode(200)
   @Put(":user_id")
-  async update(@Param("user_id") user_id: number, @Body() userDto: UpdateUserDto) {
+  async update(@Param() paramDto: UserParamDto, @Body() userDto: UpdateUserDto) {
 
-    const user = await this.usersService.getById(user_id);
+    const user = await this.usersService.getById(paramDto.user_id);
 
     this.badException.checkAndGenerateException(!user, 'user', 'not', ['user_id']);
 
-    return this.usersService.updateUser(user_id, userDto);
+    return this.usersService.updateUser(paramDto.user_id, userDto);
   }
 
   @ApiOperation({ summary: "Активация/Деактивация пользователя" })
   @ApiResponse({ status: 200, type: UserActivateResponseDto })
   @HttpCode(200)
   @Put("/activate/:user_id")
-  async changeActiveUser(@Param("user_id") user_id: number, @Body() activeDto: ActiveUserDto) {
+  async changeActiveUser(@Param() paramDto: UserParamDto, @Body() activeDto: ActiveUserDto) {
 
-    const user = await this.usersService.getById(user_id);
+    const user = await this.usersService.getById(paramDto.user_id);
 
     this.badException.checkAndGenerateException(!user, 'user', 'not', ['user_id']);
 
-    return this.usersService.changeActiveUser(user_id, activeDto);
+    return this.usersService.changeActiveUser(paramDto.user_id, activeDto);
   }
 
   @ApiOperation({ summary: "Удаление пользователя" })
   @ApiResponse({ status: 200, type: UserDeleteResponseDto})
   @HttpCode(200)
   @Delete(":user_id")
-  async remove(@Param("user_id") user_id: number) {
+  async remove(@Param() paramDto: UserParamDto) {
 
-    const user = await this.usersService.getById(user_id);
+    const user = await this.usersService.getById(paramDto.user_id);
 
     this.badException.checkAndGenerateException(!user, 'user', 'not', ['user_id']);
 
-    return this.usersService.removeUser(user_id);
+    return this.usersService.removeUser(paramDto.user_id);
   }
 }

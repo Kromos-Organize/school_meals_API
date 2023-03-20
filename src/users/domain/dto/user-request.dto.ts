@@ -1,5 +1,16 @@
 import {ApiProperty} from "@nestjs/swagger";
-import {IsBoolean, IsPhoneNumber, IsString, Length} from "class-validator";
+import {IsBoolean, IsInt, IsNotEmpty, IsPhoneNumber, IsString, Length} from "class-validator";
+import {Transform} from "class-transformer";
+
+export class UserParamDto {
+
+    @ApiProperty({example:'int', description:'Айди пользователя'})
+    @Transform(({ value }) => parseInt(value))
+    @IsInt({message: 'Айди пользователя должна быть числом'})
+    @IsNotEmpty({message: 'Обязательное поле'})
+    user_id: number
+
+}
 
 export class UpdateUserDto {
 
