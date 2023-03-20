@@ -46,7 +46,7 @@ export class StudentRequestDto {
     readonly isLargeFamilies?: boolean;
 
     @ApiProperty({
-        example: '{ m_phone: "375297485875", f_phone: "375297485875" }', description: 'Телефон родителей, JSON'})
+        example: '{ m_phone: "375297485875", f_phone: "375297485875" }', description: 'Телефоны родителей'})
     @ValidateNested()
     @Type(() => ParentsPhoneDto)
     readonly phoneParents: ParentsPhoneDto;
@@ -77,7 +77,7 @@ export class UpdateStudentDto {
     @ApiProperty({example: false, description: 'Параметр отвечающий многодетная семья или нет'})
     readonly isLargeFamilies?: boolean;
 
-    @ApiProperty({ example: '{ m_phone: "375297485875", f_phone: "375297485875" }', description: 'Телефон родителей, JSON'})
+    @ApiProperty({ example: '{ m_phone: "375297485875", f_phone: "375297485875" }', description: 'Телефоны родителей'})
     @ValidateNested()
     @Type(() => ParentsPhoneDto)
     readonly phoneParents: ParentsPhoneDto;
