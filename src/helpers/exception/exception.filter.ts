@@ -1,10 +1,5 @@
-import {
-  ExceptionFilter,
-  Catch,
-  ArgumentsHost,
-  HttpException,
-} from '@nestjs/common';
-import { Request, Response } from 'express';
+import {ArgumentsHost, Catch, ExceptionFilter, HttpException,} from '@nestjs/common';
+import {Request, Response} from 'express';
 
 
 @Catch(HttpException)
@@ -30,13 +25,13 @@ export class HttpExceptionFilter implements ExceptionFilter {
 
         response.sendStatus(404);
 
-        return;
+        break;
 
       case 403:
 
         response.status(403).json({
-          field: ['isActive'],
-          message: 'Пользователь не активирован'
+          fields: ['id'],
+          message: 'Доступ не предоставлен.'
         });
 
       case 401:
@@ -46,7 +41,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
           message: 'Вы не авторизованы'
         });
 
-        return;
+        break;
 
       case 400:
 
@@ -58,7 +53,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
           this.sendStatus(response, status, {message: responseBody})
         }
 
-        return;
+        break;
 
       default:
 

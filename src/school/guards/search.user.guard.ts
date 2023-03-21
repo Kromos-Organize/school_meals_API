@@ -6,7 +6,7 @@ import {
 } from "@nestjs/common";
 import { Request } from "express";
 import { UsersQueryRepository } from "../../users/infrastructure/users.query.repository";
-import { JwtService } from "../application/jwt-service";
+import { JwtService } from "../../auth/application/jwt-service";
 
 @Injectable()
 export class SearchUserGuard implements CanActivate {

@@ -8,6 +8,8 @@ import {UserModule} from "../users/userModule";
 import {BadCheckEntitiesException} from "../helpers/exception/BadCheckEntitiesException";
 import {SchoolRepository} from "./infrastructure/school.repository";
 import {SchoolQueryRepository} from "./infrastructure/school.query.repository";
+import {AdminModule} from "../admin/admin.module";
+import {Admin} from "../admin/domain/entities/admin.model";
 
 @Module({
     providers: [
@@ -18,9 +20,10 @@ import {SchoolQueryRepository} from "./infrastructure/school.query.repository";
     ],
     controllers: [SchoolController],
     imports: [
-        SequelizeModule.forFeature([School]),
+        SequelizeModule.forFeature([School, Admin]),
         forwardRef(() => AuthModule),
-        UserModule
+        AdminModule,
+        UserModule,
     ],
     exports: [
         SchoolService

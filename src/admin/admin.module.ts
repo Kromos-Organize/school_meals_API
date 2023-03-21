@@ -23,7 +23,7 @@ import {AdminQueryRepository} from "./infrastructure/admin.query.repository";
     ],
     exports: [
         AdminService,
-        AdminQueryRepository
+        AdminQueryRepository,
     ]
 })
 export class AdminModule { }

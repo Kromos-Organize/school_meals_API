@@ -33,12 +33,12 @@ export class AdminController {
     @ApiResponse({status: 200, type: AdminResponse, description: 'Успешное получение данных админа'})
     @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage('admin', 'not')})
     @HttpCode(200)
-    @Get('/:user_id')
+    @Get('/:admin_id')
     async getAdminByEmail(@Param() paramDto: ParamAdminDto) {
 
-        const admin = await this.adminService.getAdminById(paramDto.user_id);
+        const admin = await this.adminService.getAdminById(paramDto.admin_id);
 
-        this.badException.checkAndGenerateException(!admin, 'admin', 'not', ['user_id']);
+        this.badException.checkAndGenerateException(!admin, 'admin', 'not', ['admin_id']);
 
         return admin;
     }
@@ -64,11 +64,11 @@ export class AdminController {
     @Put('/:admin_id')
     async update(@Param() paramDto: ParamAdminDto, @Body() adminDto: UpdateAdminDto)  {
 
-        const admin = await this.adminService.getAdminById(paramDto.user_id);
+        const admin = await this.adminService.getAdminById(paramDto.admin_id);
 
         this.badException.checkAndGenerateException(!admin, 'admin', 'not', ['admin_id']);
 
-        return this.adminService.update(paramDto.user_id, adminDto);
+        return this.adminService.update(paramDto.admin_id, adminDto);
     }
 
     @ApiOperation({summary: 'Удалить админа'})
@@ -78,10 +78,10 @@ export class AdminController {
     @Delete('/:admin_id')
     async remove(@Param() paramDto: ParamAdminDto) {
 
-        const admin = await this.adminService.getAdminById(paramDto.user_id);
+        const admin = await this.adminService.getAdminById(paramDto.admin_id);
 
         this.badException.checkAndGenerateException(!admin, 'admin', 'not', ['admin_id']);
 
-        return this.adminService.remove(paramDto.user_id);
+        return this.adminService.remove(paramDto.admin_id);
     }
 }

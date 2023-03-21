@@ -6,7 +6,7 @@ import {School} from "../domain/entities/school.model";
 import {AuthGuard} from "@nestjs/passport";
 import {BadCheckEntitiesException} from "../../helpers/exception/BadCheckEntitiesException";
 import {SchoolDeleteResponseDto} from "../domain/dto/school-reponse.dto";
-import {SearchUserGuard} from "../../auth/guards/search.user.guard";
+import {SearchUserGuard} from "../guards/search.user.guard";
 import {UsersService} from "../../users/application/users.service";
 import {BadRequestResult} from "../../helpers/exception/badRequestResult";
 

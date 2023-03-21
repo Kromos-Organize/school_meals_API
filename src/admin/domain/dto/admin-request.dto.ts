@@ -1,9 +1,15 @@
 import {ApiProperty} from "@nestjs/swagger";
-import {IsEmail, IsString, Length} from "class-validator";
-import {PartialType} from "@nestjs/mapped-types";
-import {UserParamDto} from "../../../users/domain/dto/user-request.dto";
+import {IsEmail, IsInt, IsNotEmpty, IsString, Length} from "class-validator";
+import {Transform} from "class-transformer";
 
-export class ParamAdminDto extends PartialType(UserParamDto) {}
+export class ParamAdminDto {
+
+    @ApiProperty({example:'int', description:'Айди '})
+    @Transform(({ value }) => parseInt(value))
+    @IsInt({message: 'Айди пользователя должна быть числом'})
+    @IsNotEmpty({message: 'Обязательное поле'})
+    admin_id: number
+}
 
 export class CreateAdminDto {
 
