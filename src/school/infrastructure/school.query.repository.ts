@@ -8,7 +8,7 @@ export class SchoolQueryRepository {
 
     async getAllSchools() {
 
-        return await this.schoolRepository.findAll();
+        return await this.schoolRepository.findAll({include: {all:true}});
     }
 
     async getSchoolById(school_id: number) {

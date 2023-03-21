@@ -1,6 +1,11 @@
-import {Column, DataType, Model, Table} from "sequelize-typescript";
+import {Column, DataType, HasOne, Model, Table} from "sequelize-typescript";
 import {ApiProperty} from "@nestjs/swagger";
 import {ISchoolCreationAttrs} from "../dto/school-service.dto";
+import {User} from "../../../users/domain/entities/user.model";
+import {Class} from "../../../class/domain/entities/class.model";
+import {Student} from "../../../student/domain/entities/student.model";
+import {Menu} from "../../../menu/domain/entity/menu.model";
+import {TypeMenu} from "../../../typeMenu/domain/entity/type-menu.model";
 
 @Table({tableName: 'school'})
 export class School extends Model<School, ISchoolCreationAttrs> {
@@ -32,4 +37,19 @@ export class School extends Model<School, ISchoolCreationAttrs> {
     @ApiProperty({example:'12', description:'Номер здания'})
     @Column({type: DataType.INTEGER, allowNull: false})
     homeNumber: number
+
+    @HasOne(() => User)
+    user: User
+
+    @HasOne(() => Class)
+    class: Class
+
+    @HasOne(() => Student)
+    student: Student
+
+    @HasOne(() => Menu)
+    menu: Menu
+
+    @HasOne(() => TypeMenu)
+    type_menu: TypeMenu
 }
