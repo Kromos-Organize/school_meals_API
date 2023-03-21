@@ -2,7 +2,7 @@ import {Body, Controller, Delete, Get, HttpCode, Param, Post, Put, UseGuards} fr
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {AdminService} from "../application/admin.service";
 import {Admin} from "../domain/entities/admin.model";
-import {CreateAdminDto, UpdateAdminDto} from "../domain/dto/admin-request.dto";
+import {CreateAdminDto, ParamAdminDto, UpdateAdminDto} from "../domain/dto/admin-request.dto";
 import {AdminDeleteResponseDto, AdminResponse} from "../domain/dto/admin-response.dto";
 import {BadCheckEntitiesException} from "../../helpers/exception/BadCheckEntitiesException";
 import {AuthGuard} from "@nestjs/passport";
@@ -30,9 +30,9 @@ export class AdminController {
     @ApiResponse({status: 200,type: AdminResponse})
     @HttpCode(200)
     @Get('/:user_id')
-    async getAdminByEmail(@Param('user_id') user_id: number) {
+    async getAdminByEmail(@Param() paramDto: ParamAdminDto) {
 
-        const admin = await this.adminService.getAdminById(user_id);
+        const admin = await this.adminService.getAdminById(paramDto.user_id);
 
         this.badException.checkAndGenerateException(!admin,'admin','not',['user_id']);
 
@@ -56,25 +56,25 @@ export class AdminController {
     @ApiResponse({status: 200,type: Admin})
     @HttpCode(200)
     @Put('/:admin_id')
-    async update(@Param('admin_id') admin_id: number, @Body() adminDto: UpdateAdminDto)  {
+    async update(@Param() paramDto: ParamAdminDto, @Body() adminDto: UpdateAdminDto)  {
 
-        const admin = await this.adminService.getAdminById(admin_id);
+        const admin = await this.adminService.getAdminById(paramDto.user_id);
 
         this.badException.checkAndGenerateException(!admin, 'admin','not',['admin_id']);
 
-        return this.adminService.update(admin_id, adminDto);
+        return this.adminService.update(paramDto.user_id, adminDto);
     }
 
     @ApiOperation({summary: 'Удалить админа'})
     @ApiResponse({status: 200, type: AdminDeleteResponseDto})
     @HttpCode(200)
     @Delete('/:admin_id')
-    async remove(@Param('admin_id') admin_id: number) {
+    async remove(@Param() paramDto: ParamAdminDto) {
 
-        const admin = await this.adminService.getAdminById(admin_id);
+        const admin = await this.adminService.getAdminById(paramDto.user_id);
 
         this.badException.checkAndGenerateException(!admin, 'admin','not',['admin_id']);
 
-        return this.adminService.remove(admin_id);
+        return this.adminService.remove(paramDto.user_id);
     }
 }

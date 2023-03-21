@@ -14,13 +14,15 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { StudentService } from '../application/student.service';
 import { Student } from '../domain/entities/student.model';
 import {
+    StudentParamDto,
+    StudentQueryDto,
     StudentRequestDto,
     UpdateStudentDto,
 } from '../domain/dto/student-request.dto';
 import { BadCheckEntitiesException } from '../../helpers/exception/BadCheckEntitiesException';
 import { SchoolService } from '../../school/application/school.service';
 import { ClassService } from '../../class/application/class.service';
-import {AuthGuard} from "@nestjs/passport";
+import { AuthGuard } from "@nestjs/passport";
 
 @ApiTags('Ученики')
 @Controller('student')
@@ -38,24 +40,24 @@ export class StudentController {
     @ApiResponse({status: 200, type: [Student]})
     @HttpCode(200)
     @Get()
-    async getStudentToClass(@Query('school_id') school_id: number, @Query('class_id') class_id: number) {
+    async getStudentToClass(@Query() query: StudentQueryDto) {
 
-        const school = await this.schoolService.getSchoolById(school_id);
-        const classSchool = await this.classService.getClassById(class_id);
+        const school = await this.schoolService.getSchoolById(query.school_id);
+        const classSchool = await this.classService.getClassById(query.class_id);
 
         this.badException.checkAndGenerateException(!school, 'school','not',['school_id']);
         this.badException.checkAndGenerateException(!classSchool, 'class','not',['classSchool']);
 
-        return this.studentService.getStudentToClass(school_id, class_id);
+        return this.studentService.getStudentToClass(query.school_id, query.class_id);
     }
 
     @ApiOperation({summary: 'Получить данные ученика'})
     @ApiResponse({status: 200, type: Student})
     @HttpCode(200)
     @Get(':student_id')
-    async getStudentById(@Param('student_id') student_id: number) {
+    async getStudentById(@Param() paramDto: StudentParamDto) {
 
-        const student = await this.studentService.getStudentById(student_id);
+        const student = await this.studentService.getStudentById(paramDto.student_id);
 
         this.badException.checkAndGenerateException(!student, 'student','not',['student_id']);
 
@@ -88,25 +90,25 @@ export class StudentController {
     @ApiResponse({status: 200, type: Student})
     @HttpCode(200)
     @Put(':student_id')
-    async update(@Param('student_id') student_id: number, @Body() studentDto: UpdateStudentDto) {
+    async update(@Param() paramDto: StudentParamDto, @Body() studentDto: UpdateStudentDto) {
 
-        const student = await this.studentService.getStudentById(student_id);
+        const student = await this.studentService.getStudentById(paramDto.student_id);
 
         this.badException.checkAndGenerateException(!student, 'student','not',['student_id']);
 
-        return this.studentService.updateStudent(student_id, studentDto);
+        return this.studentService.updateStudent(paramDto.student_id, studentDto);
     }
 
     @ApiOperation({summary: 'Удалить ученика'})
     @ApiResponse({status: 200, type: ''})
     @HttpCode(200)
     @Delete(':student_id')
-    async remove(@Param('student_id') student_id: number) {
+    async remove(@Param() paramDto: StudentParamDto) {
 
-        const student = await this.studentService.getStudentById(student_id);
+        const student = await this.studentService.getStudentById(paramDto.student_id);
 
         this.badException.checkAndGenerateException(!student, 'student','not', ['student_id']);
 
-        return this.studentService.removeStudent(student_id);
+        return this.studentService.removeStudent(paramDto.student_id);
     }
 }

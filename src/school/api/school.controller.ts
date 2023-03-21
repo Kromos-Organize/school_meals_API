@@ -1,7 +1,7 @@
 import {Body, Controller, Delete, Get, HttpCode, Param, Post, Put, Req, UseGuards} from '@nestjs/common';
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {SchoolService} from "../application/school.service";
-import {SchoolCreateDto, SchoolUpdateDto} from "../domain/dto/school-request.dto";
+import {SchoolCreateDto, SchoolParamDto, SchoolUpdateDto} from "../domain/dto/school-request.dto";
 import {School} from "../domain/entities/school.model";
 import {AuthGuard} from "@nestjs/passport";
 import {BadCheckEntitiesException} from "../../helpers/exception/BadCheckEntitiesException";
@@ -33,9 +33,9 @@ export class SchoolController {
     @ApiResponse({status: 200, type: School})
     @HttpCode(200)
     @Get(':school_id')
-    async get(@Param('school_id') school_id: number) {
+    async get(@Param() paramDto: SchoolParamDto) {
 
-        const school = await this.schoolService.getSchoolById(school_id);
+        const school = await this.schoolService.getSchoolById(paramDto.school_id);
 
         this.badException.checkAndGenerateException(!school, 'school','not',['school_id']);
 
@@ -62,25 +62,25 @@ export class SchoolController {
     @ApiResponse({status: 200, type: School})
     @HttpCode(200)
     @Put(':school_id')
-    async update(@Param('school_id') school_id: number, @Body() schoolDto: SchoolUpdateDto) {
+    async update(@Param() paramDto: SchoolParamDto, @Body() schoolDto: SchoolUpdateDto) {
 
-        const school = await this.schoolService.getSchoolById(school_id);
+        const school = await this.schoolService.getSchoolById(paramDto.school_id);
 
         this.badException.checkAndGenerateException(!school, 'school','not',['school_id']);
 
-        return this.schoolService.updateSchool(school_id, schoolDto);
+        return this.schoolService.updateSchool(paramDto.school_id, schoolDto);
     }
 
     @ApiOperation({summary: 'Удалить школу'})
     @ApiResponse({status: 200, type: SchoolDeleteResponseDto})
     @HttpCode(200)
     @Delete(':school_id')
-    async remove(@Param('school_id') school_id: number) {
+    async remove(@Param() paramDto: SchoolParamDto) {
 
-        const school = await this.schoolService.getSchoolById(school_id);
+        const school = await this.schoolService.getSchoolById(paramDto.school_id);
 
         this.badException.checkAndGenerateException(!school, 'school','not',['school_id']);
 
-        return this.schoolService.removeSchool(school_id);
+        return this.schoolService.removeSchool(paramDto.school_id);
     }
 }

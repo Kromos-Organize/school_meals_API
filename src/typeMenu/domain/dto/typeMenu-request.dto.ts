@@ -1,5 +1,24 @@
 import {ApiProperty} from "@nestjs/swagger";
-import {IsDate, IsNumber, Length} from "class-validator";
+import {IsInt, IsNotEmpty, IsNumber, Length} from "class-validator";
+import {Transform} from "class-transformer";
+
+export class TypeMenuParamDto {
+
+    @ApiProperty({example:'int', description:'Айди типа меню'})
+    @Transform(({ value }) => parseInt(value))
+    @IsInt({message: 'Айди типа меню должно быть числом'})
+    @IsNotEmpty({message: 'Обязательное поле'})
+    type_id: number
+}
+
+export class TypeMenuDto {
+
+    @ApiProperty({example:'int', description:'Айди школы'})
+    @IsInt({message: 'Айди школы должна быть числом'})
+    @Transform(({ value }) => value?.trim())
+    @IsNotEmpty({message: 'Обязательное поле'})
+    school_id: number
+}
 
 export class CreateTypeMenuDto {
 

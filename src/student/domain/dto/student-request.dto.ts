@@ -1,5 +1,30 @@
 import {ApiProperty} from "@nestjs/swagger";
-import {IsNumber, IsString, Length} from "class-validator";
+import {IsInt, IsNotEmpty, IsNumber, IsString, Length} from "class-validator";
+import {Transform} from "class-transformer";
+
+export class StudentQueryDto {
+
+    @ApiProperty({example:'int', description:'Айди школы'})
+    @Transform(({ value }) => parseInt(value))
+    @IsInt({message: 'Айди школы должна быть числом'})
+    @IsNotEmpty({message: 'Обязательное поле'})
+    school_id: number
+
+    @ApiProperty({example:'int', description:'Айди класса'})
+    @Transform(({ value }) => parseInt(value))
+    @IsInt({message: 'Айди класса должна быть числом'})
+    @IsNotEmpty({message: 'Обязательное поле'})
+    class_id: number
+}
+
+export class StudentParamDto {
+
+    @ApiProperty({example:'int', description:'Айди студента'})
+    @IsInt({message: 'Айди студента должно быть числом'})
+    @Transform(({ value }) => value?.trim())
+    @IsNotEmpty({message: 'Обязательное поле'})
+    student_id: number
+}
 
 export class StudentRequestDto {
 

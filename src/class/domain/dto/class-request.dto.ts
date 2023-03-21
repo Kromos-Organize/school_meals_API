@@ -1,5 +1,12 @@
 import {ApiProperty} from "@nestjs/swagger";
 import {IsNumber, IsString, Max, Min} from "class-validator";
+import {PartialType} from "@nestjs/mapped-types";
+import {StudentQueryDto} from "../../../student/domain/dto/student-request.dto";
+
+
+export class ClassQueryDto extends PartialType(StudentQueryDto){}
+
+export class ClassParamDto extends PartialType(StudentQueryDto) {}
 
 export class CreateClassDto {
 
