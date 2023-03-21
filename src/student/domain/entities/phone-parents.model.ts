@@ -6,12 +6,12 @@ import {
     Model,
     Table,
 } from 'sequelize-typescript';
-import { IPhoneParentsModel } from '../dto/student-service.dto';
+import { IPhoneParents } from '../dto/student-service.dto';
 import { ApiProperty } from '@nestjs/swagger';
 import { Student } from './student.model';
 
 @Table({ tableName: 'phone_parents' })
-export class PhoneParentsModel extends Model<PhoneParentsModel, IPhoneParentsModel> {
+export class PhoneParents extends Model<PhoneParents, IPhoneParents> {
 
     @ApiProperty({ example: '1', description: 'ID номера телефона' })
     @Column({type: DataType.INTEGER, unique: true, autoIncrement: true, primaryKey: true})

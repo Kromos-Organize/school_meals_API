@@ -3,14 +3,14 @@ import {InjectModel} from "@nestjs/sequelize";
 import {Student} from "../domain/entities/student.model";
 import {IUpdateStudent, StudentCreationAttrs} from "../domain/dto/student-service.dto";
 import { Sequelize } from "sequelize-typescript";
-import { PhoneParentsModel } from "../domain/entities/phone-parents.model";
+import { PhoneParents } from "../domain/entities/phone-parents.model";
 
 @Injectable()
 export class StudentRepository {
 
     constructor(
         @InjectModel(Student) private studentRepository: typeof Student,
-        @InjectModel(PhoneParentsModel) private parentsPhoneModel: typeof PhoneParentsModel,
+        @InjectModel(PhoneParents) private parentsPhoneModel: typeof PhoneParents,
         private sequelize: Sequelize,
     ) {}
 
@@ -23,8 +23,8 @@ export class StudentRepository {
 
             const phoneStudent =  {
                 student_id: student.student_id,
-                m_phone: studentDto.m_phone,
-                f_phone: studentDto.f_phone,
+                m_phone: studentDto.phoneParents.m_phone,
+                f_phone: studentDto.phoneParents.m_phone,
             }
 
             await this.parentsPhoneModel.create( phoneStudent, { transaction: transaction }, );

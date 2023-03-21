@@ -1,6 +1,6 @@
 import {ApiProperty} from "@nestjs/swagger";
-import {IsInt, IsNotEmpty, IsNumber, IsString, Length} from "class-validator";
-import {Transform} from "class-transformer";
+import {IsInt, IsNotEmpty, IsNumber, IsString, Length, ValidateNested} from "class-validator";
+import {Transform, Type} from "class-transformer";
 
 export class StudentQueryDto {
 
@@ -24,6 +24,20 @@ export class StudentParamDto {
     @Transform(({ value }) => value?.trim())
     @IsNotEmpty({message: 'Обязательное поле'})
     student_id: number
+}
+
+export class ParentsPhoneDto {
+
+    @IsString({message: 'Должно быть строкой.'})
+    @IsNotEmpty()
+    @Transform(({ value }) => value?.trim())
+    m_phone: string
+
+    @IsString({message: 'Должно быть строкой.'})
+    @IsNotEmpty()
+    @Transform(({ value }) => value?.trim())
+    f_phone: string
+
 }
 
 export class StudentRequestDto {
@@ -56,19 +70,10 @@ export class StudentRequestDto {
     readonly isLargeFamilies?: boolean;
 
     @ApiProperty({
-        example: '{"мама":"(29)748-58-75", "папа: (29)748-58-75"}',
-        description: 'Телефон родителей, JSON.stringify',
-    })
-    @IsString({ message: 'Должно быть строкой.' })
-    readonly phoneParents: string;
-
-    get m_phone(): string {
-        return Object.values(JSON.parse(this.phoneParents))[0].toString();
-    }
-
-    get f_phone(): string {
-        return Object.values(JSON.parse(this.phoneParents))[1].toString();
-    }
+        example: '{ m_phone: "375297485875", f_phone: "375297485875" }', description: 'Телефоны родителей'})
+    @ValidateNested()
+    @Type(() => ParentsPhoneDto)
+    readonly phoneParents: ParentsPhoneDto;
 }
 
 export class UpdateStudentDto {
@@ -96,17 +101,8 @@ export class UpdateStudentDto {
     @ApiProperty({example: false, description: 'Параметр отвечающий многодетная семья или нет'})
     readonly isLargeFamilies?: boolean;
 
-    @ApiProperty({ example: '{"мама":"375297485875", "папа:375297485875"}', description: 'Телефон родителей, JSON.stringify'})
-    @IsString({ message: 'Должно быть строкой.' })
-    readonly phoneParents: string;
-
-    get m_phone(): string {
-
-        return Object.values(JSON.parse(this.phoneParents))[0].toString();
-    }
-
-    get f_phone(): string {
-
-        return Object.values(JSON.parse(this.phoneParents))[1].toString();
-    }
+    @ApiProperty({ example: '{ m_phone: "375297485875", f_phone: "375297485875" }', description: 'Телефоны родителей'})
+    @ValidateNested()
+    @Type(() => ParentsPhoneDto)
+    readonly phoneParents: ParentsPhoneDto;
 }
