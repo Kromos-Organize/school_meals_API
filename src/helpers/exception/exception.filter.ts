@@ -33,14 +33,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
         return;
 
       case 403:
-        if (responseBody['message'] === 'loginEmptyBodyError'){
-          response.status(403).json({
-            fields: ['email', 'password', 'isAdminDev'],
-            message: 'Не полные данные для входа в систему (не хватает одного или нескольких полей)'
-          });
-          return;
-        }
-
         response.status(403).json({
           field: ['isActive'],
           message: 'Пользователь не активирован'
