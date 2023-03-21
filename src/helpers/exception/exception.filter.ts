@@ -28,11 +28,11 @@ export class HttpExceptionFilter implements ExceptionFilter {
         break;
 
       case 403:
-
         response.status(403).json({
           fields: ['id'],
           message: 'Доступ не предоставлен.'
         });
+        return;
 
       case 401:
 

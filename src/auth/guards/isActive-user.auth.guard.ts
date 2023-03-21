@@ -2,6 +2,7 @@ import {CanActivate, ExecutionContext, ForbiddenException, Injectable} from "@ne
 import {UsersQueryRepository} from "../../users/infrastructure/users.query.repository";
 import {Request} from "express";
 import {BadCheckEntitiesException} from "../../helpers/exception/BadCheckEntitiesException";
+import {isEmail} from "class-validator";
 
 @Injectable()
 export class IsActiveUserAuthGuard implements CanActivate {
@@ -14,6 +15,7 @@ export class IsActiveUserAuthGuard implements CanActivate {
     async canActivate(context: ExecutionContext): Promise<boolean> {
 
         const req: Request = context.switchToHttp().getRequest();
+        if (Object.keys(req.body).length < 3 || !req.body.email || !req.body.isAdminDev ) return false
 
         if (req.body.isAdminDev) {
 
@@ -21,6 +23,7 @@ export class IsActiveUserAuthGuard implements CanActivate {
         }
 
         const email = req.body.email;
+        if (!isEmail(email)) this.badException.checkAndGenerateException(false,'user', 'not',['email']);
 
         const user = await this.usersQueryRepository.getUserByEmail(email);
 
