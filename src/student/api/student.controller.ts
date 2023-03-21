@@ -10,7 +10,7 @@ import {
     Query,
     UseGuards,
 } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {ApiBearerAuth, ApiOperation, ApiResponse, ApiTags} from '@nestjs/swagger';
 import { StudentService } from '../application/student.service';
 import { Student } from '../domain/entities/student.model';
 import {
@@ -22,9 +22,12 @@ import {
 import { BadCheckEntitiesException } from '../../helpers/exception/BadCheckEntitiesException';
 import { SchoolService } from '../../school/application/school.service';
 import { ClassService } from '../../class/application/class.service';
-import { AuthGuard } from "@nestjs/passport";
+import {AuthGuard} from "@nestjs/passport";
+import {BadRequestResult} from "../../helpers/exception/badRequestResult";
 
 @ApiTags('Ученики')
+@ApiBearerAuth()
+@ApiResponse({status: 401, description: 'Некорректный аксесс-токен'})
 @Controller('student')
 @UseGuards(AuthGuard())
 export class StudentController {
@@ -37,7 +40,8 @@ export class StudentController {
     ) {}
 
     @ApiOperation({summary: 'Получение списка учеников класса'})
-    @ApiResponse({status: 200, type: [Student]})
+    @ApiResponse({status: 200, type: [Student], description: 'Успешное получение списка учеников'})
+    @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage('school','not') + ' / ' +BadCheckEntitiesException.errorMessage('class','not')})
     @HttpCode(200)
     @Get()
     async getStudentToClass(@Query() query: StudentQueryDto) {
@@ -52,7 +56,8 @@ export class StudentController {
     }
 
     @ApiOperation({summary: 'Получить данные ученика'})
-    @ApiResponse({status: 200, type: Student})
+    @ApiResponse({status: 200, type: Student, description: 'Успешное получение данных ученика'})
+    @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage('student','not')})
     @HttpCode(200)
     @Get(':student_id')
     async getStudentById(@Param() paramDto: StudentParamDto) {
@@ -65,7 +70,8 @@ export class StudentController {
     }
 
     @ApiOperation({summary: 'Добавление ученика в класс'})
-    @ApiResponse({status: 201, type: Student})
+    @ApiResponse({status: 201, type: Student, description: 'Успешное добавление ученика в класс'})
+    @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage('school','not') + ' / ' +  BadCheckEntitiesException.errorMessage('class','not') + BadCheckEntitiesException.errorMessage('student','yep') })
     @HttpCode(201)
     @Post()
     async create(@Body() studentDto: StudentRequestDto) {
@@ -87,7 +93,8 @@ export class StudentController {
     }
 
     @ApiOperation({summary: 'Изменение данных ученика'})
-    @ApiResponse({status: 200, type: Student})
+    @ApiResponse({status: 200, type: Student, description: 'Успешное изменение данных ученика'})
+    @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage('student','not')})
     @HttpCode(200)
     @Put(':student_id')
     async update(@Param() paramDto: StudentParamDto, @Body() studentDto: UpdateStudentDto) {
@@ -100,7 +107,8 @@ export class StudentController {
     }
 
     @ApiOperation({summary: 'Удалить ученика'})
-    @ApiResponse({status: 200, type: ''})
+    @ApiResponse({status: 200, type: '', description: 'Успешное удаление ученика'})
+    @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage('student','not')})
     @HttpCode(200)
     @Delete(':student_id')
     async remove(@Param() paramDto: StudentParamDto) {

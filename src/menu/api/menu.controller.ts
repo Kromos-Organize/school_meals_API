@@ -1,4 +1,4 @@
-import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
+import {ApiBearerAuth, ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {Body, Controller, Delete, Get, HttpCode, Param, Post, Put, Query, UseGuards} from "@nestjs/common";
 import {AuthGuard} from "@nestjs/passport";
 import {MenuService} from "../application/menu.service";
@@ -8,8 +8,11 @@ import {Menu} from "../domain/entity/menu.model";
 import {MenuCreateDto, MenuParamDto, MenuSchoolQueryDto, UpdateMenuDto} from "../domain/dto/menu-request.dto";
 import {MenuDeleteDto} from "../domain/dto/menu-response.dto";
 import {TypeMenuService} from "../../typeMenu/application/typeMenu.service";
+import {BadRequestResult} from "../../helpers/exception/badRequestResult";
 
 @ApiTags('Меню')
+@ApiBearerAuth()
+@ApiResponse({status: 401, description: 'Некорректный аксесс-токен'})
 @Controller('menu')
 @UseGuards(AuthGuard())
 export class MenuController{
@@ -22,7 +25,8 @@ export class MenuController{
     ) { }
 
     @ApiOperation({summary: 'Получить список меню для школы на день.'})
-    @ApiResponse({status: 200, type: [Menu]})
+    @ApiResponse({status: 200, type: [Menu], description: 'Успешное получение списка меню для школы на день'})
+    @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage('school','not')})
     @HttpCode(200)
     @Get()
     async getAllMenuBySchool(@Query() queryDto: MenuSchoolQueryDto) {
@@ -35,7 +39,8 @@ export class MenuController{
     }
 
     @ApiOperation({summary: 'Получить меню по id'})
-    @ApiResponse({status: 200, type: Menu})
+    @ApiResponse({status: 200, type: Menu, description: 'Успешное получение меню по id'})
+    @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage('menu','not')})
     @HttpCode(200)
     @Get('/:menu_id')
     async getMenuById(@Param() paramDto: MenuParamDto) {
@@ -48,7 +53,8 @@ export class MenuController{
     }
 
     @ApiOperation({summary: 'Создать меню для школы'})
-    @ApiResponse({status: 200, type: Menu})
+    @ApiResponse({status: 200, type: Menu, description: 'Успешное создание меню для школы'})
+    @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage('menu','yep') + ' / ' + BadCheckEntitiesException.errorMessage('typeMenu','not')})
     @HttpCode(201)
     @Post()
     async createMenu(@Body() menuDto: MenuCreateDto) {
@@ -63,7 +69,8 @@ export class MenuController{
     }
 
     @ApiOperation({summary: 'Обновить меню'})
-    @ApiResponse({status: 200, type: Menu})
+    @ApiResponse({status: 200, type: Menu, description: 'Успешное обновление меню'})
+    @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage('menu','not')})
     @HttpCode(200)
     @Put('/:menu_id')
     async updateMenu(@Param() paramDto: MenuParamDto, @Body() updateMenu: UpdateMenuDto){
@@ -76,7 +83,8 @@ export class MenuController{
     }
 
     @ApiOperation({summary: 'Удалить меню'})
-    @ApiResponse({status: 201, type: MenuDeleteDto})
+    @ApiResponse({status: 201, type: MenuDeleteDto, description: 'Успешное удаление меню'})
+    @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage('menu','not')})
     @HttpCode(201)
     @Delete('/:menu_id')
     async removeMenu(@Param() paramDto: MenuParamDto) {

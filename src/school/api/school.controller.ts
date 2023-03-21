@@ -1,5 +1,5 @@
 import {Body, Controller, Delete, Get, HttpCode, Param, Post, Put, Req, UseGuards} from '@nestjs/common';
-import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
+import {ApiBearerAuth, ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {SchoolService} from "../application/school.service";
 import {SchoolCreateDto, SchoolParamDto, SchoolUpdateDto} from "../domain/dto/school-request.dto";
 import {School} from "../domain/entities/school.model";
@@ -8,8 +8,11 @@ import {BadCheckEntitiesException} from "../../helpers/exception/BadCheckEntitie
 import {SchoolDeleteResponseDto} from "../domain/dto/school-reponse.dto";
 import {SearchUserGuard} from "../../auth/guards/search.user.guard";
 import {UsersService} from "../../users/application/users.service";
+import {BadRequestResult} from "../../helpers/exception/badRequestResult";
 
 @ApiTags('Школа')
+@ApiBearerAuth()
+@ApiResponse({status: 401, description: 'Некорректный аксесс-токен'})
 @Controller('school')
 @UseGuards(AuthGuard())
 export class SchoolController {
@@ -21,7 +24,7 @@ export class SchoolController {
     ) { }
 
     @ApiOperation({summary: 'Получить список школ'})
-    @ApiResponse({status: 200, type: [School]})
+    @ApiResponse({status: 200, type: [School], description: 'Успешное получение списка школ'})
     @HttpCode(200)
     @Get()
     getAll() {
@@ -30,7 +33,8 @@ export class SchoolController {
     }
 
     @ApiOperation({summary: 'Получить данные школы'})
-    @ApiResponse({status: 200, type: School})
+    @ApiResponse({status: 200, type: School, description: 'Успешное получение данных школы'})
+    @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage('school','not')})
     @HttpCode(200)
     @Get(':school_id')
     async get(@Param() paramDto: SchoolParamDto) {
@@ -44,7 +48,8 @@ export class SchoolController {
 
     @UseGuards(SearchUserGuard)
     @ApiOperation({summary: 'Добавить школу'})
-    @ApiResponse({status: 200, type: School})
+    @ApiResponse({status: 200, type: School, description: 'Успешное добавление школы'})
+    @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage('school', 'yep')})
     @HttpCode(201)
     @Post()
     async create(@Body() schoolDto: SchoolCreateDto, @Req() req) {
@@ -59,7 +64,8 @@ export class SchoolController {
     }
 
     @ApiOperation({summary: 'Изменить данные школы'})
-    @ApiResponse({status: 200, type: School})
+    @ApiResponse({status: 200, type: School, description: 'Успешное изменение данных школы'})
+    @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage('school','not')})
     @HttpCode(200)
     @Put(':school_id')
     async update(@Param() paramDto: SchoolParamDto, @Body() schoolDto: SchoolUpdateDto) {
@@ -72,7 +78,8 @@ export class SchoolController {
     }
 
     @ApiOperation({summary: 'Удалить школу'})
-    @ApiResponse({status: 200, type: SchoolDeleteResponseDto})
+    @ApiResponse({status: 200, type: SchoolDeleteResponseDto, description: 'Успешное удаление школы'})
+    @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage('school','not')})
     @HttpCode(200)
     @Delete(':school_id')
     async remove(@Param() paramDto: SchoolParamDto) {

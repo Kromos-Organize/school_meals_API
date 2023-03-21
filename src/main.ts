@@ -16,6 +16,8 @@ const start = async () => {
         .setDescription('Документация REST API')
         .setVersion('1.0.0')
         .addTag('KromoS')
+        .addCookieAuth()
+        .addBearerAuth()
         .build();
 
     const document = SwaggerModule.createDocument(app,config);
