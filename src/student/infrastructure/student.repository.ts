@@ -24,7 +24,7 @@ export class StudentRepository {
             const phoneStudent =  {
                 student_id: student.student_id,
                 m_phone: studentDto.phoneParents.m_phone,
-                f_phone: studentDto.phoneParents.m_phone,
+                f_phone: studentDto.phoneParents.f_phone,
             }
 
             await this.parentsPhoneModel.create( phoneStudent, { transaction: transaction }, );
