@@ -10,6 +10,8 @@ import {JwtStrategy} from "./strategy/jwt.strategy";
 import {ValidateUserService} from "../helpers/middleware/validateUser.service";
 import {JwtService} from "./application/jwt-service";
 import {BadCheckEntitiesException} from "../helpers/exception/BadCheckEntitiesException";
+import {SequelizeModule} from "@nestjs/sequelize";
+import {Session} from "./domain/entities/session.model";
 
 const jwtFactory = {
     useFactory: async () => ({
@@ -24,6 +26,7 @@ const jwtFactory = {
     controllers: [AuthController],
     providers: [AuthService, JwtStrategy, JwtService, ValidateUserService, BadCheckEntitiesException],
     imports: [
+        SequelizeModule.forFeature([Session]),
         forwardRef(() => UserModule),
         forwardRef(() => AdminModule),
         TelegramBotModule,

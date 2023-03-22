@@ -22,6 +22,7 @@ import {Cookies} from "../../helpers/param-decorators/custom-decorators";
 import {BadRequestResult} from "../../helpers/exception/badRequestResult";
 import {UnauthorizedResult} from "../../helpers/exception/unauthorizedResult";
 import {ForbiddenResult} from "../../helpers/exception/forbiddenResult";
+import {Session} from "../domain/entities/session.model";
 
 
 @ApiTags("Авторизация")
@@ -42,7 +43,7 @@ export class AuthController {
     @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage('auth', 'incorrectAuth')})
     @ApiResponse({status: 403, type: ForbiddenResult, description: 'Пользователь не активирован'})
     @Post("/login")
-    async login(@Body() userDto: LoginDto, @Res() res) {
+    async login(@Body() userDto: LoginDto, @Req() req, @Res() res) {
 
         const user = await this.authService.checkCredentials(userDto);
 
@@ -50,7 +51,14 @@ export class AuthController {
 
         const tokens = await this.jwtService.createJWTTokens(user, true);
 
-        if (user) delete user.password;
+        if (user) {
+            delete user.password;
+            await Session.create({
+                ip: req.get('host'),
+                device_name: req.get("user-agent"),
+                user_id: user.id,
+            }, {})
+        }
 
         res
             .cookie("refreshToken", tokens.refreshToken, cookieConfigToken)
