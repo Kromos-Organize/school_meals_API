@@ -22,7 +22,8 @@ import {Cookies} from "../../helpers/param-decorators/custom-decorators";
 import {BadRequestResult} from "../../helpers/exception/badRequestResult";
 import {UnauthorizedResult} from "../../helpers/exception/unauthorizedResult";
 import {ForbiddenResult} from "../../helpers/exception/forbiddenResult";
-import {Session} from "../domain/entities/session.model";
+import {SessionCreateDTO} from "../session/domain/dto/session-service.dto";
+import {SessionService} from "../session/application/SessionService";
 
 
 @ApiTags("Авторизация")
@@ -34,6 +35,7 @@ export class AuthController {
         private usersQueryRepository: UsersQueryRepository,
         private jwtService: JwtService,
         private badException: BadCheckEntitiesException,
+        private sessionService: SessionService
     ) {
     }
 
@@ -53,11 +55,17 @@ export class AuthController {
 
         if (user) {
             delete user.password;
-            await Session.create({
+            const sessionData: SessionCreateDTO = {
                 ip: req.get('host'),
                 device_name: req.get("user-agent"),
                 user_id: user.id,
-            }, {})
+            }
+            const session = await this.sessionService.getSessionByDeviceAndIP(sessionData)
+            if (!session || session.logged_out) {
+                await this.sessionService.createSession(sessionData)
+            } else {
+                await this.sessionService.updateLastSessionUsage(sessionData, new Date())
+            }
         }
 
         res
@@ -105,13 +113,20 @@ export class AuthController {
     @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage("auth", 'notAuth')})
     @ApiResponse({status: 401, type: UnauthorizedResult, description: 'Некорректный рефреш-токен'})
     @Post("/logout")
-    async logout(@Cookies() refreshToken: string, @Res() res) {
+    async logout(@Cookies() refreshToken: string, @Req() req, @Res() res) {
 
         this.badException.checkAndGenerateException(!refreshToken, "auth", 'notAuth', ['email'])
 
         if (!refreshToken) {
             throw new UnauthorizedException()
         }
+        const user = await this.jwtService.getUserIdByRefreshToken(refreshToken)
+        const sessionData: SessionCreateDTO = {
+            ip: req.get('host'),
+            device_name: req.get("user-agent"),
+            user_id: user.id,
+        }
+        await this.sessionService.logoutUserSession(sessionData)
 
         res.clearCookie('refreshToken').sendStatus(204);
     }
