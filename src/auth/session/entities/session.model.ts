@@ -1,6 +1,7 @@
 import {Column, DataType, ForeignKey, Model, Table} from "sequelize-typescript";
 import {ApiProperty} from "@nestjs/swagger";
 import {User} from "../../../users/domain/entities/user.model";
+import {addDays}  from 'date-fns';
 
 interface SessionCreationAttrs{
     user_id: number
@@ -9,6 +10,7 @@ interface SessionCreationAttrs{
     issued_at: Date
     last_usage_at: Date
     logged_out: boolean
+    expires_at: Date
 }
 
 @Table({tableName: 'session', timestamps: false})
@@ -38,6 +40,10 @@ export class Session extends Model<Session, SessionCreationAttrs> {
     @ApiProperty({example:'2023-03-22 16:15:54.876', description:'Дата последнего использования рефреш-токена / авторизации'})
     @Column({type: DataType.DATE, allowNull: false, defaultValue: new Date()})
     last_usage_at: Date;
+
+    @ApiProperty({example:'2023-03-22 16:15:54.876', description:'Дата просрочки рефреш-токена / авторизации'})
+    @Column({type: DataType.DATE, allowNull: false, defaultValue: addDays(new Date(), 30)})
+    expires_at: Date;
 
     @ApiProperty({example:'false', description:'Флаг логаута пользователя'})
     @Column({type: DataType.BOOLEAN, allowNull: false, defaultValue: false})

@@ -52,7 +52,7 @@ export class AuthController {
                 user_id: user.id,
             }
             const session = await this.sessionService.getSessionByDeviceAndIP(sessionData)
-            if (!session || session.logged_out) {
+            if (!session || session.logged_out || session.expires_at < new  Date()) {
                 await this.sessionService.createSession(sessionData)
             } else {
                 await this.sessionService.updateLastSessionUsage(sessionData, new Date())
