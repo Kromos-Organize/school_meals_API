@@ -6,5 +6,6 @@ import {User} from "./users/domain/entities/user.model";
 import {PhoneParents} from "./student/domain/entities/phone-parents.model";
 import {Menu} from "./menu/domain/entity/menu.model";
 import {TypeMenu} from "./typeMenu/domain/entity/type-menu.model";
+import {Prices} from "./prices/domain/entity/prices.model";
 
-export const allModels = [Admin, User, School, Student, Class, PhoneParents, Menu, TypeMenu];
+export const allModels = [Admin, User, School, Student, Class, PhoneParents, Menu, TypeMenu, Prices];

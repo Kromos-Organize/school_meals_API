@@ -1,15 +1,10 @@
 import {Column, DataType, ForeignKey, Model, Table} from "sequelize-typescript";
 import {ApiProperty} from "@nestjs/swagger";
 import {School} from "../../../school/domain/entities/school.model";
-
-interface ClassCreationAttrs{
-    school_id: number
-    number: number
-    type: string
-}
+import {ICreateClass} from "../dto/class-service.dto";
 
 @Table({tableName: 'class'})
-export class Class extends Model<Class,ClassCreationAttrs> {
+export class Class extends Model<Class, ICreateClass> {
 
     @ApiProperty({example:'1', description:'ID'})
     @Column({type: DataType.INTEGER, unique: true, autoIncrement: true, primaryKey: true})

@@ -15,6 +15,7 @@ import {ThrottlerGuard, ThrottlerModule} from "@nestjs/throttler";
 import {APP_GUARD} from "@nestjs/core";
 import {MenuModule} from "./menu/menu.module";
 import {TypeMenuModule} from "./typeMenu/typeMenu.module";
+import {PricesModule} from "./prices/prices.module";
 
 @Module({
   controllers: [],
@@ -54,6 +55,7 @@ import {TypeMenuModule} from "./typeMenu/typeMenu.module";
     TelegramBotModule,
     MenuModule,
     TypeMenuModule,
+    PricesModule,
   ],
 })
 export class AppModule {
