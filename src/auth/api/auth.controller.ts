@@ -1,13 +1,4 @@
-import {
-    Body,
-    Controller,
-    HttpCode,
-    Post,
-    Req,
-    Res,
-    UnauthorizedException,
-    UseGuards,
-} from "@nestjs/common";
+import {Body, Controller, HttpCode, Post, Req, Res, UnauthorizedException, UseGuards,} from "@nestjs/common";
 import {ApiCookieAuth, ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {AuthService} from "../application/auth.service";
 import {LoginDto, RegistrationDto} from "../domain/dto/auth-request.dto";
@@ -120,11 +111,10 @@ export class AuthController {
         if (!refreshToken) {
             throw new UnauthorizedException()
         }
-        const user = await this.jwtService.getUserIdByRefreshToken(refreshToken)
         const sessionData: SessionCreateDTO = {
             ip: req.get('host'),
             device_name: req.get("user-agent"),
-            user_id: user.id,
+            user_id: req.user.id,
         }
         await this.sessionService.logoutUserSession(sessionData)
 
