@@ -15,7 +15,7 @@ export class IsActiveUserAuthGuard implements CanActivate {
     async canActivate(context: ExecutionContext): Promise<boolean> {
 
         const req: Request = context.switchToHttp().getRequest();
-        if (Object.keys(req.body).length < 3 || !req.body.email || !req.body.isAdminDev ) return false
+        if (Object.keys(req.body).length < 3 || !req.body.email) return false
 
         if (req.body.isAdminDev) {
 
