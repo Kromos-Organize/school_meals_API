@@ -10,7 +10,8 @@ export class ClassRepository {
 
     async createClass(classDto: ICreateClass) {
 
-        return await this.classRepository.create(classDto);
+        return await this.classRepository.create(
+            {school_id: classDto.school_id, number: classDto.number, type: classDto.type, category: classDto.category});
     }
 
     async updateClass(class_id: number, classDto: IUpdateClass) {
@@ -19,7 +20,9 @@ export class ClassRepository {
 
         if (!classInstance) return false;
 
-        await classInstance.update(classDto);
+        await classInstance.update(
+            {number: classDto.number, type: classDto.type, category: classDto.category}
+        );
 
         return await classInstance.save();
     }

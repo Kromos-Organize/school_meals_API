@@ -25,6 +25,6 @@ export class Class extends Model<Class, ICreateClass> {
     type: string;
 
     @ApiProperty({example:'junior', description:'Категория класса(junior - 1-4 классы, elder - 5-11 классы)'})
-    @Column({type: DataType.ENUM,  allowNull: false, values: [ClassCategoryEnum.elder, ClassCategoryEnum.junior], get(){return [1,2,3,4].includes(this.getDataValue('number')) ? ClassCategoryEnum.junior : ClassCategoryEnum.elder} })
+    @Column({type: DataType.ENUM,  allowNull: false, values: [ClassCategoryEnum.elder, ClassCategoryEnum.junior] })
     category: ClassCategoryEnum;
 }
