@@ -6,6 +6,7 @@ import {Class} from "../../../class/domain/entities/class.model";
 import {Student} from "../../../student/domain/entities/student.model";
 import {Menu} from "../../../menu/domain/entity/menu.model";
 import {TypeMenu} from "../../../typeMenu/domain/entity/type-menu.model";
+import {CalcSchoolSum} from "../../../calculate/domain/entity/calcSchoolSum.model";
 
 @Table({tableName: 'school'})
 export class School extends Model<School, ISchoolCreationAttrs> {
@@ -52,4 +53,7 @@ export class School extends Model<School, ISchoolCreationAttrs> {
 
     @HasMany(() => TypeMenu)
     type_menu: TypeMenu
+
+    @HasMany(() => CalcSchoolSum)
+    calcSchoolSum: CalcSchoolSum
 }

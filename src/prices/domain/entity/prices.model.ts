@@ -1,7 +1,9 @@
 import {Column, DataType, HasOne, Model, Table} from "sequelize-typescript";
 import {ICreatePrices} from "../dto/prices-service.dto";
 import {ApiProperty} from "@nestjs/swagger";
-import {CalcClassMenu} from "../../../calcClassMenu/domain/entity/calcClassMenu.model";
+import {CalcClassMenu} from "../../../calculate/domain/entity/calcClassMenu.model";
+import {CalcClassSum} from "../../../calculate/domain/entity/calcClassSum.model";
+import {CalcSchoolSum} from "../../../calculate/domain/entity/calcSchoolSum.model";
 
 @Table({tableName: 'prices'})
 export class Prices extends Model<Prices, ICreatePrices>{
@@ -20,4 +22,10 @@ export class Prices extends Model<Prices, ICreatePrices>{
 
     @HasOne(() => CalcClassMenu)
     calcClassMenu: CalcClassMenu;
+
+    @HasOne(() => CalcClassSum)
+    calcClassSum: CalcClassSum
+
+    @HasOne(() => CalcSchoolSum)
+    calcSchoolSum: CalcSchoolSum
 }

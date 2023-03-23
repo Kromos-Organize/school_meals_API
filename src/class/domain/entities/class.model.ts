@@ -2,7 +2,8 @@ import {BelongsTo, Column, DataType, ForeignKey, HasMany, Model, Table} from "se
 import {ApiProperty} from "@nestjs/swagger";
 import {School} from "../../../school/domain/entities/school.model";
 import {ICreateClass} from "../dto/class-service.dto";
-import {CalcClassMenu} from "../../../calcClassMenu/domain/entity/calcClassMenu.model";
+import {CalcClassMenu} from "../../../calculate/domain/entity/calcClassMenu.model";
+import {CalcClassSum} from "../../../calculate/domain/entity/calcClassSum.model";
 
 @Table({tableName: 'class'})
 export class Class extends Model<Class, ICreateClass> {
@@ -29,4 +30,7 @@ export class Class extends Model<Class, ICreateClass> {
 
     @HasMany(() => CalcClassMenu)
     calcClassMenu: CalcClassMenu
+
+    @HasMany(() => CalcClassSum)
+    calcClassSum: CalcClassSum
 }

@@ -16,6 +16,7 @@ import {APP_GUARD} from "@nestjs/core";
 import {MenuModule} from "./menu/menu.module";
 import {TypeMenuModule} from "./typeMenu/typeMenu.module";
 import {PricesModule} from "./prices/prices.module";
+import {CalculateModule} from "./calculate/calculate.module";
 
 @Module({
   controllers: [],
@@ -56,6 +57,7 @@ import {PricesModule} from "./prices/prices.module";
     MenuModule,
     TypeMenuModule,
     PricesModule,
+    CalculateModule,
   ],
 })
 export class AppModule {

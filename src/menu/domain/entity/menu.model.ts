@@ -3,7 +3,7 @@ import {ApiProperty} from "@nestjs/swagger";
 import {School} from "../../../school/domain/entities/school.model";
 import {IMenuCreateAttr} from "../dto/menu-service.dto";
 import {TypeMenu} from "../../../typeMenu/domain/entity/type-menu.model";
-import {CalcClassMenu} from "../../../calcClassMenu/domain/entity/calcClassMenu.model";
+import {CalcClassMenu} from "../../../calculate/domain/entity/calcClassMenu.model";
 
 @Table({tableName: 'menu'})
 export class Menu extends Model<Menu, IMenuCreateAttr> {
