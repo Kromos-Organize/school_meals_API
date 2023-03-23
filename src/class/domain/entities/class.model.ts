@@ -1,4 +1,4 @@
-import {BelongsTo, Column, DataType, ForeignKey, HasOne, Model, Table} from "sequelize-typescript";
+import {BelongsTo, Column, DataType, ForeignKey, HasMany, Model, Table} from "sequelize-typescript";
 import {ApiProperty} from "@nestjs/swagger";
 import {School} from "../../../school/domain/entities/school.model";
 import {ICreateClass} from "../dto/class-service.dto";
@@ -27,6 +27,6 @@ export class Class extends Model<Class, ICreateClass> {
     @Column({type: DataType.STRING, allowNull: false})
     type: string;
 
-    @HasOne(() => CalcClassMenu)
+    @HasMany(() => CalcClassMenu)
     calcClassMenu: CalcClassMenu
 }
