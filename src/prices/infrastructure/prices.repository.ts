@@ -1,7 +1,7 @@
 import {Injectable} from "@nestjs/common";
 import {InjectModel} from "@nestjs/sequelize";
 import {Prices} from "../domain/entity/prices.model";
-import {ICreatePrices, IUpdatePrices} from "../domain/dto/prices-service.dto";
+import {ICreatePrices} from "../domain/dto/prices-service.dto";
 
 @Injectable()
 export class PricesRepository {
@@ -13,17 +13,6 @@ export class PricesRepository {
     async createPrice(priceDto: ICreatePrices) {
 
         return await this.pricesRepository.create(priceDto);
-    }
-
-    async updatePrice(price_id: number, priceDto: IUpdatePrices) {
-
-        const priceInstance = await this.pricesRepository.findOne({ where: { price_id }});
-
-        if (!priceInstance) return false;
-
-        await priceInstance.update(priceDto);
-
-        return await priceInstance.save();
     }
 
     async removePrice(price_id) {

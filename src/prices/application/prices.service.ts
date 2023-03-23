@@ -1,7 +1,7 @@
 import {Injectable} from "@nestjs/common";
 import {PricesQueryRepository} from "../infrastructure/prices.query.repository";
 import {PricesRepository} from "../infrastructure/prices.repository";
-import {ICreatePrices, IUpdatePrices} from "../domain/dto/prices-service.dto";
+import {ICreatePrices} from "../domain/dto/prices-service.dto";
 
 @Injectable()
 export class PricesService {
@@ -11,10 +11,6 @@ export class PricesService {
         private pricesRepository: PricesRepository,
     ) { }
 
-    async getAllPriceByDate(date: Date) {
-
-        return await this.pricesQueryRepository.getAllPriceByDate(date);
-    }
 
     async getPriceById(price_id: number) {
 
@@ -24,11 +20,6 @@ export class PricesService {
     async createPrice(priceDto: ICreatePrices){
 
         return await this.pricesRepository.createPrice(priceDto);
-    }
-
-    async updatePrice(price_id: number, priceDto: IUpdatePrices) {
-
-        return await this.pricesRepository.updatePrice(price_id, priceDto);
     }
 
     async removePrice(price_id) {
