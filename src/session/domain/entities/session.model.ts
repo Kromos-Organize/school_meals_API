@@ -2,19 +2,11 @@ import {Column, DataType, ForeignKey, Model, Table} from "sequelize-typescript";
 import {ApiProperty} from "@nestjs/swagger";
 import {User} from "../../../users/domain/entities/user.model";
 import {addDays}  from 'date-fns';
+import {ISessionCreationAttrs} from "../dto/session-service.dto";
 
-interface SessionCreationAttrs{
-    user_id: number
-    device_name: string
-    ip: string
-    issued_at: Date
-    last_usage_at: Date
-    logged_out: boolean
-    expires_at: Date
-}
 
 @Table({tableName: 'session', timestamps: false})
-export class Session extends Model<Session, SessionCreationAttrs> {
+export class Session extends Model<Session, ISessionCreationAttrs> {
 
     @ApiProperty({example:'1', description:'ID сессии'})
     @Column({type: DataType.INTEGER, unique: true, autoIncrement: true, primaryKey: true})

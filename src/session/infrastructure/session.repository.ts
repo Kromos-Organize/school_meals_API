@@ -1,14 +1,16 @@
 import {Injectable} from "@nestjs/common";
 import {InjectModel} from "@nestjs/sequelize";
-import {Session} from "../entities/session.model";
-import {SessionCreateDTO} from "../domain/dto/session-service.dto";
+import {Session} from "../domain/entities/session.model";
+import {ISessionCreateDTO} from "../domain/dto/session-service.dto";
 
 @Injectable()
 export class SessionRepository {
+
     constructor(@InjectModel(Session) private sessionRepository: typeof Session) {
     }
 
-    async createSession(dto: SessionCreateDTO): Promise<void> {
+    async createSession(dto: ISessionCreateDTO): Promise<void> {
+
         await Session.create({
             ip: dto.ip,
             device_name: dto.device_name,
@@ -16,7 +18,8 @@ export class SessionRepository {
         })
     }
 
-    async getUserSessions(data: SessionCreateDTO): Promise<Session> {
+    async getUserSessions(data: ISessionCreateDTO): Promise<Session> {
+
         return await this.sessionRepository.findOne(
             {
                 where:
@@ -28,8 +31,9 @@ export class SessionRepository {
             })
     }
 
-    async updateLastSessionUsage(data: SessionCreateDTO, date: Date): Promise<void> {
-        await this.sessionRepository.update({last_usage_at: date},
+    async updateLastSessionUsage(data: ISessionCreateDTO): Promise<void> {
+
+        await this.sessionRepository.update({last_usage_at: new Date()},
             {
                 where: {
                     user_id: data.user_id,
@@ -39,8 +43,9 @@ export class SessionRepository {
             })
     }
 
-    async logoutUserSession(data: SessionCreateDTO): Promise<void> {
-        await this.sessionRepository.update({logged_out: true},
+    async logoutUserSession(data: ISessionCreateDTO): Promise<void> {
+
+        await this.sessionRepository.update({logged_out: true, last_usage_at: new Date()},
             {
                 where: {
                     user_id: data.user_id,

@@ -11,9 +11,9 @@ import {ValidateUserService} from "../helpers/middleware/validateUser.service";
 import {JwtService} from "./application/jwt-service";
 import {BadCheckEntitiesException} from "../helpers/exception/BadCheckEntitiesException";
 import {SequelizeModule} from "@nestjs/sequelize";
-import {Session} from "./session/entities/session.model";
-import {SessionService} from "./session/application/SessionService";
-import {SessionRepository} from "./session/infrastructure/session.repository";
+import {Session} from "../session/domain/entities/session.model";
+import {SessionService} from "../session/application/SessionService";
+import {SessionRepository} from "../session/infrastructure/session.repository";
 
 const jwtFactory = {
     useFactory: async () => ({

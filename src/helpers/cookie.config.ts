@@ -1,8 +1,8 @@
-import * as process from "process";
+import {CookieOptions} from "express";
 
-export const cookieConfigToken = {
+export const cookieConfigToken: CookieOptions = {
     maxAge: 24*60*60*1000,
     httpOnly: true,
-    secure: (process.env.IS_DEV) ? process.env.IS_DEV != 'true' : false,
+    secure: false,
     sameSite: "none"
 }

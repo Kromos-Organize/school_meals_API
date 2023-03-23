@@ -13,8 +13,8 @@ import {Cookies} from "../../helpers/param-decorators/custom-decorators";
 import {BadRequestResult} from "../../helpers/exception/badRequestResult";
 import {UnauthorizedResult} from "../../helpers/exception/unauthorizedResult";
 import {ForbiddenResult} from "../../helpers/exception/forbiddenResult";
-import {SessionCreateDTO} from "../session/domain/dto/session-service.dto";
-import {SessionService} from "../session/application/SessionService";
+import {SessionService} from "../../session/application/SessionService";
+import {ISessionCreateDTO} from "../../session/domain/dto/session-service.dto";
 
 
 @ApiTags("Авторизация")
@@ -45,17 +45,21 @@ export class AuthController {
         const tokens = await this.jwtService.createJWTTokens(user, true);
 
         if (user) {
+
             delete user.password;
-            const sessionData: SessionCreateDTO = {
+
+            const sessionData: ISessionCreateDTO = {
                 ip: req.get('host'),
                 device_name: req.get("user-agent"),
                 user_id: user.id,
             }
+
             const session = await this.sessionService.getSessionByDeviceAndIP(sessionData)
+
             if (!session || session.logged_out || session.expires_at < new  Date()) {
                 await this.sessionService.createSession(sessionData)
             } else {
-                await this.sessionService.updateLastSessionUsage(sessionData, new Date())
+                await this.sessionService.updateLastSessionUsage(sessionData)
             }
         }
 
@@ -83,8 +87,8 @@ export class AuthController {
 
     @UseGuards(RefreshTokenGuard)
     @ApiCookieAuth()
-    @ApiOperation({summary: "Обновление токена"})
-    @ApiResponse({status: 200, type: RefreshTokenResponseDto, description: 'Успешное обновление токенов'})
+    @ApiOperation({summary: "Обновление аксесс-токена"})
+    @ApiResponse({status: 200, type: RefreshTokenResponseDto, description: 'Успешное обновление аксесс-токена'})
     @ApiResponse({status: 401, type: UnauthorizedResult, description: 'Некорректный рефреш-токен'})
     @Post("/refresh-token")
     async resendingRefreshTokens(@Req() req, @Res() res) {
@@ -111,7 +115,7 @@ export class AuthController {
         if (!refreshToken) {
             throw new UnauthorizedException()
         }
-        const sessionData: SessionCreateDTO = {
+        const sessionData: ISessionCreateDTO = {
             ip: req.get('host'),
             device_name: req.get("user-agent"),
             user_id: req.user.id,
