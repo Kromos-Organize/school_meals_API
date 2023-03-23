@@ -1,13 +1,4 @@
-import {
-    Body,
-    Controller,
-    HttpCode,
-    Post,
-    Req,
-    Res,
-    UnauthorizedException,
-    UseGuards,
-} from "@nestjs/common";
+import {Body, Controller, HttpCode, Post, Req, Res, UnauthorizedException, UseGuards,} from "@nestjs/common";
 import {ApiCookieAuth, ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {AuthService} from "../application/auth.service";
 import {LoginDto, RegistrationDto} from "../domain/dto/auth-request.dto";
@@ -22,6 +13,8 @@ import {Cookies} from "../../helpers/param-decorators/custom-decorators";
 import {BadRequestResult} from "../../helpers/exception/badRequestResult";
 import {UnauthorizedResult} from "../../helpers/exception/unauthorizedResult";
 import {ForbiddenResult} from "../../helpers/exception/forbiddenResult";
+import {SessionService} from "../../session/application/SessionService";
+import {ISessionCreateDTO} from "../../session/domain/dto/session-service.dto";
 
 
 @ApiTags("Авторизация")
@@ -33,6 +26,7 @@ export class AuthController {
         private usersQueryRepository: UsersQueryRepository,
         private jwtService: JwtService,
         private badException: BadCheckEntitiesException,
+        private sessionService: SessionService
     ) {
     }
 
@@ -42,7 +36,7 @@ export class AuthController {
     @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage('auth', 'incorrectAuth')})
     @ApiResponse({status: 403, type: ForbiddenResult, description: 'Пользователь не активирован'})
     @Post("/login")
-    async login(@Body() userDto: LoginDto, @Res() res) {
+    async login(@Body() userDto: LoginDto, @Req() req, @Res() res) {
 
         const user = await this.authService.checkCredentials(userDto);
 
@@ -50,7 +44,24 @@ export class AuthController {
 
         const tokens = await this.jwtService.createJWTTokens(user, true);
 
-        if (user) delete user.password;
+        if (user) {
+
+            delete user.password;
+
+            const sessionData: ISessionCreateDTO = {
+                ip: req.get('host'),
+                device_name: req.get("user-agent"),
+                user_id: user.id,
+            }
+
+            const session = await this.sessionService.getSessionByDeviceAndIP(sessionData)
+
+            if (!session || session.logged_out || session.expires_at < new  Date()) {
+                await this.sessionService.createSession(sessionData)
+            } else {
+                await this.sessionService.updateLastSessionUsage(sessionData)
+            }
+        }
 
         res
             .cookie("refreshToken", tokens.refreshToken, cookieConfigToken)
@@ -76,8 +87,8 @@ export class AuthController {
 
     @UseGuards(RefreshTokenGuard)
     @ApiCookieAuth()
-    @ApiOperation({summary: "Обновление токена"})
-    @ApiResponse({status: 200, type: RefreshTokenResponseDto, description: 'Успешное обновление токенов'})
+    @ApiOperation({summary: "Обновление аксесс-токена"})
+    @ApiResponse({status: 200, type: RefreshTokenResponseDto, description: 'Успешное обновление аксесс-токена'})
     @ApiResponse({status: 401, type: UnauthorizedResult, description: 'Некорректный рефреш-токен'})
     @Post("/refresh-token")
     async resendingRefreshTokens(@Req() req, @Res() res) {
@@ -97,13 +108,19 @@ export class AuthController {
     @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage("auth", 'notAuth')})
     @ApiResponse({status: 401, type: UnauthorizedResult, description: 'Некорректный рефреш-токен'})
     @Post("/logout")
-    async logout(@Cookies() refreshToken: string, @Res() res) {
+    async logout(@Cookies() refreshToken: string, @Req() req, @Res() res) {
 
         this.badException.checkAndGenerateException(!refreshToken, "auth", 'notAuth', ['email'])
 
         if (!refreshToken) {
             throw new UnauthorizedException()
         }
+        const sessionData: ISessionCreateDTO = {
+            ip: req.get('host'),
+            device_name: req.get("user-agent"),
+            user_id: req.user.id,
+        }
+        await this.sessionService.logoutUserSession(sessionData)
 
         res.clearCookie('refreshToken').sendStatus(204);
     }
