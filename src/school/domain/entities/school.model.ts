@@ -1,4 +1,4 @@
-import {Column, DataType, HasOne, Model, Table} from "sequelize-typescript";
+import {Column, DataType, HasMany, Model, Table} from "sequelize-typescript";
 import {ApiProperty} from "@nestjs/swagger";
 import {ISchoolCreationAttrs} from "../dto/school-service.dto";
 import {User} from "../../../users/domain/entities/user.model";
@@ -38,18 +38,18 @@ export class School extends Model<School, ISchoolCreationAttrs> {
     @Column({type: DataType.INTEGER, allowNull: false})
     homeNumber: number
 
-    @HasOne(() => User)
+    @HasMany(() => User)
     user: User
 
-    @HasOne(() => Class)
+    @HasMany(() => Class)
     class: Class
 
-    @HasOne(() => Student)
+    @HasMany(() => Student)
     student: Student
 
-    @HasOne(() => Menu)
+    @HasMany(() => Menu)
     menu: Menu
 
-    @HasOne(() => TypeMenu)
+    @HasMany(() => TypeMenu)
     type_menu: TypeMenu
 }

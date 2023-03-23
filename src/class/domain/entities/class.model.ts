@@ -1,7 +1,8 @@
-import {Column, DataType, ForeignKey, Model, Table} from "sequelize-typescript";
+import {BelongsTo, Column, DataType, ForeignKey, HasOne, Model, Table} from "sequelize-typescript";
 import {ApiProperty} from "@nestjs/swagger";
 import {School} from "../../../school/domain/entities/school.model";
 import {ICreateClass} from "../dto/class-service.dto";
+import {CalcClassMenu} from "../../../calcClassMenu/domain/entity/calcClassMenu.model";
 
 @Table({tableName: 'class'})
 export class Class extends Model<Class, ICreateClass> {
@@ -15,6 +16,9 @@ export class Class extends Model<Class, ICreateClass> {
     @ForeignKey(() => School)
     school_id: number;
 
+    @BelongsTo(() => School)
+    school:School
+
     @ApiProperty({example:'4', description:'Номер класса'})
     @Column({type: DataType.INTEGER, allowNull: false})
     number: number;
@@ -22,4 +26,7 @@ export class Class extends Model<Class, ICreateClass> {
     @ApiProperty({example:'A', description:'Буква класса'})
     @Column({type: DataType.STRING, allowNull: false})
     type: string;
+
+    @HasOne(() => CalcClassMenu)
+    calcClassMenu: CalcClassMenu
 }

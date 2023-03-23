@@ -1,4 +1,4 @@
-import {Column, DataType, ForeignKey, HasOne, Model, Table} from "sequelize-typescript";
+import {BelongsTo, Column, DataType, ForeignKey, HasOne, Model, Table} from "sequelize-typescript";
 import {ApiProperty} from "@nestjs/swagger";
 import {School} from "../../../school/domain/entities/school.model";
 import {Menu} from "../../../menu/domain/entity/menu.model";
@@ -15,6 +15,9 @@ export class TypeMenu extends Model<TypeMenu, ITypeMenuCreateAttr> {
     @Column({type: DataType.INTEGER, allowNull: false})
     @ForeignKey(() => School)
     school_id: number;
+
+    @BelongsTo(() => School)
+    school:School
 
     @ApiProperty({example: 'Завтрак', description: 'Тип меню'})
     @Column({type: DataType.STRING, unique: false, allowNull: false})

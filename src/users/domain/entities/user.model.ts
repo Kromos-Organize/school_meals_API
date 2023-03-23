@@ -1,4 +1,4 @@
-import {Column, DataType, ForeignKey, Model, Table,} from "sequelize-typescript";
+import {BelongsTo, Column, DataType, ForeignKey, Model, Table,} from "sequelize-typescript";
 import {ApiProperty} from "@nestjs/swagger";
 import {School} from "../../../school/domain/entities/school.model";
 import {IUserModelAttr} from "../dto/user-service.dto";
@@ -14,6 +14,9 @@ export class User extends Model<User, IUserModelAttr> {
   @Column({ type: DataType.INTEGER, allowNull: true })
   @ForeignKey(() => School)
   school_id: number;
+
+  @BelongsTo(() => School)
+  school:School
 
   @ApiProperty({ example: "EMPLOYEE", description: "Роль пользователя"})
   @Column({ type: DataType.STRING, allowNull: false })

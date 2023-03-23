@@ -1,4 +1,5 @@
 import {
+    BelongsTo,
     Column,
     DataType,
     ForeignKey,
@@ -23,6 +24,9 @@ export class Student extends Model<Student, StudentCreationAttrs> {
     @Column({type: DataType.INTEGER, allowNull: true})
     @ForeignKey(() => School)
     school_id: number;
+
+    @BelongsTo(() => School)
+    school:School
 
     @ApiProperty({example:'1', description:'ID класса'})
     @Column({type: DataType.INTEGER, allowNull: true})
