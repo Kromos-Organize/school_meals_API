@@ -1,10 +1,15 @@
-import {Controller, Get, HttpCode, Query} from "@nestjs/common";
-import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
+import {Controller, Get, HttpCode, Query, UseGuards} from "@nestjs/common";
+import {ApiBearerAuth, ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {LogsService} from "../application/logs.service";
 import {BadRequestResult} from "../../helpers/exception/badRequestResult";
 import {BadCheckEntitiesException} from "../../helpers/exception/BadCheckEntitiesException";
+import {LogQueryDto} from "../domain/dto/logQueryDto";
+import {AuthGuard} from "@nestjs/passport";
 
 @ApiTags('Логи запросов')
+@ApiBearerAuth()
+@ApiResponse({status: 401, description: 'Некорректный аксесс-токен'})
+@UseGuards(AuthGuard())
 @Controller('logs')
 export class LogsController {
     constructor(private logsService: LogsService,
@@ -26,9 +31,9 @@ export class LogsController {
     @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage('logs', 'not')})
     @HttpCode(200)
     @Get('/log')
-    async getDailyLog(@Query('fileName') fileName: string) {
+    async getDailyLog(@Query() query: LogQueryDto) {
 
-        const logfile = await this.logsService.getSpecificLog(fileName)
+        const logfile = await this.logsService.getSpecificLog(query.date)
 
         this.badException.checkAndGenerateException(!logfile, 'logs', 'not', ['fileName']);
 

@@ -1,18 +1,28 @@
 import {Injectable} from "@nestjs/common";
+import * as fs from "fs";
+import * as path from "path";
+import * as process from "process";
 
 @Injectable()
 export class LogsService {
-    constructor() {
-    }
+
+    private readonly logsDir = './logs'
+    private readonly logName = 'query_logs.log'
 
     async getAll() {
 
-        return 'all'
+        return fs.readdirSync(path.join(process.cwd(), this.logsDir))
     }
 
-    async getSpecificLog(fileName: string) {
+    async getSpecificLog(date: string) {
 
-        return fileName
+        const logPath = path.join(process.cwd(), this.logsDir, date, this.logName)
+
+        if (!fs.existsSync(logPath)) return null
+
+        const file = fs.readFileSync(logPath)
+
+        return file.toString()
     }
 
 }
