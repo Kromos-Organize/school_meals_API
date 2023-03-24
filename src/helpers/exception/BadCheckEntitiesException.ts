@@ -1,7 +1,7 @@
 import {BadRequestException, Injectable} from "@nestjs/common";
 
 type MessagesKeyType = 'yep' | 'not' | 'notAuth' | 'incorrectAuth'
-type EntityKeyType = 'auth' | 'admin' | 'user' | 'school' | 'class' | 'student' | 'menu' | 'typeMenu'
+type EntityKeyType = 'auth' | 'admin' | 'user' | 'school' | 'class' | 'student' | 'menu' | 'typeMenu' | 'logs'
 
 type MessageType = {
     [key in MessagesKeyType]: string
@@ -30,6 +30,7 @@ export class BadCheckEntitiesException {
         student: 'Ученик',
         menu: 'Меню',
         typeMenu: 'Тип меню',
+        logs: 'Файл логов'
     }
 
     static errorMessage(entityType: EntityKeyType, type: MessagesKeyType) {
