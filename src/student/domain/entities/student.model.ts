@@ -49,6 +49,10 @@ export class Student extends Model<Student, StudentCreationAttrs> {
     @Column({ type: DataType.BOOLEAN, allowNull: false, defaultValue: false })
     isLargeFamilies: boolean;
 
+    @ApiProperty({example: false, description: 'Питается за счёт бюджета(true) или родителей(false)',})
+    @Column({ type: DataType.BOOLEAN, allowNull: false, defaultValue: false })
+    isBudget: boolean;
+
     @HasOne(() => PhoneParents)
     phoneParents: PhoneParents;
 }
