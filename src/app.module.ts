@@ -17,13 +17,18 @@ import {MenuModule} from "./menu/menu.module";
 import {TypeMenuModule} from "./typeMenu/typeMenu.module";
 import {PricesModule} from "./prices/prices.module";
 import {LogsModule} from "./logs/logs.module";
+import {ScheduleModule} from "@nestjs/schedule";
+import {CronTasksService} from "./helpers/scheduler/cron-tasks.service";
 
 @Module({
   controllers: [],
-  providers: [{
-    provide: APP_GUARD,
-    useClass: ThrottlerGuard
-  }],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard
+    },
+    CronTasksService
+  ],
   imports: [
     ConfigModule.forRoot({
       envFilePath: `.${process.env.NODE_ENV}.env`,
@@ -47,6 +52,7 @@ import {LogsModule} from "./logs/logs.module";
       autoLoadModels: true,
       synchronize: true,
     }),
+    ScheduleModule.forRoot(),
     AuthModule,
     AdminModule,
     UserModule,
