@@ -1,7 +1,7 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 import * as fs from "fs";
-import * as moment from "moment";
+import moment from "moment";
 
 @Injectable()
 export class LoggerMiddleware implements NestMiddleware {

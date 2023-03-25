@@ -1,6 +1,6 @@
 import {ApiBearerAuth, ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {Body, Controller, Delete, Get, HttpCode, Param, Post, Put, UseGuards,} from "@nestjs/common";
-import {UsersService} from "src/users/application/users.service";
+import {UsersService} from "../application/users.service";
 import {RoleEnum} from "../domain/entities/role.enum";
 import {RegistrationDto} from "../../auth/domain/dto/auth-request.dto";
 import {ActiveUserDto, UpdateUserDto, UserParamDto} from "../domain/dto/user-request.dto";
