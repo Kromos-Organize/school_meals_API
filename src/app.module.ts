@@ -47,6 +47,7 @@ import {MealsModule} from "./meals/meals.module";
       models: allModels,
       autoLoadModels: true,
       synchronize: true,
+      logging: false
     }),
     AuthModule,
     AdminModule,

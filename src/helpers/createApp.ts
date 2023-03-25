@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { useContainer } from 'class-validator';
 import { AppModule } from '../app.module';
-import * as cookieParser from 'cookie-parser';
+import cookieParser from 'cookie-parser';
 import { HttpExceptionFilter } from './exception/exception.filter';
 
 export const createApp = (app: INestApplication): INestApplication => {
