@@ -39,14 +39,7 @@ export class StudentService {
 
     async updateStudent(student_id: number, studentDto: UpdateStudentDto) {
 
-        const updateStudent: IUpdateStudent = {
-            ...studentDto,
-           phoneParents:{
-               m_phone: studentDto.phoneParents.m_phone,
-               f_phone: studentDto.phoneParents.f_phone,
-           }
-        }
-
+        const updateStudent: IUpdateStudent = {...studentDto}
         return await this.studentRepository.updateStudent(student_id, updateStudent);
     }
 
