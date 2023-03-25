@@ -16,7 +16,7 @@ export class StudentQueryRepository {
 
     async getStudentById(student_id: number) {
 
-        return await this.studentRepository.findAll({include: { model: PhoneParents }, where: { student_id }, });
+        return await this.studentRepository.findOne({include: { model: PhoneParents }, where: { student_id }, });
     }
 
     async getStudentByParams(studentParam: IParamStudent) {

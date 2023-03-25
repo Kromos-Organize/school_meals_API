@@ -21,4 +21,10 @@ export class TypeMenuQueryRepository {
 
         return await this.typeMenuRepository.findOne({ where: { school_id, type_menu }})
     }
+
+    async getTypesMenuByVisit(studentId, meals: number[]) {
+
+        return  await this.typeMenuRepository.findAll({where: {type_id: meals}})
+
+    }
 }

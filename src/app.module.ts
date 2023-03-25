@@ -17,6 +17,7 @@ import {MenuModule} from "./menu/menu.module";
 import {TypeMenuModule} from "./typeMenu/typeMenu.module";
 import {PricesModule} from "./prices/prices.module";
 import {LogsModule} from "./logs/logs.module";
+import {MealsModule} from "./meals/meals.module";
 
 @Module({
   controllers: [],
@@ -57,7 +58,8 @@ import {LogsModule} from "./logs/logs.module";
     MenuModule,
     TypeMenuModule,
     PricesModule,
-    LogsModule
+    LogsModule,
+    MealsModule
   ],
 })
 export class AppModule {
