@@ -344,7 +344,20 @@ describe("Meals tests (e2e)", () => {
     it(`(GET -> /meals  )`, () => {
         return request(app.getHttpServer())
             .get(`/meals/`)
-            // .query({date: '2023-03-27'})
+            .query({date: '2023-03-27'})
+            .set("Content-Type", "application/json")
+            .set("Accept", "application/json")
+            .set("Authorization", `Bearer ${schooladmin.accessToken}`)
+            // .expect(200)
+            .then((res) => {
+                console.log(res.body)
+            });
+    });
+
+    it(`(GET -> /meals  )`, () => {
+        return request(app.getHttpServer())
+            .get(`/meals/`)
+            // .query({date: '2023-03-26'})
             .set("Content-Type", "application/json")
             .set("Accept", "application/json")
             .set("Authorization", `Bearer ${schooladmin.accessToken}`)

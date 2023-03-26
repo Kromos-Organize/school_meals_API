@@ -45,6 +45,7 @@ export class MealsController {
     @Delete('/:student_id')
     async deleteVisitByStudent(@Param('student_id', ParseIntPipe) studentId: number,
                                @Query() query: VisitDateQueryDto) {
+
         const student = await this.studentService.getStudentById(studentId);
 
         this.badException.checkAndGenerateException(!student, 'student','not',['student_id']);

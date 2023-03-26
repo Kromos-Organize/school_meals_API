@@ -1,10 +1,10 @@
-import {Column, DataType, ForeignKey, Model, Table} from "sequelize-typescript";
+import {BelongsTo, Column, DataType, ForeignKey, Model, Table} from "sequelize-typescript";
 import {ApiProperty} from "@nestjs/swagger";
 import {TypeMenu} from "../../../typeMenu/domain/entity/type-menu.model";
 import {Student} from "../../../student/domain/entities/student.model";
 import {IMealsCreateAttr} from "../dto/meals-service.dto";
 
-@Table({tableName: 'meals',timestamps: false})
+@Table({tableName: 'student_meals',timestamps: false})
 export class Meals extends Model<Meals, IMealsCreateAttr>{
 
     @ApiProperty({example:'1', description:'ID'})
@@ -25,4 +25,6 @@ export class Meals extends Model<Meals, IMealsCreateAttr>{
     @Column({type: DataType.DATEONLY, allowNull: false, defaultValue: new Date()})
     date: Date;
 
+    @BelongsTo(()=> Student, 'student_id')
+    student: Student
 }
