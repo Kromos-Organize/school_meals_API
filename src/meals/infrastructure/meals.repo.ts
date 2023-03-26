@@ -11,4 +11,9 @@ export class MealsRepo {
 
      return  await this.mealsRepo.create({student_id,  meals, })
     }
+
+    async deleteStudentVisitByDate(student_id: number, date: Date) {
+
+        return await this.mealsRepo.destroy({where: {student_id, date}})
+    }
 }

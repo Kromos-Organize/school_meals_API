@@ -22,10 +22,7 @@ export class Meals extends Model<Meals, IMealsCreateAttr>{
     meals: TypeMenu[];
 
     @ApiProperty({example:'25/03/2023', description:'Дата визита'})
-    @Column({type: DataType.DATEONLY})
+    @Column({type: DataType.DATEONLY, allowNull: false, defaultValue: new Date()})
     date: Date;
-
-    // @HasOne(() => Student)
-    // student: Student;
 
 }

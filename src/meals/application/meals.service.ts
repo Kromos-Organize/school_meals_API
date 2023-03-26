@@ -15,8 +15,18 @@ export class MealsService {
 
         const checkedMeals = await this.typeMenuQueryRepo.getTypesMenuByVisit(studentId, meals)
 
-        if (checkedMeals.length !== meals.length) throw new NotFoundException(`${meals} not found in type_menu`)
+        if (checkedMeals.length !== meals.length) throw new NotFoundException(`some of ${meals} not found in type_menu`)
 
        return  await  this.mealsRepository.addStudentVisit(studentId, meals)
+    }
+
+    async deleteStudentVisit(studentId: number, date: Date) {
+
+        return await this.mealsRepository.deleteStudentVisitByDate(studentId, date)
+    }
+
+    async getAllVisitsByDate(date: Date) {
+
+        return await this.mealsQueryRepository.getAllVisitsByDate(date)
     }
 }

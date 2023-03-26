@@ -38,7 +38,7 @@ export class AdminService {
             ...adminDto,
             password: passwordHash,
             role: RoleEnum.s_admin,
-            chat_number: null
+            chat_number: adminDto.chat_number
         }
 
         return await this.adminRepository.createAdmin(newAdmin);
