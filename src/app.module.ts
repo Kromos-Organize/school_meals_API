@@ -20,6 +20,7 @@ import {LogsModule} from "./logs/logs.module";
 import {MealsModule} from "./meals/meals.module";
 import {ScheduleModule} from "@nestjs/schedule";
 import {CronTasksService} from "./helpers/scheduler/cron-tasks.service";
+import { AppGateway } from './gateway/app.gateway';
 
 @Module({
   controllers: [],
@@ -28,7 +29,8 @@ import {CronTasksService} from "./helpers/scheduler/cron-tasks.service";
       provide: APP_GUARD,
       useClass: ThrottlerGuard
     },
-    CronTasksService
+    CronTasksService,
+    AppGateway
   ],
   imports: [
     ConfigModule.forRoot({
