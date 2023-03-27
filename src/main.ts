@@ -11,7 +11,8 @@ const start = async () => {
     const PORT = process.env.PORT || 5000;
 
     const rawApp = await NestFactory.create<NestExpressApplication>(AppModule);
-    rawApp.useStaticAssets(path.join(process.cwd(), 'static'))
+
+    rawApp.useStaticAssets(path.join(process.cwd(), 'src/gateway/static'))
 
     const app = createApp(rawApp);
 

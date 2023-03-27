@@ -9,7 +9,8 @@ import {
 import {Logger} from "@nestjs/common";
 import {Socket, Server} from "socket.io";
 
-@WebSocketGateway()
+@WebSocketGateway( {})
+
 export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
 
     @WebSocketServer() wss: Server
@@ -37,7 +38,7 @@ export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGateway
         // this.wss.emit('msgToClient', text)
         // client.emit('msgToClient', text)
 
-        return {event: 'msgToClient', data:  text}
+        return {event: 'msgToClient', data:  text.split('').reverse().join('')}
     }
 
 

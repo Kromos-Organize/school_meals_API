@@ -32,7 +32,7 @@
         data: {
             title: 'Websocket tester',
             text: '',
-            messages: ['msg1', 'msg2'],
+            messages: [],
             socket: null
         },
         methods: {
@@ -40,11 +40,11 @@
                 console.log(`send  ${this.text}`)
                 this.socket.emit('msgToServer', this.text)
 
-                this.messages.push(this.text)
-                    this.text = ''
+                this.messages.push('sended ' + this.text)
+                this.text = ''
             },
             receiveMessage(msg) {
-                this.messages.push(msg)
+                this.messages.push('received backward ' + msg)
             }
         },
         created() {
