@@ -14,9 +14,6 @@ export class UserParamDto {
 
 export class UpdateUserDto {
 
-    @ApiProperty({ example: 11, description: "ID школы пользователя" })
-    readonly school_id?: number;
-
     @ApiProperty({ example: "Шавлинский", description: "Фамилия пользователя" })
     @Length(3, 20, { message: "Фамилия должна быть от 3 до 20 символов." })
     @IsString({ message: "Должно быть строкой." })

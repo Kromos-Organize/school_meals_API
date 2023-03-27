@@ -7,13 +7,7 @@ export interface StudentCreationAttrs {
     phoneParents?: any,
     birthday?: Date,
     isLargeFamilies?: boolean,
-}
-
-export interface IParamStudent{
-    school_id: number,
-    class_id: number,
-    fname: string,
-    name: string,
+    isBudget?: boolean
 }
 
 export interface IParamStudent{
@@ -30,6 +24,8 @@ export interface IUpdateStudent{
     phoneParents?: any,
     birthday?: Date
     isLargeFamilies?: boolean,
+    isBudget?: boolean
+
 }
 
 export interface IPhoneParents {
