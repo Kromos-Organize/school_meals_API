@@ -14,6 +14,7 @@
 <div id="v-app">
     <h1>{{ title }}</h1>
 
+
     <form>
         <input type="text" v-model="text" id="">
         <button type="submit" @click.prevent="sendMessage()">Send</button>
@@ -21,10 +22,19 @@
 
     <p>
     <ul>
-        <li v-for="msg of messages">{{ msg }}</li>
+        <li>{{ messages }}</li>
     </ul>
 
+    <button type="submit" @click.prevent="send_all_meals_today()">all_meals_today</button>
+    <button type="submit" @click.prevent="send_one_meals_today()">one_meals_today</button>
+    <button type="submit" @click.prevent="send_calc_meals_today()">calc_meals_today</button>
+    <button type="submit" @click.prevent="send_send_meals()">send_meals</button>
+    <button type="submit" @click.prevent="send_get_meals_today()">get_meals_today</button>
 </div>
+
+
+
+
 
 <script>
     var app = new Vue({
@@ -32,24 +42,68 @@
         data: {
             title: 'Websocket tester',
             text: '',
-            messages: [],
+            messages: '',
             socket: null
         },
         methods: {
+
+            send_all_meals_today() {
+                this.socket.emit('all_meals_today')
+            },
+
+            send_one_meals_today(data) {
+                this.socket.emit('one_meals_today', data)
+            },
+
+            send_calc_meals_today() {
+                this.socket.emit('calc_meals_today')
+            },
+            send_send_meals(data) {
+                this.socket.emit('send_meals', data)
+            },
+            send_get_meals_today() {
+                this.socket.emit('get_meals_today')
+            },
+
             sendMessage() {
                 console.log(`send  ${this.text}`)
                 this.socket.emit('msgToServer', this.text)
 
-                this.messages.push('sended ' + this.text)
+                this.messages = 'sended ' + this.text
                 this.text = ''
             },
+
             receiveMessage(msg) {
-                this.messages.push('received backward ' + msg)
+                this.messages =  msg
             }
         },
         created() {
             this.socket = io('http://localhost:5001')
             this.socket.on('msgToClient', (msg) => {
+                this.receiveMessage(msg)
+            })
+
+            this.socket.on('all_meals_today', (msg) => {
+                this.receiveMessage(msg)
+            })
+
+            this.socket.on('one_meals_today', (msg) => {
+                this.receiveMessage(msg)
+            })
+
+            this.socket.on('all_meals_today', (msg) => {
+                this.receiveMessage(msg)
+            })
+
+            this.socket.on('calc_meals_today', (msg) => {
+                this.receiveMessage(msg)
+            })
+
+            this.socket.on('send_meals', (msg) => {
+                this.receiveMessage(msg)
+            })
+
+            this.socket.on('get_meals_today', (msg) => {
                 this.receiveMessage(msg)
             })
         }

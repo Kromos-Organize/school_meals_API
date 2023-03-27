@@ -27,6 +27,7 @@ import {TypeMenu} from "../typeMenu/domain/entity/type-menu.model";
         StudentRepository,
         TypeMenuQueryRepository
     ],
+    exports:[MealsQueryRepo, MealsRepo]
 })
 
 export class MealsModule {
