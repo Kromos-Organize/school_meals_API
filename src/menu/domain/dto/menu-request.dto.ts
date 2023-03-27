@@ -1,6 +1,6 @@
 import {ApiProperty} from "@nestjs/swagger";
-import {IsDate, IsInt, IsNotEmpty, IsNumber, Length} from "class-validator";
-import {Transform} from "class-transformer";
+import {IsDate, IsInt, IsNotEmpty, IsNumber} from "class-validator";
+import {Transform, Type} from "class-transformer";
 
 export class MenuSchoolQueryDto {
 
@@ -45,6 +45,7 @@ export class MenuCreateDto {
 
     @ApiProperty({example:'22.02.2023', description:'Время добавления меню'})
     @IsDate()
+    @Type(() => Date)
     date: Date;
 }
 

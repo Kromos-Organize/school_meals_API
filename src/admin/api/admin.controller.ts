@@ -9,10 +9,7 @@ import {AuthGuard} from "@nestjs/passport";
 import {BadRequestResult} from "../../helpers/exception/badRequestResult";
 
 @ApiTags('Администраторы проекта')
-@ApiBearerAuth()
-@ApiResponse({status: 401, description: 'Некорректный аксесс-токен'})
 @Controller('admin')
-@UseGuards(AuthGuard())
 export class AdminController {
 
     constructor(
@@ -22,6 +19,9 @@ export class AdminController {
 
     @ApiOperation({summary: 'Получение списка админов'})
     @ApiResponse({status: 200, type: [AdminResponse], description: 'Успешное получение списка админов'})
+    @ApiResponse({status: 401, description: 'Некорректный аксесс-токен'})
+    @ApiBearerAuth()
+    @UseGuards(AuthGuard())
     @HttpCode(200)
     @Get()
     getAll() {
@@ -32,6 +32,9 @@ export class AdminController {
     @ApiOperation({summary: 'Получить данные админа'})
     @ApiResponse({status: 200, type: AdminResponse, description: 'Успешное получение данных админа'})
     @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage('admin', 'not')})
+    @ApiResponse({status: 401, description: 'Некорректный аксесс-токен'})
+    @ApiBearerAuth()
+    @UseGuards(AuthGuard())
     @HttpCode(200)
     @Get('/:admin_id')
     async getAdminByEmail(@Param() paramDto: ParamAdminDto) {
@@ -60,8 +63,12 @@ export class AdminController {
     @ApiOperation({summary: 'Изменить данные админа'})
     @ApiResponse({status: 200, type: Admin, description: 'Успешное изменение данных админа'})
     @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage('admin', 'not')})
+    @ApiResponse({status: 401, description: 'Некорректный аксесс-токен'})
+    @ApiBearerAuth()
+    @UseGuards(AuthGuard())
     @HttpCode(200)
     @Put('/:admin_id')
+
     async update(@Param() paramDto: ParamAdminDto, @Body() adminDto: UpdateAdminDto)  {
 
         const admin = await this.adminService.getAdminById(paramDto.admin_id);
@@ -74,6 +81,9 @@ export class AdminController {
     @ApiOperation({summary: 'Удалить админа'})
     @ApiResponse({status: 200, type: AdminDeleteResponseDto, description: 'Успешное удаление админа'})
     @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage('admin', 'not')})
+    @ApiResponse({status: 401, description: 'Некорректный аксесс-токен'})
+    @ApiBearerAuth()
+    @UseGuards(AuthGuard())
     @HttpCode(200)
     @Delete('/:admin_id')
     async remove(@Param() paramDto: ParamAdminDto) {

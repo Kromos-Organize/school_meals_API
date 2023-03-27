@@ -1,7 +1,8 @@
-import {Column, DataType, ForeignKey, Model, Table} from "sequelize-typescript";
+import {BelongsTo, Column, DataType, ForeignKey, Model, Table} from "sequelize-typescript";
 import {ApiProperty} from "@nestjs/swagger";
 import {School} from "../../../school/domain/entities/school.model";
 import {ClassCategoryEnum, ICreateClass} from "../dto/class-service.dto";
+import {Student} from "../../../student/domain/entities/student.model";
 
 
 @Table({tableName: 'class'})
@@ -27,4 +28,7 @@ export class Class extends Model<Class, ICreateClass> {
     @ApiProperty({example:'junior', description:'Категория класса(junior - 1-4 классы, elder - 5-11 классы)'})
     @Column({type: DataType.ENUM,  allowNull: false, values: [ClassCategoryEnum.elder, ClassCategoryEnum.junior] })
     category: ClassCategoryEnum;
+
+    @BelongsTo(() => Student, 'class_id')
+    student: Student;
 }

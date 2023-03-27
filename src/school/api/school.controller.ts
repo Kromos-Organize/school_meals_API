@@ -48,7 +48,7 @@ export class SchoolController {
 
     @UseGuards(SearchUserGuard)
     @ApiOperation({summary: 'Добавить школу'})
-    @ApiResponse({status: 200, type: School, description: 'Успешное добавление школы'})
+    @ApiResponse({status: 201, type: School, description: 'Успешное добавление школы'})
     @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage('school', 'yep')})
     @HttpCode(201)
     @Post()
