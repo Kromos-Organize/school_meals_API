@@ -2,12 +2,16 @@ import {NestFactory} from "@nestjs/core";
 import {AppModule} from "./app.module";
 import {DocumentBuilder, SwaggerModule} from "@nestjs/swagger";
 import { createApp } from "./helpers/createApp";
+import {NestExpressApplication} from "@nestjs/platform-express";
+import * as path from "path";
+import * as process from "process";
 
 const start = async () => {
 
     const PORT = process.env.PORT || 5000;
 
-    const rawApp = await NestFactory.create(AppModule);
+    const rawApp = await NestFactory.create<NestExpressApplication>(AppModule);
+    rawApp.useStaticAssets(path.join(process.cwd(), 'static'))
 
     const app = createApp(rawApp);
 
