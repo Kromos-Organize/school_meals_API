@@ -78,9 +78,6 @@ export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGateway
     @SubscribeMessage('msgToServer')
     handleMessage(client: Socket, text: string): WsResponse<string> {
 
-        // this.wss.emit('msgToClient', text)
-        // client.emit('msgToClient', text)
-
         return {event: 'msgToClient', data: text.split('').reverse().join('')}
     }
 
@@ -93,8 +90,6 @@ export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGateway
 
         if (res) {
             this.wss.emit('msgToClient', JSON.stringify(res))
-        } else {
-            this.wss.emit('msgToClient', `${this.clients[client.id]}: при подключении админа школы отправлять ему все данные по питанию за текущий день.`)
         }
 
     }
@@ -106,10 +101,8 @@ export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGateway
 
         const res = (role == 'ADMIN') ? `Отправлены данные по питанию за ${data} класс` : null
 
-        if (this.clients[client.id]) {
+        if (res) {
             this.wss.emit('msgToClient', JSON.stringify(res))
-        } else {
-            this.wss.emit('msgToClient', `это сообщение будет отправляться админу школы, когда учитель отправит данные (отправка данных по питанию за один класс)`)
         }
     }
 
@@ -120,10 +113,8 @@ export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGateway
 
         const res = role ? await this.mealsQueryRepo.getAllVisitsByDate(new Date) : null
 
-        if (this.clients[client.id]) {
+        if (res) {
             this.wss.emit('msgToClient', JSON.stringify(res))
-        } else {
-            this.wss.emit('msgToClient', `будем отправлять результат когда все классы отправят данные`)
         }
     }
 
@@ -132,15 +123,12 @@ export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGateway
 
         const role = this.clients[client.id]?.role
 
-        //TODO implement class visiting meals room
-
         const res = (role == 'EMPLOYEE') ? await this.mealsRepo.addStudentVisit(1, []) : null
 
         if (res) {
             this.wss.emit('msgToClient', JSON.stringify(res))
-        } else {
-            this.wss.emit('msgToClient', `с этим сообщением будут учителя отправлять данные по классу`)
         }
+
         this.wss.emit('one_meals_today', data)
     }
 
@@ -153,8 +141,6 @@ export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGateway
 
         if (res) {
             this.wss.emit('msgToClient', JSON.stringify(res))
-        } else {
-            this.wss.emit('msgToClient', `${this.clients[client.id]}: при подключении админа школы отправлять ему все данные по питанию за текущий день.`)
         }
     }
 

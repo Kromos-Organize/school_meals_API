@@ -79,6 +79,7 @@
         },
         created() {
             this.socket = io('http://localhost:5001')
+
             this.socket.on('msgToClient', (msg) => {
                 this.receiveMessage(msg)
             })
@@ -91,9 +92,6 @@
                 this.receiveMessage(msg)
             })
 
-            this.socket.on('all_meals_today', (msg) => {
-                this.receiveMessage(msg)
-            })
 
             this.socket.on('calc_meals_today', (msg) => {
                 this.receiveMessage(msg)
