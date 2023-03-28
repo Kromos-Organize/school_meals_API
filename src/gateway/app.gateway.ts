@@ -46,11 +46,9 @@ export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGateway
 
             const payload = await this.jwtService.getUserIdByRefreshToken(refToken)
 
-            if (payload) {
+            if (payload.role !== 'S_ADMIN') {
 
-                const user = payload.role !== 'S_ADMIN'
-                    ? await this.usersQueryRepo.getUserById(payload?.id)
-                    : await this.adminsQueryRepo.getById(payload.id)
+                const user =  await this.usersQueryRepo.getUserById(payload?.id)
 
                 this.clients[client.id] = {
                     name: user.dataValues.name,
@@ -137,7 +135,7 @@ export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGateway
 
         const role = this.clients[client.id]?.role
 
-        const res = (role == 'S_ADMIN') ? await this.mealsQueryRepo.getAllVisitsByDate(new Date) : null
+        const res = (role == 'ADMIN') ? await this.mealsQueryRepo.getAllVisitsByDate(new Date) : null
 
         if (res) {
             this.wss.emit('msgToClient', JSON.stringify(res))
