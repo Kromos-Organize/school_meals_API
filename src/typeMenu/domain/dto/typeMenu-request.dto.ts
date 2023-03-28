@@ -15,7 +15,7 @@ export class TypeMenuDto {
 
     @ApiProperty({example:'int', description:'Айди школы'})
     @IsInt({message: 'Айди школы должна быть числом'})
-    @Transform(({ value }) => value?.trim())
+    @Transform(({ value }) => +value?.trim())
     @IsNotEmpty({message: 'Обязательное поле'})
     school_id: number
 }
