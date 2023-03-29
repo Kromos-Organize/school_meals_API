@@ -20,7 +20,7 @@ import {LogsModule} from "./logs/logs.module";
 import {MealsModule} from "./meals/meals.module";
 import {ScheduleModule} from "@nestjs/schedule";
 import {CronTasksService} from "./helpers/scheduler/cron-tasks.service";
-import { AppGateway } from './gateway/app.gateway';
+import {GatewayModule} from "./gateway/gateway.module";
 
 @Module({
   controllers: [],
@@ -30,7 +30,6 @@ import { AppGateway } from './gateway/app.gateway';
       useClass: ThrottlerGuard
     },
     CronTasksService,
-    AppGateway
   ],
   imports: [
     ConfigModule.forRoot({
@@ -68,7 +67,8 @@ import { AppGateway } from './gateway/app.gateway';
     TypeMenuModule,
     PricesModule,
     LogsModule,
-    MealsModule
+    MealsModule,
+    GatewayModule
   ],
 })
 export class AppModule {

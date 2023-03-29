@@ -121,7 +121,7 @@ export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGateway
 
         const role = this.clients[client.id]?.role
 
-        const res = (role == 'EMPLOYEE') ? await this.mealsRepo.addStudentVisit(1, []) : null
+        const res = (role == 'EMPLOYEE') ? await this.mealsRepo.addStudentVisit({meals: [], student_id: 1}) : null
 
         if (res) {
             this.wss.emit('msgToClient', JSON.stringify(res))
