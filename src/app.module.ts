@@ -8,7 +8,7 @@ import {AdminModule} from "./admin/admin.module";
 import {LoggerMiddleware} from "./helpers/middleware/logger.middleware";
 import {ClassModule} from "./class/class.module";
 import {allModels} from "./importModels";
-import {UserModule} from "./users/userModule";
+import {UserModule} from "./users/user.module";
 import {TelegramBotService} from "./helpers/bot/telegram_bot.service";
 import {TelegramBotModule} from "./helpers/bot/telegram_bot.module";
 import {ThrottlerGuard, ThrottlerModule} from "@nestjs/throttler";

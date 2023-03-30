@@ -8,6 +8,8 @@ import {BadCheckEntitiesException} from "../helpers/exception/BadCheckEntitiesEx
 import {ClassQueryRepository} from "./infrastructure/class.query.repository";
 import {ClassRepository} from "./infrastructure/class.repository";
 import {Class} from "./domain/entity/class.model";
+import {BlockCabinetModule} from "../block_cabinet/blockCabinet.module";
+import {UserModule} from "../users/user.module";
 
 @Module({
     providers: [
@@ -21,6 +23,8 @@ import {Class} from "./domain/entity/class.model";
         SequelizeModule.forFeature([Class]),
         SchoolModule,
         forwardRef(() => AuthModule),
+        BlockCabinetModule,
+        UserModule,
     ],
     exports: [
         ClassService
