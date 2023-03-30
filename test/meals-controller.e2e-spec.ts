@@ -4,22 +4,29 @@ import request from "supertest";
 import {AppModule} from "../src/app.module";
 import * as process from "process";
 import {TestHelpersClass} from "./helpers/testHelpers";
+
 const cookieParser = require("cookie-parser");
+
+// jest.runAllTimers()
 
 let helper = new TestHelpersClass()
 
+let studentsCounter = 3
 let sa = helper.createFakeSA()
 let schooladmin = helper.createFakeSchoolAdmin()
 let school = helper.createFakeSchool()
 let prepod = helper.createFakeUser()
 let klass = helper.createFakeClass()
-let student  = helper.createFakeStudent()
-let typeMenu1  = helper.createFakeTypeMenu()
-let typeMenu2  = helper.createFakeTypeMenu()
-let typeMenu3  = helper.createFakeTypeMenu()
-let menu1  = helper.createFakeMenu()
-let menu2  = helper.createFakeMenu()
-let menu3  = helper.createFakeMenu()
+let students = helper.createFakeStudents(studentsCounter)
+let typeMenu1 = helper.createFakeTypeMenu()
+let typeMenu2 = helper.createFakeTypeMenu()
+let typeMenu3 = helper.createFakeTypeMenu()
+let menu1 = helper.createFakeMenu()
+let menu2 = helper.createFakeMenu()
+let menu3 = helper.createFakeMenu()
+
+let classVisits = []
+
 
 describe("Meals tests (e2e)", () => {
     let app: INestApplication;
@@ -47,9 +54,9 @@ describe("Meals tests (e2e)", () => {
     });
 
 
-
-    test("Some test name", () => {
-
+    test("Some test name", async () => {
+        // const test = await app.get(Sequelize).query(`select count(*) from public.user`, {plain: true})
+        // console.log(test)
         expect(process.env.POSTGRES_HOST).toBe("localhost")
     })
 
@@ -182,7 +189,7 @@ describe("Meals tests (e2e)", () => {
             });
     });
 
-    it(`(POST -> /class )`, () => {
+    it(`(POST -> /class )`, async () => {
         return request(app.getHttpServer())
             .post("/class")
             .send(JSON.stringify(klass.in))
@@ -190,27 +197,33 @@ describe("Meals tests (e2e)", () => {
             .set("Accept", "application/json")
             .set("Authorization", `Bearer ${schooladmin.accessToken}`)
             .expect(201)
-            .then((res) => {
+            .then(async (res) => {
                 // console.log(res.body)
                 klass.id = res.body.class_id
-                student.in.class_id = res.body.class_id
-                student.in.school_id = res.body.school_id
-            });
+                for await (const s of students) {
+                    s.in.class_id = res.body.class_id;
+                    s.in.school_id = res.body.school_id;
+                }
+            })
     });
 
-    it(`(POST -> /student )`, () => {
-        return request(app.getHttpServer())
-            .post("/student")
-            .send(JSON.stringify(student.in))
-            .set("Content-Type", "application/json")
-            .set("Accept", "application/json")
-            .set("Authorization", `Bearer ${schooladmin.accessToken}`)
-            .expect(201)
-            .then((res) => {
-                student.id = res.body.student_id
-                // console.log(res.body)
-            });
-    });
+
+    for (const student of students) {
+
+        it(`(POST -> /student )`, () => {
+            return request(app.getHttpServer())
+                .post("/student")
+                .send(JSON.stringify(student.in))
+                .set("Content-Type", "application/json")
+                .set("Accept", "application/json")
+                .set("Authorization", `Bearer ${schooladmin.accessToken}`)
+                .expect(201)
+                .then((res) => {
+                    student.id = res.body.student_id
+                });
+        });
+
+    }
 
     it(`(POST -> /type-menu )`, () => {
         return request(app.getHttpServer())
@@ -300,24 +313,24 @@ describe("Meals tests (e2e)", () => {
             });
     });
 
-    it(`(POST -> /meals/:student_id  )`, () => {
+    it(`(POST -> /meals/student  )`, () => {
         return request(app.getHttpServer())
-            .post(`/meals/${student.id}`)
-            .send(JSON.stringify({meals: [typeMenu1.id, typeMenu3.id]}))
+            .post(`/meals/student`)
+            .send(JSON.stringify({student_id: students[0].id, meals: [typeMenu1.id, typeMenu3.id]}))
             .set("Content-Type", "application/json")
             .set("Accept", "application/json")
             .set("Authorization", `Bearer ${schooladmin.accessToken}`)
             .expect(200)
             .then((res) => {
-                // console.log(res.body)
+                console.log(res.body)
             });
     });
 
 
-    it(`(POST -> /meals/:student_id )`, () => {
+    it(`(POST -> /meals/student/:student_id )`, () => {
         return request(app.getHttpServer())
-            .post(`/meals/${student.id}`)
-            .send(JSON.stringify({meals: [ 12312312, typeMenu1.id]}))
+            .post(`/meals/student`)
+            .send(JSON.stringify({student_id: students[0].id, meals: [12312312, typeMenu1.id]}))
             .set("Content-Type", "application/json")
             .set("Accept", "application/json")
             .set("Authorization", `Bearer ${schooladmin.accessToken}`)
@@ -327,17 +340,16 @@ describe("Meals tests (e2e)", () => {
             });
     });
 
-    // it(`(DELETE -> /meals/:student_id  )`, () => {
+    // it(`(DELETE -> /meals/student/:student_id  )`, () => {
     //     return request(app.getHttpServer())
-    //         .delete(`/meals/${student.id}`)
-    //         .send(JSON.stringify({meals: [ 12312312, typeMenu1.id]}))
+    //         .delete(`/meals/student/${students[0].id}`)
     //         .query({date: '2023-03-26'})
     //         .set("Content-Type", "application/json")
     //         .set("Accept", "application/json")
     //         .set("Authorization", `Bearer ${schooladmin.accessToken}`)
     //         // .expect(404)
     //         .then((res) => {
-    //             // console.log(res.body)
+    //             console.log(res.body)
     //         });
     // });
 
@@ -364,7 +376,42 @@ describe("Meals tests (e2e)", () => {
             .expect(200)
             .then((res) => {
                 // console.log(res.body)
+                
+                for (let i = 0; i < studentsCounter; i++) {
+                    classVisits.push({
+                        student_id: students[i].id,
+                        meals: [typeMenu1.id, i % 2 ? typeMenu2.id : typeMenu3.id]
+                    })
+                }
             });
     });
+
+
+
+    it(`(POST -> /meals/class/:class_id )`, () => {
+        return request(app.getHttpServer())
+            .post(`/meals/class/${klass.id}`)
+            .send(JSON.stringify(classVisits))
+            .set("Content-Type", "application/json")
+            .set("Accept", "application/json")
+            .set("Authorization", `Bearer ${schooladmin.accessToken}`)
+            .expect(200)
+            .then((res) => {
+                console.log( res.body)
+            });
+    });
+
+    // it(`(DELETE -> /meals/class/:class_id )`, () => {
+    //     return request(app.getHttpServer())
+    //         .delete(`/meals/class/${klass.id}`)
+    //         .query({date: '2023-03-29'})
+    //         .set("Content-Type", "application/json")
+    //         .set("Accept", "application/json")
+    //         .set("Authorization", `Bearer ${schooladmin.accessToken}`)
+    //         // .expect(200)
+    //         .then((res) => {
+    //             console.log( res.body)
+    //         });
+    // });
 
 });

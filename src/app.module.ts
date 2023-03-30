@@ -8,7 +8,7 @@ import {AdminModule} from "./admin/admin.module";
 import {LoggerMiddleware} from "./helpers/middleware/logger.middleware";
 import {ClassModule} from "./class/class.module";
 import {allModels} from "./importModels";
-import {UserModule} from "./users/userModule";
+import {UserModule} from "./users/user.module";
 import {TelegramBotService} from "./helpers/bot/telegram_bot.service";
 import {TelegramBotModule} from "./helpers/bot/telegram_bot.module";
 import {ThrottlerGuard, ThrottlerModule} from "@nestjs/throttler";
@@ -20,7 +20,7 @@ import {LogsModule} from "./logs/logs.module";
 import {MealsModule} from "./meals/meals.module";
 import {ScheduleModule} from "@nestjs/schedule";
 import {CronTasksService} from "./helpers/scheduler/cron-tasks.service";
-import { AppGateway } from './gateway/app.gateway';
+import {GatewayModule} from "./gateway/gateway.module";
 import {BlockCabinetModule} from "./block_cabinet/blockCabinet.module";
 
 @Module({
@@ -31,7 +31,6 @@ import {BlockCabinetModule} from "./block_cabinet/blockCabinet.module";
       useClass: ThrottlerGuard
     },
     CronTasksService,
-    AppGateway
   ],
   imports: [
     ConfigModule.forRoot({
@@ -70,6 +69,7 @@ import {BlockCabinetModule} from "./block_cabinet/blockCabinet.module";
     PricesModule,
     LogsModule,
     MealsModule,
+    GatewayModule,
     BlockCabinetModule,
   ],
 })

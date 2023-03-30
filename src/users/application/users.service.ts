@@ -39,7 +39,7 @@ export class UsersService {
     const passwordHash = await this.passwordService.generateSaltAndHash(inputModel.password);
 
     const newUser = {
-      school_id: null,
+      school_id: inputModel.school_id,
       role: inputModel.role,
       email: inputModel.email,
       password: passwordHash,

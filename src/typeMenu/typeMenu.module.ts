@@ -24,7 +24,8 @@ import {TypeMenuController} from "./api/typeMenu.controller";
         AuthModule
     ],
     exports: [
-        TypeMenuService
+        TypeMenuService,
+        TypeMenuQueryRepository
     ]
 })
 export class TypeMenuModule { }

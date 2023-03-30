@@ -19,12 +19,17 @@ export class BlockCabinetService {
 
     async getUserById(user_id: number) {
 
-        return await this.blockCabinetQueryRepository.getUserById(user_id);
+        return await this.blockCabinetQueryRepository.getBlocByUserId(user_id);
     }
 
     async getById(id: number) {
 
-        return await this.blockCabinetQueryRepository.getById(id);
+        return await this.blockCabinetQueryRepository.getBlockById(id);
+    }
+
+    async getBlockBySchoolId(school_id: number) {
+
+        return await this.blockCabinetQueryRepository.getBlockBySchoolId(school_id);
     }
 
     async addUser(userDto: ICreateBlockCabinet) {

@@ -25,5 +25,10 @@ import { PhoneParents } from './domain/entities/phone-parents.model';
         ClassModule,
         forwardRef(() => AuthModule),
     ],
+    exports: [
+        StudentService,
+        StudentQueryRepository,
+        StudentRepository,
+    ]
 })
 export class StudentModule {}

@@ -4,7 +4,7 @@ import {AuthService} from "./application/auth.service";
 import {JwtModule} from "@nestjs/jwt";
 import {TelegramBotModule} from "../helpers/bot/telegram_bot.module";
 import {AdminModule} from "../admin/admin.module";
-import {UserModule} from "../users/userModule";
+import {UserModule} from "../users/user.module";
 import {PassportModule} from "@nestjs/passport";
 import {JwtStrategy} from "./strategy/jwt.strategy";
 import {ValidateUserService} from "../helpers/middleware/validateUser.service";

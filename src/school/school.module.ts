@@ -4,7 +4,7 @@ import {SchoolController} from './api/school.controller';
 import {SequelizeModule} from "@nestjs/sequelize";
 import {School} from "./domain/entities/school.model";
 import {AuthModule} from "../auth/auth.module";
-import {UserModule} from "../users/userModule";
+import {UserModule} from "../users/user.module";
 import {BadCheckEntitiesException} from "../helpers/exception/BadCheckEntitiesException";
 import {SchoolRepository} from "./infrastructure/school.repository";
 import {SchoolQueryRepository} from "./infrastructure/school.query.repository";
@@ -20,10 +20,10 @@ import {Admin} from "../admin/domain/entities/admin.model";
     ],
     controllers: [SchoolController],
     imports: [
-        SequelizeModule.forFeature([School, Admin]),
+        SequelizeModule.forFeature([School]),
         forwardRef(() => AuthModule),
         AdminModule,
-        UserModule,
+        forwardRef(() => UserModule),
     ],
     exports: [
         SchoolService

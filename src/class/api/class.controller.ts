@@ -8,6 +8,7 @@ import {SchoolService} from "../../school/application/school.service";
 import {BadCheckEntitiesException} from "../../helpers/exception/BadCheckEntitiesException";
 import {BadRequestResult} from "../../helpers/exception/badRequestResult";
 import {Class} from "../domain/entity/class.model";
+import {IsBlockCabinetUserGuard} from "../../users/guards/isBlockCabinet.user.guard";
 
 @ApiTags('Классы')
 @ApiBearerAuth()
@@ -40,6 +41,7 @@ export class ClassController {
     @ApiResponse({status: 200, type: Class, description: 'Успешное получение данных класса'})
     @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage('class','not')})
     @HttpCode(200)
+    @UseGuards(IsBlockCabinetUserGuard)
     @Get(':class_id')
     async get(@Param() paramDto: ClassParamDto){
 

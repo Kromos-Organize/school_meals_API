@@ -1,10 +1,10 @@
-import {Module} from "@nestjs/common";
+import {forwardRef, Module} from "@nestjs/common";
 import {SequelizeModule} from "@nestjs/sequelize";
 import {BlockCabinetQueryRepository} from "./infrastructure/blockCabinet.query.repository";
 import {BlockCabinetRepository} from "./infrastructure/blockCabinet.repository";
 import {BlockCabinetService} from "./application/blockCabinet.service";
 import {SchoolModule} from "../school/school.module";
-import {UserModule} from "../users/userModule";
+import {UserModule} from "../users/user.module";
 import {BadCheckEntitiesException} from "../helpers/exception/BadCheckEntitiesException";
 import {BlockCabinetController} from "./api/blockCabinet.controller";
 import {BlockCabinet} from "./domain/entity/blockCabinet.model";
@@ -20,8 +20,7 @@ import {BlockCabinet} from "./domain/entity/blockCabinet.model";
     imports: [
         SequelizeModule.forFeature([BlockCabinet]),
         SchoolModule,
-        UserModule,
-
+        forwardRef(() => UserModule),
     ],
     exports: [BlockCabinetService]
 })
