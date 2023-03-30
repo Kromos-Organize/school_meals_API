@@ -1,9 +1,9 @@
 import {forwardRef, Module} from "@nestjs/common";
 import {AppGateway} from "./app.gateway";
 import {AuthModule} from "../auth/auth.module";
-import {UserModule} from "../users/userModule";
 import {AdminModule} from "../admin/admin.module";
 import {MealsModule} from "../meals/meals.module";
+import {UserModule} from "../users/user.module";
 
 @Module({
 	imports: [

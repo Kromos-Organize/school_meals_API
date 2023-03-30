@@ -15,8 +15,8 @@ import {TypeMenuModule} from "../typeMenu/typeMenu.module";
 import {AppGateway} from "../gateway/app.gateway";
 import {GatewayModule} from "../gateway/gateway.module";
 import {AuthModule} from "../auth/auth.module";
-import {UserModule} from "../users/userModule";
 import {AdminModule} from "../admin/admin.module";
+import {UserModule} from "../users/user.module";
 
 @Module({
 	imports: [
