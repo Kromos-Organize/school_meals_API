@@ -1,13 +1,13 @@
 import {ApiBearerAuth, ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {Body, Controller, Delete, Get, HttpCode, Param, Post, Put, Query, UseGuards} from "@nestjs/common";
 import {ClassService} from "../application/class.service";
-import {Class} from "../domain/entities/class.model";
 import {AuthGuard} from "@nestjs/passport";
 import {ClassParamDto, ClassQueryDto, CreateClassDto, UpdateClassDto} from "../domain/dto/class-request.dto";
 import {ClassDeleteResponseDto} from "../domain/dto/class-response.dto";
 import {SchoolService} from "../../school/application/school.service";
 import {BadCheckEntitiesException} from "../../helpers/exception/BadCheckEntitiesException";
 import {BadRequestResult} from "../../helpers/exception/badRequestResult";
+import {Class} from "../domain/entity/class.model";
 
 @ApiTags('Классы')
 @ApiBearerAuth()
@@ -54,7 +54,8 @@ export class ClassController {
 
     @ApiOperation({summary: 'Добавить класс'})
     @ApiResponse({status: 201, type: Class, description: 'Успешное добавление класса'})
-    @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage('school','not') + ' / ' + BadCheckEntitiesException.errorMessage('class','yep')})
+    @ApiResponse({status: 400, type: BadRequestResult, description:
+            BadCheckEntitiesException.errorMessage('school','not') + ' / ' + BadCheckEntitiesException.errorMessage('class','yep')})
     @HttpCode(201)
     @Post()
     async create(@Body() classDto: CreateClassDto) {

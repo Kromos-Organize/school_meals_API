@@ -1,7 +1,7 @@
 import {Injectable} from "@nestjs/common";
 import {InjectModel} from "@nestjs/sequelize";
-import {Class} from "../domain/entities/class.model";
 import {ICreateClass, IUpdateClass} from "../domain/dto/class-service.dto";
+import {Class} from "../domain/entity/class.model";
 
 @Injectable()
 export class ClassRepository {

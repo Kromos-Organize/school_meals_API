@@ -21,6 +21,7 @@ import {MealsModule} from "./meals/meals.module";
 import {ScheduleModule} from "@nestjs/schedule";
 import {CronTasksService} from "./helpers/scheduler/cron-tasks.service";
 import {GatewayModule} from "./gateway/gateway.module";
+import {BlockCabinetModule} from "./block_cabinet/blockCabinet.module";
 
 @Module({
   controllers: [],
@@ -68,7 +69,8 @@ import {GatewayModule} from "./gateway/gateway.module";
     PricesModule,
     LogsModule,
     MealsModule,
-    GatewayModule
+    GatewayModule,
+    BlockCabinetModule,
   ],
 })
 export class AppModule {
