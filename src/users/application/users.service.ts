@@ -4,8 +4,6 @@ import {UsersQueryRepository} from "../infrastructure/users.query.repository";
 import {PasswordService} from "../../helpers/password/password.service";
 import {IActiveUser, IUserModelAttr, IUserUpdateModel} from "../domain/dto/user-service.dto";
 import {UserActivateResponseDto} from "../domain/dto/user-response.dto";
-import {CreateEmployee} from "../domain/dto/user-request.dto";
-import {RoleEnum} from "../domain/entities/role.enum";
 
 @Injectable()
 export class UsersService {
@@ -36,17 +34,14 @@ export class UsersService {
     return await this.usersQueryRepository.getUserModeration()
   }
 
-  async createUser(inputModel: CreateEmployee) {
+  async createUser(inputModel: IUserModelAttr) {
 
     const generatedPass = this.passwordService.generateRandomPass();
     const passwordHash = await this.passwordService.generateSaltAndHash(generatedPass);
 
     const newUser: IUserModelAttr = {
-      school_id: inputModel.school_id,
-      role: RoleEnum.employee,
-      email: inputModel.email,
+      ...inputModel,
       password: passwordHash,
-      phone: inputModel.phone,
       fname: null,
       name: null,
       lname: null,

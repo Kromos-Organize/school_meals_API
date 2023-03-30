@@ -6,6 +6,9 @@ import {UserActivateResponseDto, UserDeleteResponseDto, UserResponseDto} from ".
 import {BadCheckEntitiesException} from "../../helpers/exception/BadCheckEntitiesException";
 import {AuthGuard} from "@nestjs/passport";
 import {BadRequestResult} from "../../helpers/exception/badRequestResult";
+import {IUserModelAttr} from "../domain/dto/user-service.dto";
+import {use} from "passport";
+import {RoleEnum} from "../domain/entities/role.enum";
 
 @ApiTags("Пользователи")
 @ApiBearerAuth()
@@ -66,7 +69,15 @@ export class UsersController {
 
         this.badException.checkAndGenerateException(user, 'user', 'yep', ['email']);
 
-        return this.usersService.createUser(userDto);
+        const userInput: IUserModelAttr = {
+            school_id: userDto.school_id,
+            email: userDto.email,
+            password: null,
+            role: RoleEnum.employee,
+            phone: userDto.phone,
+        }
+
+        return this.usersService.createUser(userInput);
     }
 
 
