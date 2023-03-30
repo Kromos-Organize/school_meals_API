@@ -1,10 +1,10 @@
 import {BelongsTo, Column, DataType, ForeignKey, HasOne, Model, Table,} from 'sequelize-typescript';
 import {ApiProperty} from '@nestjs/swagger';
 import {School} from '../../../school/domain/entities/school.model';
-import {Class} from '../../../class/domain/entities/class.model';
 import {StudentCreationAttrs} from '../dto/student-service.dto';
 import {PhoneParents} from './phone-parents.model';
 import {Meals} from "../../../meals/domain/entity/meals.model";
+import {Class} from "../../../class/domain/entity/class.model";
 
 @Table({ tableName: 'student' })
 export class Student extends Model<Student, StudentCreationAttrs> {

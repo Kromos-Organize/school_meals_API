@@ -2,10 +2,11 @@ import {Column, DataType, HasOne, Model, Table} from "sequelize-typescript";
 import {ApiProperty} from "@nestjs/swagger";
 import {ISchoolCreationAttrs} from "../dto/school-service.dto";
 import {User} from "../../../users/domain/entities/user.model";
-import {Class} from "../../../class/domain/entities/class.model";
 import {Student} from "../../../student/domain/entities/student.model";
 import {Menu} from "../../../menu/domain/entity/menu.model";
 import {TypeMenu} from "../../../typeMenu/domain/entity/type-menu.model";
+import {BlockCabinet} from "../../../block_cabinet/domain/entity/blockCabinet.model";
+import {Class} from "../../../class/domain/entity/class.model";
 
 @Table({tableName: 'school'})
 export class School extends Model<School, ISchoolCreationAttrs> {
@@ -52,4 +53,7 @@ export class School extends Model<School, ISchoolCreationAttrs> {
 
     @HasOne(() => TypeMenu)
     type_menu: TypeMenu
+
+    @HasOne(() => BlockCabinet)
+    blockCabinet: BlockCabinet
 }
