@@ -52,7 +52,7 @@ export class StudentController {
         this.badException.checkAndGenerateException(!school, 'school','not',['school_id']);
         this.badException.checkAndGenerateException(!classSchool, 'class','not',['classSchool']);
 
-        return this.studentService.getStudentToClass(query.school_id, query.class_id);
+        return this.studentService.getStudentToClass( query.class_id);
     }
 
     @ApiOperation({summary: 'Получить данные ученика'})

@@ -88,22 +88,27 @@ export class TestHelpersClass {
         }
     };
 
-    createFakeStudent = () => {
-        return {
-            in: {
-                school_id: null,
-                class_id: null,
-                fname: this.createRandomString(10),
-                name: this.createRandomString(10),
-                lname: this.createRandomString(10),
-                birthday: addYears(new Date(), -Math.floor(Math.random() * 10 + 7)),
-                isLargeFamilies: false,
-                isBudget: false,
-                phoneParents: {m_phone: "375297485875", f_phone: "375297485875"}
-            },
-            id: null,
+    createFakeStudents = (count: number) => {
+        const students = []
+        for (let i = 0; i < count; i++) {
+            students.push({
+                in: {
+                    school_id: null,
+                    class_id: null,
+                    fname: this.createRandomString(10),
+                    name: this.createRandomString(10),
+                    lname: this.createRandomString(10),
+                    birthday: addYears(new Date(), -Math.floor(Math.random() * 10 + 7)),
+                    isLargeFamilies: false,
+                    isBudget: false,
+                    phoneParents: {m_phone: "375297485875", f_phone: "375297485875"}
+                },
+                id: null
+            })
         }
+        return students
     };
+
 
     createFakeTypeMenu = () => {
         return {
