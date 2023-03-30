@@ -13,7 +13,7 @@ import {BadRequestResult} from "../../helpers/exception/badRequestResult";
 @ApiBearerAuth()
 @ApiResponse({status: 401, description: 'Некорректный аксесс-токен'})
 @Controller('block_cabinet')
-@UseGuards(AuthGuard())
+@UseGuards(AuthGuard('jwt'))
 export class BlockCabinetController {
 
     constructor(

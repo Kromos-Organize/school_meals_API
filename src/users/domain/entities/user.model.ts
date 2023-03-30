@@ -1,4 +1,4 @@
-import {Column, DataType, ForeignKey, HasOne, Model, Table,} from "sequelize-typescript";
+import {Column, DataType, ForeignKey, HasOne, Model, Table, Unique,} from "sequelize-typescript";
 import {ApiProperty} from "@nestjs/swagger";
 import {School} from "../../../school/domain/entities/school.model";
 import {IUserModelAttr} from "../dto/user-service.dto";
@@ -19,10 +19,11 @@ export class User extends Model<User, IUserModelAttr> {
   @ApiProperty({ example: "EMPLOYEE", description: "Роль пользователя"})
   @Column({ type: DataType.STRING, allowNull: false })
   role: string;
-
-  @ApiProperty({ example: "user@mail.ru", description: "Почтовый адрес"})
-  @Column({ type: DataType.STRING, unique: true, allowNull: false })
-  email: string;
+  
+  @ApiProperty({example:'user@mail.ru', description:'Почтовый адрес'})
+  @Unique({name: 'user_email_key', msg: 'Email must be unique in admin table'})
+  @Column({type: DataType.STRING, allowNull: false})
+  email: string
 
   @ApiProperty({ example: "123456789", description: "Пароль пользователя"})
   @Column({ type: DataType.STRING, allowNull: false })
