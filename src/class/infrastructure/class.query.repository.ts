@@ -1,7 +1,8 @@
 import {InjectModel} from "@nestjs/sequelize";
-import {Class} from "../domain/entities/class.model";
+
 import {Injectable, Scope} from "@nestjs/common";
 import {ICreateClass} from "../domain/dto/class-service.dto";
+import { Class } from "../domain/entity/class.model";
 
 @Injectable({ scope: Scope.DEFAULT })
 export class ClassQueryRepository {
