@@ -2,8 +2,7 @@ import {ApiBearerAuth, ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger
 import {Body, Controller, Delete, Get, HttpCode, Param, Post, Put, UseGuards,} from "@nestjs/common";
 import {UsersService} from "../application/users.service";
 import {RoleEnum} from "../domain/entities/role.enum";
-import {RegistrationDto} from "../../auth/domain/dto/auth-request.dto";
-import {ActiveUserDto, UpdateUserDto, UserParamDto} from "../domain/dto/user-request.dto";
+import {ActiveUserDto, CreateEmployeeDto, UpdateUserDto, UserParamDto} from "../domain/dto/user-request.dto";
 import {IUserModelAttr} from "../domain/dto/user-service.dto";
 import {UserActivateResponseDto, UserDeleteResponseDto, UserResponseDto} from "../domain/dto/user-response.dto";
 import {BadCheckEntitiesException} from "../../helpers/exception/BadCheckEntitiesException";
@@ -62,13 +61,14 @@ export class UsersController {
     @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage('user', 'yep')})
     @HttpCode(201)
     @Post("/create")
-    async create(@Body() userDto: RegistrationDto) {
+    async create(@Body() userDto: CreateEmployeeDto) {
 
         const user = await this.usersService.getByEmail(userDto.email);
 
         this.badException.checkAndGenerateException(user, 'user', 'yep', ['email']);
 
         const inputModel: IUserModelAttr = {
+            school_id: userDto.school_id,
             email: userDto.email,
             password: userDto.password,
             phone: userDto.phone,

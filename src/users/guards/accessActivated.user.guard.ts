@@ -1,4 +1,4 @@
-import {BadRequestException, CanActivate, ExecutionContext, UnauthorizedException} from "@nestjs/common";
+import {CanActivate, ExecutionContext, ForbiddenException, UnauthorizedException} from "@nestjs/common";
 import {UsersQueryRepository} from "../infrastructure/users.query.repository";
 import {BadCheckEntitiesException} from "../../helpers/exception/BadCheckEntitiesException";
 import {Request} from "express";
@@ -24,8 +24,8 @@ export class AccessActivatedUserGuard implements CanActivate {
 
         if (requesting.role === RoleEnum.s_admin || requesting.role === RoleEnum.admin) return true;
 
-        if (requesting.role === RoleEnum.employee && changedUser.role === RoleEnum.admin) throw new BadRequestException('нет доступа');
-        if (requesting.role === RoleEnum.admin && changedUser.role === RoleEnum.admin) throw new BadRequestException('нет доступа');
+        if (requesting.role === RoleEnum.employee && changedUser.role === RoleEnum.admin) throw new ForbiddenException('нет доступа');
+        if (requesting.role === RoleEnum.admin && changedUser.role === RoleEnum.admin) throw new ForbiddenException('нет доступа');
     }
 
     async checkToken(refreshToken: string): Promise<IPayloadJwt> {

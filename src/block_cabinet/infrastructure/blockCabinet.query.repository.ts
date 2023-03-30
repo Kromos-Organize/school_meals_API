@@ -12,13 +12,18 @@ export class BlockCabinetQueryRepository {
         return await this.blockCabinetRepository.findAll();
     }
 
-    async getById(id: number) {
+    async getBlockById(id: number) {
 
         return await this.blockCabinetRepository.findOne({ where: { id}})
     }
 
-    async getUserById(user_id: number) {
+    async getBlocByUserId(user_id: number) {
 
         return await this.blockCabinetRepository.findOne({ where: { user_id}})
+    }
+
+    async getBlockBySchoolId(school_id: number) {
+
+        return await this.blockCabinetRepository.findOne({ where: { school_id}})
     }
 }
