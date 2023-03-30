@@ -6,17 +6,16 @@ import {AdminModule} from "../admin/admin.module";
 import {MealsModule} from "../meals/meals.module";
 
 @Module({
-    imports:[
-        AuthModule,
-        UserModule,
-        AdminModule,
-        forwardRef(() => MealsModule)
-
-    ],
-    providers: [
-        AppGateway,
-    ],
-
-    exports: [AppGateway]
+	imports: [
+		AuthModule,
+		UserModule,
+		AdminModule,
+		forwardRef(() => MealsModule),
+	],
+	providers: [
+		AppGateway,
+	],
+	exports: [AppGateway]
 })
-export class GatewayModule {}
+export class GatewayModule {
+}

@@ -1,16 +1,16 @@
 import {Injectable, NotFoundException} from "@nestjs/common";
-import {MealsQueryRepo} from "../infrastructure/meals.query.repo";
-import {MealsRepo} from "../infrastructure/meals.repo";
 import {TypeMenuQueryRepository} from "../../typeMenu/infrastructure/typeMenu.query.repository";
 import {IMealsCreateAttr} from "../domain/dto/meals-service.dto";
 import {StudentQueryRepository} from "../../student/infrastructure/student.query.repository";
 import {AppGateway} from "../../gateway/app.gateway";
+import {MealsQueryRepository} from "../infrastructure/meals-query-repository";
+import {MealsRepository} from "../infrastructure/meals.repository";
 
 @Injectable()
 export class MealsService {
     constructor(
-        private mealsQueryRepository: MealsQueryRepo,
-        private mealsRepository: MealsRepo,
+        private mealsQueryRepository: MealsQueryRepository,
+        private mealsRepository: MealsRepository,
         private typeMenuQueryRepo: TypeMenuQueryRepository,
         private studentsQueryRepo: StudentQueryRepository,
         private gateWay: AppGateway

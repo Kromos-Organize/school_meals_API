@@ -12,8 +12,8 @@ import {Server, Socket} from "socket.io";
 import {JwtService} from "../auth/application/jwt-service";
 import {UsersQueryRepository} from "../users/infrastructure/users.query.repository";
 import {AdminQueryRepository} from "../admin/infrastructure/admin.query.repository";
-import {MealsQueryRepo} from "../meals/infrastructure/meals.query.repo";
-import {MealsRepo} from "../meals/infrastructure/meals.repo";
+import {MealsQueryRepository} from "../meals/infrastructure/meals-query-repository";
+import {IMealsCreateAttr} from "../meals/domain/dto/meals-service.dto";
 
 @WebSocketGateway({})
 
@@ -24,8 +24,7 @@ export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGateway
     constructor(private readonly jwtService: JwtService,
                 private readonly usersQueryRepo: UsersQueryRepository,
                 private readonly adminsQueryRepo: AdminQueryRepository,
-                private readonly mealsQueryRepo: MealsQueryRepo,
-                private readonly mealsRepo: MealsRepo) {
+                private readonly mealsQueryRepo: MealsQueryRepository) {
     }
 
     private logger: Logger = new Logger('GATEWAY')
@@ -70,7 +69,6 @@ export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGateway
 
         this.logger.log(`Client ${client.id} disconnected)`)
         console.log(this.clients)
-
     }
 
     @SubscribeMessage('msgToServer')
@@ -89,7 +87,6 @@ export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGateway
         if (res) {
             this.wss.emit('msgToClient', JSON.stringify(res))
         }
-
     }
 
     @SubscribeMessage('one_meals_today')
@@ -117,17 +114,17 @@ export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGateway
     }
 
     @SubscribeMessage('send_meals')
-    async handle_send_meals(client: Socket, data: string) {
+    async handle_send_meals(client: Socket, data: IMealsCreateAttr[]) {
 
         const role = this.clients[client.id]?.role
 
-        const res = (role == 'EMPLOYEE') ? await this.mealsRepo.addStudentVisit({meals: [], student_id: 1}) : null
+        const res = (role == 'EMPLOYEE') ? data : null
 
         if (res) {
             this.wss.emit('msgToClient', JSON.stringify(res))
         }
 
-        this.wss.emit('one_meals_today', data)
+        this.wss.emit('one_meals_today', res)
     }
 
     @SubscribeMessage('get_meals_today')
@@ -141,5 +138,4 @@ export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGateway
             this.wss.emit('msgToClient', JSON.stringify(res))
         }
     }
-
 }

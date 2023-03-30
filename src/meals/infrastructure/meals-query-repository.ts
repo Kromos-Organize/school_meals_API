@@ -5,7 +5,7 @@ import {Sequelize} from "sequelize-typescript";
 import {QueryTypes} from "sequelize";
 
 @Injectable()
-export class MealsQueryRepo {
+export class MealsQueryRepository {
 
     constructor(
         @InjectModel(Meals) private mealsRepo: typeof Meals,

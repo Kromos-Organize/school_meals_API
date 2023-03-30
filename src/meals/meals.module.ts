@@ -5,8 +5,8 @@ import {MealsController} from "./api/meals.controller";
 import {BadCheckEntitiesException} from "../helpers/exception/BadCheckEntitiesException";
 import {Student} from "../student/domain/entities/student.model";
 import {PhoneParents} from "../student/domain/entities/phone-parents.model";
-import {MealsRepo} from "./infrastructure/meals.repo";
-import {MealsQueryRepo} from "./infrastructure/meals.query.repo";
+import {MealsRepository} from "./infrastructure/meals.repository";
+import {MealsQueryRepository} from "./infrastructure/meals-query-repository";
 import {MealsService} from "./application/meals.service";
 import {TypeMenu} from "../typeMenu/domain/entity/type-menu.model";
 import {ClassModule} from "../class/class.module";
@@ -19,29 +19,28 @@ import {UserModule} from "../users/userModule";
 import {AdminModule} from "../admin/admin.module";
 
 @Module({
-    imports: [
-        SequelizeModule.forFeature([Meals, Student, PhoneParents, TypeMenu]),
-        ClassModule,
-        StudentModule,
-        TypeMenuModule,
-        GatewayModule,
-        AuthModule,
-        UserModule,
-        AdminModule
-    ],
-    controllers: [MealsController],
-    providers: [
-        MealsService,
-        MealsRepo,
-        MealsQueryRepo,
-        BadCheckEntitiesException,
-        AppGateway
-
-    ],
-    exports: [
-        MealsQueryRepo,
-        MealsRepo
-    ]
+	imports: [
+		SequelizeModule.forFeature([Meals, Student, PhoneParents, TypeMenu]),
+		ClassModule,
+		StudentModule,
+		TypeMenuModule,
+		GatewayModule,
+		AuthModule,
+		UserModule,
+		AdminModule,
+	],
+	controllers: [MealsController],
+	providers: [
+		MealsService,
+		MealsRepository,
+		MealsQueryRepository,
+		BadCheckEntitiesException,
+		AppGateway,
+	],
+	exports: [
+		MealsQueryRepository,
+		MealsRepository,
+	]
 })
 
 export class MealsModule {
