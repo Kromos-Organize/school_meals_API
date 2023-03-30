@@ -21,7 +21,7 @@ export class User extends Model<User, IUserModelAttr> {
   role: string;
   
   @ApiProperty({example:'user@mail.ru', description:'Почтовый адрес'})
-  @Unique({name: 'user_email_key', msg: 'Email must be unique in admin table'})
+  @Unique({name: 'user_email_unique_key', msg: 'Email must be unique in admin table'})
   @Column({type: DataType.STRING, allowNull: false})
   email: string
 

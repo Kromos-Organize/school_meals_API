@@ -348,9 +348,9 @@ describe("Meals tests (e2e)", () => {
             .set("Content-Type", "application/json")
             .set("Accept", "application/json")
             .set("Authorization", `Bearer ${schooladmin.accessToken}`)
-            // .expect(200)
+            .expect(200)
             .then((res) => {
-                console.log(res.body)
+                // console.log(res.body)
             });
     });
 
@@ -361,9 +361,9 @@ describe("Meals tests (e2e)", () => {
             .set("Content-Type", "application/json")
             .set("Accept", "application/json")
             .set("Authorization", `Bearer ${schooladmin.accessToken}`)
-            // .expect(200)
+            .expect(200)
             .then((res) => {
-                console.log(res.body)
+                // console.log(res.body)
             });
     });
 

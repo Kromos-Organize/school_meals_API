@@ -10,7 +10,7 @@ export class Admin extends Model<Admin, IAdminCreationAttrs>  {
     id: number;
     
     @ApiProperty({example:'user@mail.ru', description:'Почтовый адрес'})
-    @Unique({name: 'admin_email_key', msg: 'Email must be unique in admin table'})
+    @Unique({name: 'admin_email_unique_key', msg: 'Email must be unique in admin table'})
     @Column({type: DataType.STRING, allowNull: false})
     email: string
 
