@@ -1,9 +1,7 @@
 import {ApiBearerAuth, ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {Body, Controller, Delete, Get, HttpCode, Param, Post, Put, UseGuards,} from "@nestjs/common";
 import {UsersService} from "../application/users.service";
-import {RoleEnum} from "../domain/entities/role.enum";
-import {ActiveUserDto, CreateEmployeeDto, UpdateUserDto, UserParamDto} from "../domain/dto/user-request.dto";
-import {IUserModelAttr} from "../domain/dto/user-service.dto";
+import {ActiveUserDto, CreateEmployee, UpdateUserDto, UserParamDto} from "../domain/dto/user-request.dto";
 import {UserActivateResponseDto, UserDeleteResponseDto, UserResponseDto} from "../domain/dto/user-response.dto";
 import {BadCheckEntitiesException} from "../../helpers/exception/BadCheckEntitiesException";
 import {AuthGuard} from "@nestjs/passport";
@@ -13,12 +11,13 @@ import {BadRequestResult} from "../../helpers/exception/badRequestResult";
 @ApiBearerAuth()
 @ApiResponse({status: 401, description: 'Некорректный аксесс-токен'})
 @Controller("user")
-@UseGuards(AuthGuard())
+@UseGuards(AuthGuard('jwt'))
 export class UsersController {
 
-    constructor(private usersService: UsersService,
-                private badException: BadCheckEntitiesException) {
-    }
+    constructor(
+        private usersService: UsersService,
+        private badException: BadCheckEntitiesException
+    ) { }
 
 
     @ApiOperation({summary: "Получение списка пользователей"})
@@ -61,22 +60,13 @@ export class UsersController {
     @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage('user', 'yep')})
     @HttpCode(201)
     @Post("/create")
-    async create(@Body() userDto: CreateEmployeeDto) {
+    async create(@Body() userDto: CreateEmployee) {
 
         const user = await this.usersService.getByEmail(userDto.email);
 
         this.badException.checkAndGenerateException(user, 'user', 'yep', ['email']);
 
-        const inputModel: IUserModelAttr = {
-            school_id: userDto.school_id,
-            email: userDto.email,
-            password: userDto.password,
-            phone: userDto.phone,
-            role: RoleEnum.employee,
-            isActive: true,
-        };
-
-        return this.usersService.createUser(inputModel);
+        return this.usersService.createUser(userDto);
     }
 
 

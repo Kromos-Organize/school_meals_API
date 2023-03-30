@@ -1,9 +1,9 @@
-import {ApiProperty, PartialType} from "@nestjs/swagger";
+import {ApiProperty, OmitType, PartialType} from "@nestjs/swagger";
 import {IsBoolean, IsInt, IsNotEmpty, IsPhoneNumber, IsString, Length} from "class-validator";
 import {Transform} from "class-transformer";
 import {RegistrationDto} from "../../../auth/domain/dto/auth-request.dto";
 
-export class CreateEmployeeDto extends PartialType(RegistrationDto) {
+export class EmployeeDto extends PartialType(RegistrationDto) {
 
     @ApiProperty({example: 12, description:'Айди школы'})
     @Transform(({ value }) => parseInt(value))
@@ -11,6 +11,8 @@ export class CreateEmployeeDto extends PartialType(RegistrationDto) {
     @IsNotEmpty({message: 'Обязательное поле'})
     school_id: number
 }
+
+export class CreateEmployee extends OmitType(EmployeeDto, ["password"]) {}
 
 export class UserParamDto {
 

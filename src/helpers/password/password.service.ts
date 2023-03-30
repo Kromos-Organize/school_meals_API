@@ -1,10 +1,17 @@
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import * as bcrypt from "bcrypt";
+import Generator from 'generate-password';
 
 @Injectable()
 export class PasswordService {
 
   private saltRounds = process.env.SALT_ROUNDS;
+  private lengthPass = 8;
+
+  generateRandomPass(): string {
+
+    return Generator.generate({length: this.lengthPass, numbers: true});
+  }
 
   private async generateSalt(): Promise<string> {
 

@@ -33,3 +33,9 @@ export interface IValidateUserEmailReturns {
 export interface IActiveUser {
     isActive: boolean
 }
+
+export interface ICreateEmployee {
+    email: string,
+    school_id: number,
+    phone: string
+}
