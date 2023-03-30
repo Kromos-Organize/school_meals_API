@@ -376,6 +376,7 @@ describe("Meals tests (e2e)", () => {
             .expect(200)
             .then((res) => {
                 // console.log(res.body)
+                
                 for (let i = 0; i < studentsCounter; i++) {
                     classVisits.push({
                         student_id: students[i].id,
