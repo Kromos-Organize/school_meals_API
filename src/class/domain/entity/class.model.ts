@@ -22,11 +22,11 @@ export class Class extends Model<Class, ICreateClass> {
     number: number;
 
     @ApiProperty({example:'A', description:'Буква класса'})
-    @Column({type: DataType.STRING, allowNull: false})
+    @Column({type: DataType.STRING(5), allowNull: false})
     type: string;
 
     @ApiProperty({example:'junior', description:'Категория класса(junior - 1-4 классы, elder - 5-11 классы)'})
-    @Column({type: DataType.STRING,  allowNull: false, values: [ClassCategoryEnum.elder, ClassCategoryEnum.junior] })
+    @Column({type: DataType.STRING(10),  allowNull: false, values: [ClassCategoryEnum.elder, ClassCategoryEnum.junior] })
     category: ClassCategoryEnum;
 
     @BelongsTo(() => Student, 'class_id')

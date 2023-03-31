@@ -2,7 +2,7 @@ import {Column, DataType, Model, Table} from "sequelize-typescript";
 import {ICreatePrices} from "../dto/prices-service.dto";
 import {ApiProperty} from "@nestjs/swagger";
 
-@Table({tableName: 'prices'})
+@Table({tableName: 'prices', timestamps: false})
 export class Prices extends Model<Prices, ICreatePrices>{
 
     @ApiProperty({example:'1', description:'ID'})
