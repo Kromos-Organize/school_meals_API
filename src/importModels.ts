@@ -9,5 +9,6 @@ import {TypeMenu} from "./typeMenu/domain/entity/type-menu.model";
 import {Prices} from "./prices/domain/entity/prices.model";
 import {Session} from "./session/domain/entities/session.model";
 import {Meals} from "./meals/domain/entity/meals.model";
+import {RecoveryData} from "./users/domain/entities/recovery-data.model";
 
-export const allModels = [Admin, User, School, Student, Class, PhoneParents, Menu, TypeMenu, Prices, Session, Meals];
+export const allModels = [Admin, User, School, Student, Class, PhoneParents, Menu, TypeMenu, Prices, Session, Meals, RecoveryData];

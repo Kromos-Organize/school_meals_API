@@ -21,6 +21,7 @@ import {MealsModule} from "./meals/meals.module";
 import {ScheduleModule} from "@nestjs/schedule";
 import {CronTasksService} from "./helpers/scheduler/cron-tasks.service";
 import { AppGateway } from './gateway/app.gateway';
+import {EmailModule} from "./email-adapter/email.module";
 
 @Module({
   controllers: [],
@@ -68,7 +69,8 @@ import { AppGateway } from './gateway/app.gateway';
     TypeMenuModule,
     PricesModule,
     LogsModule,
-    MealsModule
+    MealsModule,
+    EmailModule
   ],
 })
 export class AppModule {

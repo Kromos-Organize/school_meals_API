@@ -14,6 +14,8 @@ import {SequelizeModule} from "@nestjs/sequelize";
 import {Session} from "../session/domain/entities/session.model";
 import {SessionService} from "../session/application/SessionService";
 import {SessionRepository} from "../session/infrastructure/session.repository";
+import {EmailService} from "../email-adapter/email-service";
+import {PasswordService} from "../helpers/password/password.service";
 
 const jwtFactory = {
     useFactory: async () => ({
@@ -27,7 +29,7 @@ const jwtFactory = {
 @Module({
     controllers: [AuthController],
     providers: [AuthService, JwtStrategy, JwtService, ValidateUserService, BadCheckEntitiesException,
-        SessionService, SessionRepository],
+        SessionService, SessionRepository, EmailService, PasswordService],
     imports: [
         SequelizeModule.forFeature([Session]),
         forwardRef(() => UserModule),

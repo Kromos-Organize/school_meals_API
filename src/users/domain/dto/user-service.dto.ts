@@ -33,3 +33,11 @@ export interface IValidateUserEmailReturns {
 export interface IActiveUser {
     isActive: boolean
 }
+
+export interface IRecoveryData {
+
+    user_id: number
+    recovery_code: string
+    expired_date: Date
+    is_confirmed: boolean
+}

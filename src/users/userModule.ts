@@ -8,6 +8,8 @@ import { UsersRepository } from "./infrastructure/users.repository";
 import { UsersQueryRepository } from "./infrastructure/users.query.repository";
 import { PasswordService } from "../helpers/password/password.service";
 import {BadCheckEntitiesException} from "../helpers/exception/BadCheckEntitiesException";
+import {RecoveryData} from "./domain/entities/recovery-data.model";
+import {EmailService} from "../email-adapter/email-service";
 
 @Module({
   controllers: [UsersController],
@@ -16,10 +18,11 @@ import {BadCheckEntitiesException} from "../helpers/exception/BadCheckEntitiesEx
     UsersRepository,
     UsersQueryRepository,
     PasswordService,
-    BadCheckEntitiesException
+    BadCheckEntitiesException,
+    EmailService
   ],
   imports: [
-    SequelizeModule.forFeature([User]),
+    SequelizeModule.forFeature([User, RecoveryData]),
     forwardRef(() => AuthModule),
   ],
   exports: [

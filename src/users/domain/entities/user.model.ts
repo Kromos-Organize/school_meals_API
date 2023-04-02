@@ -1,7 +1,8 @@
-import {Column, DataType, ForeignKey, Model, Table,} from "sequelize-typescript";
+import {Column, DataType, ForeignKey, HasOne, Model, Table,} from "sequelize-typescript";
 import {ApiProperty} from "@nestjs/swagger";
 import {School} from "../../../school/domain/entities/school.model";
 import {IUserModelAttr} from "../dto/user-service.dto";
+import {RecoveryData} from "./recovery-data.model";
 
 @Table({ tableName: "user" })
 export class User extends Model<User, IUserModelAttr> {
@@ -50,4 +51,7 @@ export class User extends Model<User, IUserModelAttr> {
   @ApiProperty({ example: "false", description: "Активирован ли пользователь"})
   @Column({ type: DataType.BOOLEAN, allowNull: false, defaultValue: true })
   isActive: boolean;
+
+  @HasOne(() => RecoveryData)
+  recoveryData: RecoveryData;
 }
