@@ -18,11 +18,11 @@ export class Session extends Model<Session, ISessionCreationAttrs> {
     user_id: number;
 
     @ApiProperty({example:'axios/1.3.4', description:'Имя приложения, с которого произошёл логин'})
-    @Column({type: DataType.STRING, allowNull: false})
+    @Column({type: DataType.STRING(20), allowNull: false})
     device_name: string;
 
     @ApiProperty({example:'google.com', description:'IP адрес / сайт '})
-    @Column({type: DataType.STRING, allowNull: false})
+    @Column({type: DataType.STRING(30), allowNull: false})
     ip: string;
 
     @ApiProperty({example:'2023-03-22 16:15:54.876', description:'Дата выдачи рефреш-токена / начала сессии'})

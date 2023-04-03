@@ -10,7 +10,7 @@ import { IPhoneParents } from '../dto/student-service.dto';
 import { ApiProperty } from '@nestjs/swagger';
 import { Student } from './student.model';
 
-@Table({ tableName: 'phone_parents' })
+@Table({ tableName: 'phone_parents', timestamps: false })
 export class PhoneParents extends Model<PhoneParents, IPhoneParents> {
 
     @ApiProperty({ example: '1', description: 'ID номера телефона' })
@@ -26,10 +26,10 @@ export class PhoneParents extends Model<PhoneParents, IPhoneParents> {
     student: Student;
 
     @ApiProperty({ example: '(29)748-58-75', description: 'телефон мамы' })
-    @Column({ type: DataType.STRING, allowNull: false })
+    @Column({ type: DataType.STRING(20), allowNull: false })
     m_phone: string;
 
     @ApiProperty({ example: '(29)748-58-75', description: 'телефон папы' })
-    @Column({ type: DataType.STRING, allowNull: false })
+    @Column({ type: DataType.STRING(20), allowNull: false })
     f_phone: string;
 }
