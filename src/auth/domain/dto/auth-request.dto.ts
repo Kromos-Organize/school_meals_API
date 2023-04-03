@@ -37,7 +37,13 @@ export class RegistrationDto {
   readonly phone: string;
 }
 
-export class EmailInputDto extends OmitType(RegistrationDto, ['password', 'phone']){ }
+export class EmailInputDto { 
+  
+  @ApiProperty({ example: "user@mail.ru", description: "Почтовый адрес" })
+  @IsString({ message: "Должно быть строкой." })
+  @IsEmail({}, { message: "Некорректынй емейл." })
+  readonly email: string;
+}
 
 export class NewPasswordDto {
 
