@@ -107,7 +107,7 @@ export class UsersController {
 
         this.badException.checkAndGenerateException(!user, 'user', 'not', ['user_id']);
 
-        return this.usersService.changeActiveUser(paramDto.user_id, activeDto);
+        return this.usersService.changeActiveUser(paramDto.user_id, activeDto, user.email);
     }
 
 

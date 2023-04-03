@@ -10,6 +10,7 @@ import {Session} from "./session/domain/entities/session.model";
 import {Meals} from "./meals/domain/entity/meals.model";
 import {Class} from "./class/domain/entity/class.model";
 import {BlockCabinet} from "./block_cabinet/domain/entity/blockCabinet.model";
+import {RecoveryData} from "./users/domain/entities/recovery-data.model";
 
 export const allModels = [
     Admin,
@@ -24,4 +25,5 @@ export const allModels = [
     Session,
     Meals,
     BlockCabinet,
+    RecoveryData,
 ];

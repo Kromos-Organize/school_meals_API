@@ -1,5 +1,6 @@
 import {ApiProperty} from "@nestjs/swagger";
-import {IsBoolean, IsEmail, IsPhoneNumber, IsString, Length,} from "class-validator";
+import {IsBoolean, IsEmail, IsNotEmpty, IsPhoneNumber, IsString, Length,} from "class-validator";
+import {OmitType} from "@nestjs/mapped-types";
 
 export class LoginDto {
 
@@ -34,4 +35,20 @@ export class RegistrationDto {
   @IsPhoneNumber("BY", { message: "Код номера должен быть кодом используемым в РБ" })
   @IsString({ message: "Должно быть строкой." })
   readonly phone: string;
+}
+
+export class EmailInputDto extends OmitType(RegistrationDto, ['password', 'phone']){ }
+
+export class NewPasswordDto {
+
+  @ApiProperty({ example: "123456789", description: "Новый пароль" })
+  @Length(8, 16, { message: "Пароль должен быть от 8 до 16 символов." })
+  @IsString({ message: "Должно быть строкой." })
+  @IsNotEmpty({message: 'Обязательное поле'})
+  newPassword: string;
+
+  @ApiProperty({ example: "113452ertrte-66456werqer-42558", description: "Код для получения нового пароля"})
+  @IsString({ message: "Должно быть строкой." })
+  @IsNotEmpty({message: 'Обязательное поле'})
+  recoveryCode: string;
 }

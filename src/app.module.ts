@@ -22,6 +22,7 @@ import {ScheduleModule} from "@nestjs/schedule";
 import {CronTasksService} from "./helpers/scheduler/cron-tasks.service";
 import {GatewayModule} from "./gateway/gateway.module";
 import {BlockCabinetModule} from "./block_cabinet/blockCabinet.module";
+import {EmailModule} from "./email-adapter/email.module";
 
 @Module({
   controllers: [],
@@ -71,6 +72,7 @@ import {BlockCabinetModule} from "./block_cabinet/blockCabinet.module";
     MealsModule,
     GatewayModule,
     BlockCabinetModule,
+    EmailModule,
   ],
 })
 export class AppModule {

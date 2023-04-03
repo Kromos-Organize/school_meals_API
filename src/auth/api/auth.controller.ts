@@ -1,7 +1,17 @@
-import {Body, Controller, HttpCode, Post, Req, Res, UnauthorizedException, UseGuards,} from "@nestjs/common";
+import {
+    Body,
+    Controller,
+    HttpCode,
+    HttpStatus,
+    Post,
+    Req,
+    Res,
+    UnauthorizedException,
+    UseGuards,
+} from "@nestjs/common";
 import {ApiCookieAuth, ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {AuthService} from "../application/auth.service";
-import {LoginDto, RegistrationDto} from "../domain/dto/auth-request.dto";
+import {EmailInputDto, LoginDto, NewPasswordDto, RegistrationDto} from "../domain/dto/auth-request.dto";
 import {RefreshTokenGuard} from "../guards/refresh.token.guard";
 import {cookieConfigToken} from "../../helpers/cookie.config";
 import {UsersQueryRepository} from "../../users/infrastructure/users.query.repository";
@@ -26,7 +36,7 @@ export class AuthController {
         private usersQueryRepository: UsersQueryRepository,
         private jwtService: JwtService,
         private badException: BadCheckEntitiesException,
-        private sessionService: SessionService
+        private sessionService: SessionService,
     ) {
     }
 
@@ -99,6 +109,29 @@ export class AuthController {
 
             res.send({id: req.user.id, role: req.user.role, accessToken: tokens.accessToken,})
         }
+    }
+
+    @ApiOperation({summary: "Восстановление пароля"})
+    @ApiResponse({status: 201, description: 'Успешное восстановление пароля'})
+    @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage("user", 'yep')})
+    @Post("/recovery-password")
+    async recoveryPassword(@Body() inputEmail: EmailInputDto) {
+
+        const user = await this.usersQueryRepository.getUserByEmail(inputEmail.email);
+
+        this.badException.checkAndGenerateException(!user, 'user', 'not', ['email']);
+
+        return this.authService.sendRecoveryCode(user);
+    }
+
+    @ApiOperation({summary: "Смена пароля"})
+    @ApiResponse({status: 204, description: 'Успешная смена пароля'})
+    @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage("user", 'yep')})
+    @HttpCode(HttpStatus.NO_CONTENT)
+    @Post("/new-password")
+    async addNewPassword(@Body() inputPasswordDto: NewPasswordDto) {
+
+        return this.authService.confirmPassword(inputPasswordDto)
     }
 
     @UseGuards(RefreshTokenGuard)

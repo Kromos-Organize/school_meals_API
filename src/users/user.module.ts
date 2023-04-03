@@ -9,6 +9,8 @@ import { UsersQueryRepository } from "./infrastructure/users.query.repository";
 import { PasswordService } from "../helpers/password/password.service";
 import {BadCheckEntitiesException} from "../helpers/exception/BadCheckEntitiesException";
 import {BlockCabinetModule} from "../block_cabinet/blockCabinet.module";
+import {RecoveryData} from "./domain/entities/recovery-data.model";
+import {EmailService} from "../email-adapter/email-service";
 
 @Module({
   controllers: [UsersController],
@@ -17,10 +19,11 @@ import {BlockCabinetModule} from "../block_cabinet/blockCabinet.module";
     UsersRepository,
     UsersQueryRepository,
     PasswordService,
-    BadCheckEntitiesException
+    BadCheckEntitiesException,
+    EmailService,
   ],
   imports: [
-    SequelizeModule.forFeature([User]),
+    SequelizeModule.forFeature([User, RecoveryData]),
     forwardRef(() => AuthModule),
     forwardRef(() => BlockCabinetModule),
   ],

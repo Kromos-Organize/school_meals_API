@@ -39,3 +39,11 @@ export interface ICreateEmployee {
     school_id: number,
     phone: string
 }
+
+export interface IRecoveryData {
+
+    user_id: number
+    recovery_code: string
+    expired_date: Date
+    is_confirmed: boolean
+}

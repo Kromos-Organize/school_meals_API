@@ -2,8 +2,9 @@ import {Injectable} from "@nestjs/common";
 import {UsersRepository} from "../infrastructure/users.repository";
 import {UsersQueryRepository} from "../infrastructure/users.query.repository";
 import {PasswordService} from "../../helpers/password/password.service";
-import {IActiveUser, IUserModelAttr, IUserUpdateModel} from "../domain/dto/user-service.dto";
+import {IActiveUser, IRecoveryData, IUserModelAttr, IUserUpdateModel} from "../domain/dto/user-service.dto";
 import {UserActivateResponseDto} from "../domain/dto/user-response.dto";
+import {EmailService} from "../../email-adapter/email-service";
 
 @Injectable()
 export class UsersService {
@@ -11,7 +12,8 @@ export class UsersService {
   constructor(
     private usersRepository: UsersRepository,
     private usersQueryRepository: UsersQueryRepository,
-    private passwordService: PasswordService
+    private passwordService: PasswordService,
+    private emailService: EmailService
   ) {}
 
   async getAll() {
@@ -57,7 +59,7 @@ export class UsersService {
     return await this.usersRepository.updateUser(id, userDto);
   }
 
-  async changeActiveUser(id: number, activeDto: IActiveUser) {
+  async changeActiveUser(id: number, activeDto: IActiveUser, email: string) {
 
     const activatedUser = await this.usersRepository.changeActivateUser(id, activeDto);
 
@@ -71,6 +73,8 @@ export class UsersService {
         message: message
       }
 
+      await this.emailService.sendModerationMessage(email, message)
+
       return resultActivated;
     }
 
@@ -80,5 +84,15 @@ export class UsersService {
   async removeUser(id: number) {
 
     return await this.usersRepository.deleteUser(id);
+  }
+
+  async createRecoveryData(recoveryData: IRecoveryData) {
+
+    return this.usersRepository.addRecoveryData(recoveryData)
+  }
+
+  async confirmAndChangePassword(id: number, passwordData: string) {
+
+    return this.usersRepository.updateUserPasswordAndRecoveryData(id, passwordData)
   }
 }
