@@ -37,9 +37,10 @@ export class TestHelpersClass {
         return {
             in: {
                 email: this.createRandomString(5) + "@mail.ru",
-                password: this.createRandomString(8),
-                phone: "(29)-748-58-75"
+                phone: "(29)-748-58-75",
+                school_id: null
             },
+            password: null,
             accessToken: null,
             refreshToken: null,
             id: null,

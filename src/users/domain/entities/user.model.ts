@@ -4,7 +4,7 @@ import {School} from "../../../school/domain/entities/school.model";
 import {IUserModelAttr} from "../dto/user-service.dto";
 import {BlockCabinet} from "../../../block_cabinet/domain/entity/blockCabinet.model";
 
-@Table({ tableName: "user" })
+@Table({ tableName: "user", updatedAt: false })
 export class User extends Model<User, IUserModelAttr> {
 
   @ApiProperty({ example: "1", description: "ID пользователя"})
@@ -17,36 +17,36 @@ export class User extends Model<User, IUserModelAttr> {
   school_id: number;
 
   @ApiProperty({ example: "EMPLOYEE", description: "Роль пользователя"})
-  @Column({ type: DataType.STRING, allowNull: false })
+  @Column({ type: DataType.STRING(10), allowNull: false })
   role: string;
   
   @ApiProperty({example:'user@mail.ru', description:'Почтовый адрес'})
   @Unique({name: 'user_email_unique_key', msg: 'Email must be unique in admin table'})
-  @Column({type: DataType.STRING, allowNull: false})
+  @Column({type: DataType.STRING(50), allowNull: false})
   email: string
 
   @ApiProperty({ example: "123456789", description: "Пароль пользователя"})
-  @Column({ type: DataType.STRING, allowNull: false })
+  @Column({ type: DataType.STRING(100), allowNull: false })
   password: string;
 
   @ApiProperty({ example: "297485875", description: "Телефон пользователя"})
-  @Column({ type: DataType.STRING, allowNull: false })
+  @Column({ type: DataType.STRING(20), allowNull: false })
   phone: string;
 
   @ApiProperty({ example: "Шавлинский", description: "Фамилия пользователя"})
-  @Column({ type: DataType.STRING, allowNull: true })
+  @Column({ type: DataType.STRING(40), allowNull: true })
   fname: string;
 
   @ApiProperty({ example: "Роман", description: "Имя пользователя"})
-  @Column({ type: DataType.STRING, allowNull: true })
+  @Column({ type: DataType.STRING(20), allowNull: true })
   name: string;
 
   @ApiProperty({ example: "Игоревич", description: "Отчество пользователя"})
-  @Column({ type: DataType.STRING, allowNull: true })
+  @Column({ type: DataType.STRING(30), allowNull: true })
   lname: string;
 
   @ApiProperty({example: "22.02.2022", description: "Дата рождения пользователя"})
-  @Column({ type: DataType.DATE, allowNull: true })
+  @Column({ type: DataType.DATEONLY, allowNull: true })
   birthday: Date;
 
   @ApiProperty({ example: "false", description: "Активирован ли пользователь"})

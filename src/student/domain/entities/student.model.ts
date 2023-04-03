@@ -6,7 +6,7 @@ import {PhoneParents} from './phone-parents.model';
 import {Meals} from "../../../meals/domain/entity/meals.model";
 import {Class} from "../../../class/domain/entity/class.model";
 
-@Table({ tableName: 'student' })
+@Table({ tableName: 'student' , updatedAt: false})
 export class Student extends Model<Student, StudentCreationAttrs> {
 
     @ApiProperty({example:'1', description:'ID'})
@@ -24,19 +24,19 @@ export class Student extends Model<Student, StudentCreationAttrs> {
     class_id: number;
 
     @ApiProperty({example:'Шавлинский', description:'Фамилия ученика'})
-    @Column({type: DataType.STRING, allowNull: false})
+    @Column({type: DataType.STRING(40), allowNull: false})
     fname: string;
 
     @ApiProperty({example:'Роман', description:'Имя ученика'})
-    @Column({type: DataType.STRING, allowNull: false})
+    @Column({type: DataType.STRING(20), allowNull: false})
     name: string;
 
     @ApiProperty({example:'Игоревич', description:'Отчество ученика'})
-    @Column({type: DataType.STRING, allowNull: true})
+    @Column({type: DataType.STRING(30), allowNull: true})
     lname: string;
 
     @ApiProperty({ example: '22.02.2022', description: 'Дата рождения ученика' })
-    @Column({ type: DataType.STRING, allowNull: true })
+    @Column({ type: DataType.DATEONLY, allowNull: true })
     birthday: Date;
 
     @ApiProperty({example: false, description: 'Параметр отвечающий многодетная семья или нет',})

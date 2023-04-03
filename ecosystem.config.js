@@ -21,7 +21,7 @@ module.exports = {
       repo : 'git@github.com:Kromos-Organize/school_meals_API.git',
       path : '/home/kromos/school_meals_dev/school_meals_API',
       'pre-deploy-local': '',
-      'post-deploy' : 'git checkout . && git checkout main && git pull && npm install && npm run build && pm2 reload ecosystem.config.js --env production',
+      'post-deploy' : 'git checkout . && git checkout main && git pull && npm install && npm run build && pm2 reload ecosystem.config.ts --env production',
       'pre-setup': ''
     }
   }

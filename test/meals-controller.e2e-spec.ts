@@ -82,11 +82,13 @@ describe("Meals tests (e2e)", () => {
             .set("Content-Type", "application/json")
             .set("Accept", "application/json")
             .expect(201)
-            .then((res) => {
+            .then(async (res) => {
+              const seq = await app.get('Sequelize')
+              seq.query(`select 1+1`)
                 schooladmin.id = res.body.id
                 schooladmin.role = res.body.role
                 schooladmin.isActive = res.body.isActive
-                // console.log(res.body)
+                console.log(res.body)
             });
     });
 
@@ -108,6 +110,29 @@ describe("Meals tests (e2e)", () => {
                 // console.log(superadmin)
             });
     });
+  
+  it(`(POST -> /school)`, () => {
+    return request(app.getHttpServer())
+      .post("/school")
+      .send(JSON.stringify(school.in))
+      .set("Content-Type", "application/json")
+      .set("Accept", "application/json")
+      .set("Authorization", `Bearer ${sa.accessToken}`)
+      .expect(201)
+      .then((res) => {
+        school.id = res.body.school_id
+        klass.in.school_id = res.body.school_id
+        typeMenu1.in.school_id = res.body.school_id
+        typeMenu2.in.school_id = res.body.school_id
+        typeMenu3.in.school_id = res.body.school_id
+        menu1.in.school_id = res.body.school_id
+        menu2.in.school_id = res.body.school_id
+        menu3.in.school_id = res.body.school_id
+        
+        schooladmin.in.school_id= res.body.school_id
+        // console.log(res.body)
+      });
+  });
 
     it(`(GET -> /user/moderation )`, () => {
         return request(app.getHttpServer())
@@ -138,13 +163,14 @@ describe("Meals tests (e2e)", () => {
     it(`(POST -> /auth/login  LOGIN schoolAdmin)`, () => {
         return request(app.getHttpServer())
             .post("/auth/login")
-            .send(JSON.stringify({email: schooladmin.in.email, password: schooladmin.in.password, isAdminDev: false}))
+            .send(JSON.stringify({email: schooladmin.in.email, password: schooladmin.password, isAdminDev: false}))
             .set("Content-Type", "application/json")
             .set("Accept", "application/json")
             .set("user-Agent", "deviceTitle")
-            .expect(201)
+            // .expect(201)
             .then((res) => {
-                // console.log(res.body)
+                console.log(res.body)
+                console.log(schooladmin)
                 schooladmin.accessToken = res.body.accessToken
                 schooladmin.refreshToken = res.headers["set-cookie"][0]
                     .split("=")[1]
@@ -153,26 +179,7 @@ describe("Meals tests (e2e)", () => {
             });
     });
 
-    it(`(POST -> /school)`, () => {
-        return request(app.getHttpServer())
-            .post("/school")
-            .send(JSON.stringify(school.in))
-            .set("Content-Type", "application/json")
-            .set("Accept", "application/json")
-            .set("Authorization", `Bearer ${schooladmin.accessToken}`)
-            .expect(201)
-            .then((res) => {
-                school.id = res.body.school_id
-                klass.in.school_id = res.body.school_id
-                typeMenu1.in.school_id = res.body.school_id
-                typeMenu2.in.school_id = res.body.school_id
-                typeMenu3.in.school_id = res.body.school_id
-                menu1.in.school_id = res.body.school_id
-                menu2.in.school_id = res.body.school_id
-                menu3.in.school_id = res.body.school_id
-                // console.log(res.body)
-            });
-    });
+
 
     it(`(POST -> /user/create )`, () => {
         return request(app.getHttpServer())

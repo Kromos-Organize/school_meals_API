@@ -4,7 +4,7 @@ import {School} from "../../../school/domain/entities/school.model";
 import {IMenuCreateAttr} from "../dto/menu-service.dto";
 import {TypeMenu} from "../../../typeMenu/domain/entity/type-menu.model";
 
-@Table({tableName: 'menu'})
+@Table({tableName: 'menu', timestamps: false})
 export class Menu extends Model<Menu, IMenuCreateAttr> {
 
     @ApiProperty({example:'1', description:'ID'})
