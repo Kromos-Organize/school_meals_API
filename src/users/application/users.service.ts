@@ -38,8 +38,8 @@ export class UsersService {
 
   async createUser(inputModel: IUserModelAttr) {
 
-    const generatedPass = this.passwordService.generateRandomPass();
-    const passwordHash = await this.passwordService.generateSaltAndHash(generatedPass);
+    const password = inputModel.password  ? inputModel.password : this.passwordService.generateRandomPass();
+    const passwordHash = await this.passwordService.generateSaltAndHash(password);
 
     const newUser: IUserModelAttr = {
       ...inputModel,
