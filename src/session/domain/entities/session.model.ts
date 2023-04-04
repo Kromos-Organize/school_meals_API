@@ -18,7 +18,7 @@ export class Session extends Model<Session, ISessionCreationAttrs> {
     user_id: number;
 
     @ApiProperty({example:'axios/1.3.4', description:'Имя приложения, с которого произошёл логин'})
-    @Column({type: DataType.STRING(20), allowNull: false})
+    @Column({type: DataType.STRING(30), allowNull: false})
     device_name: string;
 
     @ApiProperty({example:'google.com', description:'IP адрес / сайт '})
