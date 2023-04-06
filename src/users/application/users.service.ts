@@ -38,7 +38,7 @@ export class UsersService {
 
   async createUser(inputModel: IUserModelAttr) {
 
-    const password = inputModel.password  ? inputModel.password : this.passwordService.generateRandomPass();
+    const password = inputModel.password ? inputModel.password : this.passwordService.generateRandomPass();
     const passwordHash = await this.passwordService.generateSaltAndHash(password);
 
     const newUser: IUserModelAttr = {
@@ -48,7 +48,6 @@ export class UsersService {
       name: null,
       lname: null,
       birthday: null,
-      isActive: true,
     };
 
     return await this.usersRepository.createUser(newUser);
