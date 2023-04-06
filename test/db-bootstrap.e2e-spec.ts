@@ -89,10 +89,10 @@ describe("Bootstrapping db (e2e)", () => {
 	let menuArr: number[] = []
 	
 	test("Create 5 menu from typeMenu", async () => {
-		const menyRepo = app.get(MenuRepository)
+		const menuRepo = app.get(MenuRepository)
 		for (let i = 0; i < typeMenuArr.length; i++) {
 			let dto = fakers.makeMenuDTO(schoolId, typeMenuArr[i])
-			const res = await menyRepo.createMenu(dto)
+			const res = await menuRepo.createMenu(dto)
 			menuArr.push(res.menu_id)
 		}
 	})
