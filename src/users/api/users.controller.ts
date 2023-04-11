@@ -75,6 +75,7 @@ export class UsersController {
             password: null,
             role: RoleEnum.employee,
             phone: userDto.phone,
+            isActive: true,
         }
 
         return this.usersService.createUser(userInput);

@@ -48,7 +48,6 @@ export class UsersService {
       name: null,
       lname: null,
       birthday: null,
-      isActive: true,
     };
 
     return await this.usersRepository.createUser(newUser);
