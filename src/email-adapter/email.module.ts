@@ -16,12 +16,12 @@ import {EmailService} from "./email-service";
                     ignoreTLS: true,
                     secure: true,
                     auth: {
-                        user: configService.get<string>('SMTP_USER'),
+                        user: configService.get<string>('TEAM_LEAD_EMAIL'),
                         pass: configService.get<string>('SMTP_PASSWORD'),
                     },
                 },
                 defaults: {
-                    from: '"No Reply" <no-reply@gmail.com>',
+                    from: '"School Meals" <no-reply@gmail.com>',
                 },
                 preview: false,
                 template: {
