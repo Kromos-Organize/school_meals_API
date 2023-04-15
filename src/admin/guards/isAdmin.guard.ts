@@ -26,11 +26,21 @@ export class IsAdminGuard implements CanActivate {
                 new UnauthorizedException({message: 'Не авторизован'})
             }
 
-            const userId = await this.jwtService.getUserIdByAccessToken(token);
+            const adminId = await this.jwtService.getUserIdByAccessToken(token);
 
-            const admin = await this.adminQueryRepository.getById(userId);
+            const admin = await this.adminQueryRepository.getById(adminId);
 
             if (!admin) new ForbiddenException()
+
+            req.admin = {
+                id: admin.id,
+                email: admin.email,
+                role: admin.role,
+                name: admin.name,
+                fname: admin.fname,
+                position: admin.position,
+                chat_number: admin.chat_number
+            }
 
             return !!admin;
 

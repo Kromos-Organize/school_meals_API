@@ -15,3 +15,13 @@ export interface IPayloadJwt {
     email:string,
     role: string,
 }
+
+export interface ISuperAdmin {
+    id: number,
+    email: string,
+    role: string,
+    name: string,
+    fname: string,
+    position: string,
+    chat_number: string
+}

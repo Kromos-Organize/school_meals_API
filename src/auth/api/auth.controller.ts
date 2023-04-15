@@ -19,12 +19,15 @@ import {JwtService} from "../application/jwt-service";
 import {LoginResponseDto, RefreshTokenResponseDto, RegisterResponseDto} from "../domain/dto/auth-response.dto";
 import {BadCheckEntitiesException} from "../../helpers/exception/BadCheckEntitiesException";
 import {IsActiveUserAuthGuard} from "../guards/isActive-user.auth.guard";
-import {Cookies} from "../../helpers/param-decorators/custom-decorators";
+import {Cookies, SuperAdmin} from "../../helpers/param-decorators/custom-decorators";
 import {BadRequestResult} from "../../helpers/exception/badRequestResult";
 import {UnauthorizedResult} from "../../helpers/exception/unauthorizedResult";
 import {ForbiddenResult} from "../../helpers/exception/forbiddenResult";
 import {SessionService} from "../../session/application/SessionService";
 import {ISessionCreateDTO} from "../../session/domain/dto/session-service.dto";
+import {SuperAdminCabinInput} from "../../admin/domain/dto/admin-request.dto";
+import {IsAdminGuard} from "../../admin/guards/isAdmin.guard";
+import {ISuperAdmin} from "../domain/dto/auth-service.dto";
 
 
 @ApiTags("Авторизация")
@@ -132,6 +135,29 @@ export class AuthController {
     async addNewPassword(@Body() inputPasswordDto: NewPasswordDto) {
 
         return this.authService.confirmPassword(inputPasswordDto)
+    }
+
+    @ApiOperation({summary: 'Вход для супер-админа'})
+    @ApiResponse({status: 200, description: 'Успешный вход в кабинет админа'})
+    @ApiResponse({status: 401, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage('admin', 'yep')})
+    @UseGuards(IsAdminGuard)
+    @HttpCode(200)
+    @Post('login/cabinet')
+    async enterToCabinet(@Body() inputDto: SuperAdminCabinInput, @SuperAdmin() adminData: ISuperAdmin) {
+
+        const token = this.jwtService.createToken(
+            {id: adminData.id, role: adminData.role, email: adminData.email},
+            'ACCESS_JWT_SECRET',
+            process.env.TIME_LIFE_ACCESS);
+
+        return {
+            id: adminData.id,
+            role: adminData.role,
+            email: adminData.email,
+            name: adminData.name,
+            fname: adminData.fname,
+            accessToken: token,
+        }
     }
 
     @UseGuards(RefreshTokenGuard)
