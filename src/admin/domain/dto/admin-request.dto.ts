@@ -63,3 +63,10 @@ export class UpdateAdminDto {
     @IsString({message: 'Должно быть строкой.'})
     readonly chat_number?: string
 }
+
+export class SuperAdminCabinInput {
+
+    @ApiProperty({example: 'user@mail.ru', description: 'Почтовый адрес'})
+    @IsEmail({}, {message:'Некорректынй емейл.'})
+    readonly email: string;
+}
