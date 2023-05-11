@@ -22,7 +22,6 @@ export class UsersController {
         private badException: BadCheckEntitiesException
     ) { }
 
-
     @ApiOperation({summary: "Получение списка пользователей"})
     @ApiResponse({status: 200, type: [UserResponseDto], description: 'Успешное получение списка пользователей'})
     @HttpCode(200)

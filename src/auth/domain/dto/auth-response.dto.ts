@@ -1,4 +1,5 @@
 import {ApiProperty} from "@nestjs/swagger";
+import { RoleEnum } from 'src/users/domain/entities/role.enum';
 
 export class LoginResponseDto {
 
@@ -53,6 +54,21 @@ export class RegisterResponseDto {
 
 export class RefreshTokenResponseDto {
 
+    @ApiProperty({ example: '13', description: "Айди пользователя"})
+    id: number
+
+    @ApiProperty({ example: "ADMIN", description: "Роль текущего пользователя"})
+    role: RoleEnum
+
     @ApiProperty({ example: 'wdqdwqdqwdqwd12319283y912dw', description: "Токен авторизации"})
     accessToken: string
+}
+
+export class MeResponseDto {
+
+    @ApiProperty({ example: '13', description: "Айди пользователя"})
+    id: number
+
+    @ApiProperty({ example: "ADMIN", description: "Роль текущего пользователя"})
+    role: RoleEnum
 }

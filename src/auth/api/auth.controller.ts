@@ -1,6 +1,7 @@
 import {
     Body,
     Controller,
+    Get,
     HttpCode,
     HttpStatus,
     Post,
@@ -16,7 +17,7 @@ import {RefreshTokenGuard} from "../guards/refresh.token.guard";
 import {cookieConfigToken} from "../../helpers/cookie.config";
 import {UsersQueryRepository} from "../../users/infrastructure/users.query.repository";
 import {JwtService} from "../application/jwt-service";
-import {LoginResponseDto, RefreshTokenResponseDto, RegisterResponseDto} from "../domain/dto/auth-response.dto";
+import { LoginResponseDto, RefreshTokenResponseDto, RegisterResponseDto } from "../domain/dto/auth-response.dto";
 import {BadCheckEntitiesException} from "../../helpers/exception/BadCheckEntitiesException";
 import {IsActiveUserAuthGuard} from "../guards/isActive-user.auth.guard";
 import {Cookies} from "../../helpers/param-decorators/custom-decorators";
@@ -40,6 +41,20 @@ export class AuthController {
     ) {
     }
 
+    // @UseGuards(RefreshTokenGuard)
+    // @ApiCookieAuth()
+    // @ApiOperation({ summary: "Проверка авторизации" })
+    // @ApiResponse({ status: 200, type: MeResponseDto, description: 'Пользователь авторизован' })
+    // @ApiResponse({ status: 401, type: UnauthorizedResult, description: 'Пользователь не авторизован' })
+    // @Get("/me")
+    // async me(@Req() req, @Res() res) {
+        
+    //     if (req.user) {
+
+    //         res.send({id: req.user.id, role: req.user.role,})
+    //     }
+    //  }
+
     @UseGuards(IsActiveUserAuthGuard)
     @ApiOperation({summary: "Логинизация"})
     @ApiResponse({status: 200, type: LoginResponseDto, description: 'Успешный вход в систему'})
@@ -56,7 +71,7 @@ export class AuthController {
 
         if (user) {
 
-            delete user.password;
+            const {password, ...sendUser} = user;
 
             const sessionData: ISessionCreateDTO = {
                 ip: req.get('host'),
@@ -71,14 +86,14 @@ export class AuthController {
             } else {
                 await this.sessionService.updateLastSessionUsage(sessionData)
             }
-        }
 
-        res
+            res
             .cookie("refreshToken", tokens.refreshToken, cookieConfigToken)
             .send({
-                ...user,
+                ...sendUser,
                 accessToken: tokens.accessToken,
             });
+        }
     }
 
     @ApiOperation({summary: "Регистрация"})
@@ -100,7 +115,7 @@ export class AuthController {
     @ApiOperation({summary: "Обновление аксесс-токена"})
     @ApiResponse({status: 200, type: RefreshTokenResponseDto, description: 'Успешное обновление аксесс-токена'})
     @ApiResponse({status: 401, type: UnauthorizedResult, description: 'Некорректный рефреш-токен'})
-    @Post("/refresh-token")
+    @Get("/refresh-token")
     async resendingRefreshTokens(@Req() req, @Res() res) {
 
         if (req.user) {
