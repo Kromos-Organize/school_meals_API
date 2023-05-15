@@ -14,7 +14,7 @@ export class BlockCabinetQueryRepository {
 
     async getBlockById(id: number) {
 
-        return await this.blockCabinetRepository.findOne({ where: { id}})
+        return await this.blockCabinetRepository.findOne({ where: { id }})
     }
 
     async getBlocByUserId(user_id: number) {

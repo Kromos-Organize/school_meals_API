@@ -32,12 +32,12 @@ export class UsersQueryRepository {
 
     const res = await this.sequelize.query(`
         SELECT u.id, u.school_id, u.role, u.email, u.phone, u.fname, u.name, u.lname, u."isActive", 
-        CASE WHEN b.user_id IS NOT NULL THEN TRUE ELSE FALSE END AS isBlock
+        CASE WHEN b.user_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_block
         FROM public.user u 
-        LEFT JOIN block_cabinet b ON u.id = b.user_id;`,{
+        LEFT JOIN block_cabinet b ON u.id = b.user_id
+        ORDER BY u.id ASC;`,{
         type: QueryTypes.SELECT,
         raw: true,
-
     })
 
     return res;

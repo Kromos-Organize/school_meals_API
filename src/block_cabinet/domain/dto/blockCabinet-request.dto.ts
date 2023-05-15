@@ -22,6 +22,6 @@ export class ParamRemoveCabinet {
     @Transform(({ value }) => parseInt(value))
     @IsInt({message: 'Айди кабинета должна быть числом'})
     @IsNotEmpty({message: 'Обязательное поле'})
-    id: number
+    user_id: number
 }
 

@@ -13,10 +13,10 @@ export class BlockCabinetRepository {
         return await this.blockCabinetRepository.create(userDto);
     }
 
-    async removeCabinet(id: number) {
+    async removeCabinet(user_id: number) {
 
-        const result = await this.blockCabinetRepository.destroy({ where: { id }})
+        const result = await this.blockCabinetRepository.destroy({ where: { user_id }})
 
-        return result && { id }
+        return result && { user_id }
     }
 }

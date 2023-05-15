@@ -23,8 +23,8 @@ export class BlockCabinetController {
         private badException: BadCheckEntitiesException,
     ) { }
 
-    @ApiOperation({summary: 'Получить список заблокироавнных кабинетов'})
-    @ApiResponse({status: 200, type: [BlockCabinet], description: 'Успешное получение списка заблокироавнных кабинетов'})
+    @ApiOperation({summary: 'Получить список заблокированных кабинетов'})
+    @ApiResponse({ status: 200, type: [BlockCabinet], description: 'Успешное получение списка заблокированных кабинетов' })
     @HttpCode(200)
     @Get()
     async getAll() {
@@ -32,7 +32,7 @@ export class BlockCabinetController {
         return await this.blockCabinetService.getAll();
     }
 
-    @ApiOperation({summary: 'Добавить пользователя для блокировки'})
+    @ApiOperation({summary: 'Заблокировать кабинет пользователя'})
     @ApiResponse({status: 201, type: BlockCabinet, description: 'Успешное добавление пользователя'})
     @ApiResponse({status: 400, type: BadRequestResult, description:
             BadCheckEntitiesException.errorMessage('school','not') + ' / ' + BadCheckEntitiesException.errorMessage('blockCabinet','yep') + ' / ' + BadCheckEntitiesException.errorMessage('user','not')})
@@ -49,23 +49,23 @@ export class BlockCabinetController {
             school = await this.schoolService.getSchoolById(userDto.school_id);
             this.badException.checkAndGenerateException(!school, 'school', 'not', ['school_id']);
         }
-
+        
         const cabinet = await this.blockCabinetService.getUserById(userDto.user_id);
         this.badException.checkAndGenerateException(cabinet, 'blockCabinet', 'yep', ['user_id']);
 
         return this.blockCabinetService.addUser(userDto);
     }
 
-    @ApiOperation({summary: 'Добавить id школы к заблокированному пользователю'})
-    @ApiResponse({status: 200, type: BlockCabinet, description: 'Успешное добавление id школы'})
+    @ApiOperation({summary: 'Разблокировать кабинет пользователя'})
+    @ApiResponse({status: 200, type: BlockCabinet, description: 'Успешное разблокировка'})
     @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage('blockCabinet','yep')})
     @HttpCode(201)
-    @Delete(':id')
+    @Delete(':user_id')
     async removeCabinet(@Param() paramDto: ParamRemoveCabinet) {
 
-        const cabinet = await this.blockCabinetService.getById(paramDto.id);
+        const cabinet = await this.blockCabinetService.getUserById(paramDto.user_id);
         this.badException.checkAndGenerateException(!cabinet, 'blockCabinet', 'not', ['id']);
 
-        return this.blockCabinetService.removeCabinet(paramDto.id);
+        return this.blockCabinetService.removeCabinet(paramDto.user_id);
     }
 }
