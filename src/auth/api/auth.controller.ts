@@ -168,9 +168,9 @@ export class AuthController {
         return {
             id: adminData.id,
             role: adminData.role,
-            email: adminData.email,
-            name: adminData.name,
-            fname: adminData.fname,
+            // email: adminData.email,
+            // name: adminData.name,
+            // fname: adminData.fname,
             accessToken: token,
         }
     }

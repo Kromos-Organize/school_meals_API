@@ -50,10 +50,10 @@ export class UsersController {
     @ApiOperation({summary: "Получение списка пользователя для модерации"})
     @ApiResponse({status: 200, type: [UserResponseDto], description: 'Успешное получение списка пользователей для модерации"'})
     @HttpCode(200)
-    @Get('/moderation')
-    async getUserModeration() {
+    @Get('/list')
+    async getListUsers() {
 
-        return await this.usersService.getUserModeration();
+        return await this.usersService.getListUsers();
     }
 
 

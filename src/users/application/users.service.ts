@@ -31,9 +31,9 @@ export class UsersService {
     return await this.usersQueryRepository.getUserById(id)
   }
 
-  async getUserModeration() {
+  async getListUsers() {
 
-    return await this.usersQueryRepository.getUserModeration()
+    return await this.usersQueryRepository.getListUsers()
   }
 
   async createUser(inputModel: IUserModelAttr) {

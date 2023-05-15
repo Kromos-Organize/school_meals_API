@@ -28,9 +28,19 @@ export class UsersQueryRepository {
     return await this.usersRepository.findOne({ where: { id } });
   }
 
-  async getUserModeration() {
+  async getListUsers() {
 
-    return await this.usersRepository.findAll({ where: { isActive: false } });
+    const res = await this.sequelize.query(`
+        SELECT u.id, u.school_id, u.role, u.email, u.phone, u.fname, u.name, u.lname, u."isActive", 
+        CASE WHEN b.user_id IS NOT NULL THEN TRUE ELSE FALSE END AS isBlock
+        FROM public.user u 
+        LEFT JOIN block_cabinet b ON u.id = b.user_id;`,{
+        type: QueryTypes.SELECT,
+        raw: true,
+
+    })
+
+    return res;
   }
 
   async getUserByRecoveryCode(recoveryCode: string) {
