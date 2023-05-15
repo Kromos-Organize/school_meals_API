@@ -20,12 +20,12 @@ export class UsersQueryRepository {
 
   async getUserByEmail(email: string) {
 
-    return await this.usersRepository.findOne({ where: { email } });
+    return await this.usersRepository.findOne({ where: { email }, attributes: { exclude: ['password'] } });
   }
 
   async getUserById(id: number) {
 
-    return await this.usersRepository.findOne({ where: { id } });
+    return await this.usersRepository.findOne({ where: { id }, attributes: { exclude: ['password'] }});
   }
 
   async getListUsers() {

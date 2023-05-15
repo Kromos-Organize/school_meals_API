@@ -160,17 +160,18 @@ export class AuthController {
     @Post('login/cabinet')
     async enterToCabinet(@Body() inputDto: SuperAdminCabinInput, @SuperAdmin() adminData: ISuperAdmin) {
 
+        const user = await this.usersQueryRepository.getUserByEmail(inputDto.email)
+
+        this.badException.checkAndGenerateException(!user, 'auth', 'incorrectAuth', ['email']);
+
         const token = this.jwtService.createToken(
-            {id: adminData.id, role: adminData.role, email: adminData.email},
+            { id: user.id, role: user.role, email: user.email },
             'ACCESS_JWT_SECRET',
             process.env.TIME_LIFE_ACCESS);
 
         return {
-            id: adminData.id,
-            role: adminData.role,
-            // email: adminData.email,
-            // name: adminData.name,
-            // fname: adminData.fname,
+            id: user.id,
+            role: user.role,
             accessToken: token,
         }
     }
