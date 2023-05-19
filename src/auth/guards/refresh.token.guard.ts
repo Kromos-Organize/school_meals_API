@@ -19,18 +19,17 @@ export class RefreshTokenGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
 
     const req: Request = context.switchToHttp().getRequest();
-    const refToken = req.cookies.refreshToken;
+    const refToken = req.body.refreshToken;
 
     if (!refToken) throw new UnauthorizedException();
 
     const token = refToken.split(" ")[0];
 
     const user = await this.jwtService.getUserIdByRefreshToken(token);
-
     if (!user) throw new UnauthorizedException();
 
     req.user = await this.validateUserService.validateByEmail(user.email);
-
+    
     return true;
   }
 }

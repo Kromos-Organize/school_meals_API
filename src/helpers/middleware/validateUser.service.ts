@@ -46,13 +46,15 @@ export class ValidateUserService {
 
     const admin = await this.adminService.getAdminByEmail(email);
     const manager = await this.userQueryRepository.getUserByEmail(email);
-
+    
     if (admin)
       return {
         id: admin.id,
         role: admin.role,
         email: admin.email,
         password: admin.password,
+        fname: admin.fname,
+        name: admin.name,
       };
     if (manager)
       return {
@@ -60,6 +62,8 @@ export class ValidateUserService {
         role: manager.role,
         email: manager.email,
         password: manager.password,
+        fname: manager.fname,
+        name: manager.name,
       };
   }
 }

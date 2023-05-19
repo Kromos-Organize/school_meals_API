@@ -1,6 +1,6 @@
 import {ApiProperty} from "@nestjs/swagger";
 import {IsBoolean, IsEmail, IsNotEmpty, IsPhoneNumber, IsString, Length,} from "class-validator";
-import {OmitType} from "@nestjs/mapped-types";
+import { Transform } from 'class-transformer';
 
 export class LoginDto {
 
@@ -14,6 +14,7 @@ export class LoginDto {
   @Length(8, 16, { message: "Пароль должен быть от 8 до 16 символов." })
   readonly password: string;
 
+  @Transform(({ value }) => JSON.parse(value))
   @ApiProperty({ example: true, description: "Заходит ли админ проекта" })
   @IsBoolean({ message: "Должно быть булевым значением" })
   readonly isAdminDev: boolean;
@@ -57,4 +58,11 @@ export class NewPasswordDto {
   @IsString({ message: "Должно быть строкой." })
   @IsNotEmpty({message: 'Обязательное поле'})
   recoveryCode: string;
+}
+
+export class RefreshTokenDto {
+
+  @ApiProperty({ example: "wdqwddefef23qwdqwdqwdqwd", description: "RefreshToken, который был отправлен при логинизации" })
+  @IsString({ message: "Должно быть строкой." })
+  readonly refreshToken: string;
 }

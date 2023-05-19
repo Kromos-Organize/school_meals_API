@@ -28,6 +28,8 @@ export interface IValidateUserEmailReturns {
     id: number
     email: string;
     role: string;
+    fname: string;
+    name: string;
 }
 
 export interface IActiveUser {
