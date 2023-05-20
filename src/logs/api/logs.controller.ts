@@ -18,7 +18,7 @@ export class LogsController {
     }
 
     @ApiOperation({summary: 'Получение списка логов'})
-    @ApiResponse({status: 200, type: '', description: 'Успешное получение списка логов'})
+    @ApiResponse({ status: 200, type: [String], description: 'Успешное получение списка логов (массив дат)' })
     @HttpCode(200)
     @Get()
     async getAllLogs() {
