@@ -1,25 +1,13 @@
-import {
-    Body,
-    Controller,
-    Get,
-    HttpCode,
-    HttpStatus,
-    Post,
-    Req,
-    Res,
-    UnauthorizedException,
-    UseGuards,
-} from "@nestjs/common";
+import { Body, Controller, HttpCode, HttpStatus, Post, Req, Res, UseGuards } from "@nestjs/common";
 import {ApiCookieAuth, ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {AuthService} from "../application/auth.service";
-import {EmailInputDto, LoginDto, NewPasswordDto, RefreshTokenDto, RegistrationDto} from "../domain/dto/auth-request.dto";
+import { EmailInputDto, LoginDto, NewPasswordDto, RefreshTokenDto, RegistrationDto } from "../domain/dto/auth-request.dto";
 import {RefreshTokenGuard} from "../guards/refresh.token.guard";
 import {UsersQueryRepository} from "../../users/infrastructure/users.query.repository";
 import {JwtService} from "../application/jwt-service";
 import { LoginResponseDto, RefreshTokenResponseDto, RegisterResponseDto } from "../domain/dto/auth-response.dto";
 import {BadCheckEntitiesException} from "../../helpers/exception/BadCheckEntitiesException";
 import {IsActiveUserAuthGuard} from "../guards/isActive-user.auth.guard";
-import {Cookies, SuperAdmin} from "../../helpers/param-decorators/custom-decorators";
 import {BadRequestResult} from "../../helpers/exception/badRequestResult";
 import {UnauthorizedResult} from "../../helpers/exception/unauthorizedResult";
 import {ForbiddenResult} from "../../helpers/exception/forbiddenResult";
@@ -27,7 +15,7 @@ import {SessionService} from "../../session/application/SessionService";
 import {ISessionCreateDTO} from "../../session/domain/dto/session-service.dto";
 import {SuperAdminCabinInput} from "../../admin/domain/dto/admin-request.dto";
 import {IsAdminGuard} from "../../admin/guards/isAdmin.guard";
-import {ISuperAdmin} from "../domain/dto/auth-service.dto";
+import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags("Авторизация")
 @Controller("auth")
@@ -140,11 +128,11 @@ export class AuthController {
 
     @ApiOperation({summary: 'Вход для супер-админа'})
     @ApiResponse({status: 200, description: 'Успешный вход в кабинет админа'})
-    @ApiResponse({status: 401, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage('admin', 'yep')})
+    @ApiResponse({status: 401, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage('admin', 'not')})
     @UseGuards(IsAdminGuard)
     @HttpCode(200)
-    @Post('login/cabinet')
-    async enterToCabinet(@Body() inputDto: SuperAdminCabinInput, @SuperAdmin() adminData: ISuperAdmin) {
+    @Post('/login/cabinet')
+    async enterToCabinet(@Body() inputDto: SuperAdminCabinInput) {
 
         const user = await this.usersQueryRepository.getUserByEmail(inputDto.email)
 
@@ -152,15 +140,39 @@ export class AuthController {
 
         const tokens = await this.jwtService.createJWTTokens(user, true);
 
+        const {password, ...userWithoutPass} = user.dataValues;
+
         return {
-            ...user.dataValues,
+            ...userWithoutPass,
+            accessToken: tokens.accessToken,
+            refreshToken: tokens.refreshToken,
+        }
+    }
+
+    @ApiOperation({summary: 'Обновление сессии после обновления данных пользователя'})
+    @ApiResponse({status: 200, description: 'Получение данных пользователя'})
+    @ApiResponse({status: 401, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage('user', 'not')})
+    @HttpCode(200)
+    @UseGuards(AuthGuard('jwt'))
+    @Post('/update_session')
+    async updateSessionUser(@Body() inputDto: EmailInputDto) {
+
+        const user = await this.usersQueryRepository.getUserByEmail(inputDto.email)
+
+        this.badException.checkAndGenerateException(!user, 'auth', 'incorrectAuth', ['email']);
+
+        const tokens = await this.jwtService.createJWTTokens(user, true);
+
+        const { password, ...userWithoutPass } = user.dataValues;
+
+        return {
+            ...userWithoutPass,
             accessToken: tokens.accessToken,
             refreshToken: tokens.refreshToken,
         }
     }
 
     @UseGuards(RefreshTokenGuard)
-    @ApiCookieAuth()
     @ApiOperation({summary: "Выход из системы"})
     @ApiResponse({status: 201, type: '', description: 'Успешный выход из системы'})
     @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage("auth", 'notAuth')})
