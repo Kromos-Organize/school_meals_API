@@ -2,7 +2,7 @@ import {Injectable} from "@nestjs/common";
 import {UsersRepository} from "../infrastructure/users.repository";
 import {UsersQueryRepository} from "../infrastructure/users.query.repository";
 import {PasswordService} from "../../helpers/password/password.service";
-import {IActiveUser, IRecoveryData, IUserModelAttr, IUserUpdateModel} from "../domain/dto/user-service.dto";
+import {IActiveUser, IListUsersSchool, IRecoveryData, IUserModelAttr, IUserUpdateModel} from "../domain/dto/user-service.dto";
 import {UserActivateResponseDto} from "../domain/dto/user-response.dto";
 import {EmailService} from "../../email-adapter/email-service";
 
@@ -31,9 +31,9 @@ export class UsersService {
     return await this.usersQueryRepository.getUserById(id)
   }
 
-  async getListUsers() {
+  async getListUsersBySchool(param: IListUsersSchool) {
 
-    return await this.usersQueryRepository.getListUsers()
+    return await this.usersQueryRepository.getListUsersBySchool(param)
   }
 
   async createUser(inputModel: IUserModelAttr) {

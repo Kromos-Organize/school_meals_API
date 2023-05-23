@@ -43,9 +43,13 @@ export interface ICreateEmployee {
 }
 
 export interface IRecoveryData {
-
     user_id: number
     recovery_code: string
     expired_date: Date
     is_confirmed: boolean
+}
+
+export interface IListUsersSchool {
+    school_id: number 
+    type_user: "EMPLOYEE" | "USERS"
 }

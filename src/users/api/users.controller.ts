@@ -1,7 +1,7 @@
 import {ApiBearerAuth, ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
-import {Body, Controller, Delete, Get, HttpCode, Param, Post, Put, UseGuards,} from "@nestjs/common";
+import {Body, Controller, Delete, Get, HttpCode, Param, Post, Put, Query, UseGuards,} from "@nestjs/common";
 import {UsersService} from "../application/users.service";
-import {ActiveUserDto, CreateEmployee, UpdateUserDto, UserParamDto} from "../domain/dto/user-request.dto";
+import {ActiveUserDto, CreateEmployee, ListUserSchoolParamDto, UpdateUserDto, UserParamDto} from "../domain/dto/user-request.dto";
 import {UserActivateResponseDto, UserDeleteResponseDto, UserResponseDto} from "../domain/dto/user-response.dto";
 import {BadCheckEntitiesException} from "../../helpers/exception/BadCheckEntitiesException";
 import {AuthGuard} from "@nestjs/passport";
@@ -9,6 +9,7 @@ import {BadRequestResult} from "../../helpers/exception/badRequestResult";
 import {IUserModelAttr} from "../domain/dto/user-service.dto";
 import {use} from "passport";
 import {RoleEnum} from "../domain/entities/role.enum";
+import { SchoolService } from 'src/school/application/school.service';
 
 @ApiTags("Пользователи")
 @ApiBearerAuth()
@@ -19,6 +20,7 @@ export class UsersController {
 
     constructor(
         private usersService: UsersService,
+        private schoolService: SchoolService,
         private badException: BadCheckEntitiesException
     ) { }
 
@@ -47,13 +49,17 @@ export class UsersController {
     }
 
 
-    @ApiOperation({summary: "Получение списка пользователя для модерации"})
-    @ApiResponse({status: 200, type: [UserResponseDto], description: 'Успешное получение списка пользователей для модерации"'})
+    @ApiOperation({summary: "Получение списка пользователей одной школы"})
+    @ApiResponse({status: 200, type: [UserResponseDto], description: 'Успешное получение списка пользователей"'})
     @HttpCode(200)
-    @Get('/list')
-    async getListUsers() {
+    @Get('/list_school/')
+    async getListUsers(@Query() paramDto: ListUserSchoolParamDto) {
 
-        return await this.usersService.getListUsers();
+        const school = this.schoolService.getSchoolById(paramDto.school_id)
+
+        this.badException.checkAndGenerateException(!school, 'school', 'not', ['school_id']);
+
+        return await this.usersService.getListUsersBySchool(paramDto);
     }
 
 

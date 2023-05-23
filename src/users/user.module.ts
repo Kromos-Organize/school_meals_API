@@ -11,6 +11,8 @@ import {BadCheckEntitiesException} from "../helpers/exception/BadCheckEntitiesEx
 import {BlockCabinetModule} from "../block_cabinet/blockCabinet.module";
 import {RecoveryData} from "./domain/entities/recovery-data.model";
 import {EmailService} from "../email-adapter/email-service";
+import { SchoolModule } from 'src/school/school.module';
+import { School } from 'src/school/domain/entities/school.model';
 
 @Module({
   controllers: [UsersController],
@@ -23,9 +25,10 @@ import {EmailService} from "../email-adapter/email-service";
     EmailService,
   ],
   imports: [
-    SequelizeModule.forFeature([User, RecoveryData]),
+    SequelizeModule.forFeature([User, RecoveryData, School]),
     forwardRef(() => AuthModule),
     forwardRef(() => BlockCabinetModule),
+    SchoolModule,
   ],
   exports: [
     UsersService,

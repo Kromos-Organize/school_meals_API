@@ -28,7 +28,7 @@ export class LoggerMiddleware implements NestMiddleware {
         })
       }
       
-      const message = `\n[${now}]\nMethod: ${req.method} -- Path: ${req.url} -- Params ${JSON.stringify(req.params)}\nQuery ${JSON.stringify(req.query)}\nBody ${JSON.stringify(req.body)}\nCookies ${JSON.stringify(req.cookies)}\n`
+      const message = `\n[${now}]\nMethod: ${req.method} -- Path: ${req.url} -- Params ${JSON.stringify(req.params)}\nQuery ${JSON.stringify(req.query)}\nBody ${JSON.stringify(req.body)}\nCookies ${JSON.stringify(req.cookies)}\nHeaders: [Authorization - ${req.headers.authorization}]`
 
       fs.appendFile(`logs/${dirDate}/query_logs.log`, message, (err: Error) => {
 
