@@ -75,6 +75,7 @@ export class UsersController {
         this.badException.checkAndGenerateException(user, 'user', 'yep', ['email']);
 
         const userInput: IUserModelAttr = {
+            ...userDto,
             school_id: userDto.school_id,
             email: userDto.email,
             password: null,

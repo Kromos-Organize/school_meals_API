@@ -15,6 +15,10 @@ export class CreateClassDto {
     @IsNumber()
     readonly school_id: number;
 
+    @ApiProperty({example:'12', description:'ID учителя'})
+    @IsNumber()
+    readonly user_id: number;
+
     @ApiProperty({example:'2', description:'Номер класса'})
     @IsNumber()
     @Min(1)

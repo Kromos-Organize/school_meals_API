@@ -10,6 +10,7 @@ import {ClassRepository} from "./infrastructure/class.repository";
 import {Class} from "./domain/entity/class.model";
 import {BlockCabinetModule} from "../block_cabinet/blockCabinet.module";
 import {UserModule} from "../users/user.module";
+import { User } from 'src/users/domain/entities/user.model';
 
 @Module({
     providers: [
@@ -20,7 +21,7 @@ import {UserModule} from "../users/user.module";
     ],
     controllers: [ClassController],
     imports: [
-        SequelizeModule.forFeature([Class]),
+        SequelizeModule.forFeature([Class,User]),
         SchoolModule,
         forwardRef(() => AuthModule),
         BlockCabinetModule,

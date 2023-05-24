@@ -44,9 +44,9 @@ export class UsersService {
     const newUser: IUserModelAttr = {
       ...inputModel,
       password: passwordHash,
-      fname: null,
-      name: null,
-      lname: null,
+      fname: inputModel.fname ?? null,
+      name: inputModel.name ?? null,
+      lname: inputModel.lname ?? null,
       birthday: null,
     };
 

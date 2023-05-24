@@ -2,7 +2,7 @@ import {BelongsTo, Column, DataType, ForeignKey, Model, Table} from "sequelize-t
 import {ApiProperty} from "@nestjs/swagger";
 import {School} from "../../../school/domain/entities/school.model";
 import {ClassCategoryEnum, ICreateClass} from "../dto/class-service.dto";
-import {Student} from "../../../student/domain/entities/student.model";
+import { User } from 'src/users/domain/entities/user.model';
 
 
 @Table({tableName: 'class'})
@@ -16,6 +16,11 @@ export class Class extends Model<Class, ICreateClass> {
     @Column({type: DataType.INTEGER, allowNull: false})
     @ForeignKey(() => School)
     school_id: number;
+    
+    @ApiProperty({example:'1', description:'ID учителя'})
+    @Column({type: DataType.INTEGER, allowNull: false})
+    @ForeignKey(() => User)
+    user_id: number;
 
     @ApiProperty({example:'4', description:'Номер класса'})
     @Column({type: DataType.INTEGER, allowNull: false})
@@ -29,6 +34,9 @@ export class Class extends Model<Class, ICreateClass> {
     @Column({type: DataType.STRING(10),  allowNull: false, values: [ClassCategoryEnum.elder, ClassCategoryEnum.junior] })
     category: ClassCategoryEnum;
 
-    @BelongsTo(() => Student, 'class_id')
-    student: Student;
+    @BelongsTo(() => User, 'user_id')
+    user: User;
+
+    @BelongsTo(() => School, 'school_id')
+    school: School;
 }

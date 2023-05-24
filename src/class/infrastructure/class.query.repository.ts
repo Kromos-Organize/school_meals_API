@@ -21,6 +21,11 @@ export class ClassQueryRepository {
 
     async getClassParam(classData: ICreateClass) {
 
-        return await this.classRepo.findOne({where: {...classData}});
+        return await this.classRepo.findOne({ where: { school_id: classData.school_id, number: classData.number, type: classData.type } });
+    }
+
+    async checkUserForClassById(user_id: number) {
+
+        return await this.classRepo.findOne({ where: { user_id } });
     }
 }

@@ -26,6 +26,11 @@ export class ClassService {
         return await this.classQueryRepository.getClassParam(classParams);
     }
 
+    async checkUserForClassById(user_id: number) {
+
+        return await this.classQueryRepository.checkUserForClassById(user_id);
+    }
+
     async create(classDto: ICreateClass) {
 
         return await this.classRepository.createClass(classDto);

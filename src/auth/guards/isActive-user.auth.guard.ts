@@ -16,8 +16,8 @@ export class IsActiveUserAuthGuard implements CanActivate {
 
         const req: Request = context.switchToHttp().getRequest();
         if (Object.keys(req.body).length < 3 || !req.body.email) return false
-
-        if (req.body.isAdminDev) {
+        
+        if (JSON.parse(req.body.isAdminDev)) {
 
             return true;
         }
@@ -28,7 +28,7 @@ export class IsActiveUserAuthGuard implements CanActivate {
         const user = await this.usersQueryRepository.getUserByEmail(email);
 
         this.badException.checkAndGenerateException(!user,'user', 'not',['email']);
-
+        
         if (user.isActive) {
 
             req.user = user;

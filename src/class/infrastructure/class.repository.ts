@@ -11,7 +11,7 @@ export class ClassRepository {
     async createClass(classDto: ICreateClass) {
 
         return await this.classRepository.create(
-            {school_id: classDto.school_id, number: classDto.number, type: classDto.type, category: classDto.category});
+            { school_id: classDto.school_id, user_id: classDto.user_id, number: classDto.number, type: classDto.type, category: classDto.category });
     }
 
     async updateClass(class_id: number, classDto: IUpdateClass) {

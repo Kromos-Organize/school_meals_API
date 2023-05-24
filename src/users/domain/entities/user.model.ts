@@ -1,9 +1,10 @@
-import {Column, DataType, ForeignKey, HasOne, Model, Table, Unique,} from "sequelize-typescript";
+import {BelongsTo, Column, DataType, ForeignKey, HasOne, Model, Table, Unique,} from "sequelize-typescript";
 import {ApiProperty} from "@nestjs/swagger";
 import {School} from "../../../school/domain/entities/school.model";
 import {IUserModelAttr} from "../dto/user-service.dto";
 import {BlockCabinet} from "../../../block_cabinet/domain/entity/blockCabinet.model";
 import {RecoveryData} from "./recovery-data.model";
+import { Class } from 'src/class/domain/entity/class.model';
 
 @Table({ tableName: "user", updatedAt: false })
 export class User extends Model<User, IUserModelAttr> {
@@ -59,4 +60,10 @@ export class User extends Model<User, IUserModelAttr> {
 
   @HasOne(() => RecoveryData)
   recoveryData: RecoveryData;
+
+  @BelongsTo(() => School, 'school_id')
+  school: School;
+
+  @HasOne(() => Class)
+  class: Class
 }

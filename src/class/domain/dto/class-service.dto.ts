@@ -1,6 +1,6 @@
-
 export interface ICreateClass {
     school_id: number,
+    user_id: number
     number: number,
     type: string
     category?: ClassCategoryEnum

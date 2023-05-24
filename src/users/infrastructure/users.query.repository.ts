@@ -6,6 +6,7 @@ import {QueryTypes} from "sequelize";
 import {RecoveryData} from "../domain/entities/recovery-data.model";
 import { IListUsersSchool } from '../domain/dto/user-service.dto';
 import { RoleEnum } from '../domain/entities/role.enum';
+import { Class } from 'src/class/domain/entity/class.model';
 
 @Injectable({ scope: Scope.DEFAULT })
 export class UsersQueryRepository {
@@ -17,7 +18,17 @@ export class UsersQueryRepository {
 
   async getAllUsers() {
 
-    return await this.usersRepository.findAll({attributes: {exclude: ['password']}});
+    const res = await this.sequelize.query(`
+        SELECT u.id, u.school_id, u.role, u.email, u.phone, u.fname, u.name, u.lname, u."isActive", 
+        CASE WHEN b.user_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_block
+        FROM public.user u 
+        LEFT JOIN block_cabinet b ON u.id = b.user_id
+        ORDER BY u.id ASC;`,{
+        type: QueryTypes.SELECT,
+        raw: true,
+    })
+
+    return res;
   }
 
   async getUserByEmail(email: string) {
@@ -34,7 +45,16 @@ export class UsersQueryRepository {
 
     const isRole = param.type_user === RoleEnum.employee ? { role: RoleEnum.employee } : {}
 
-    return await this.usersRepository.findAll({ where: { school_id: param.school_id, ...isRole }, attributes: { exclude: ['password'] } });
+    return await this.usersRepository.findAll({ 
+      where: { school_id: param.school_id, ...isRole }, 
+      attributes: { 
+        exclude: ['password'] }, 
+        include: [{ model: Class, attributes: ['number', 'type']}], 
+        order: [
+          ['fname', 'ASC'],
+        ],
+      }
+    );
   }
 
   async getUserByRecoveryCode(recoveryCode: string) {

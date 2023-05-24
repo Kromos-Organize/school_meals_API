@@ -9,6 +9,7 @@ import {BadCheckEntitiesException} from "../../helpers/exception/BadCheckEntitie
 import {BadRequestResult} from "../../helpers/exception/badRequestResult";
 import {Class} from "../domain/entity/class.model";
 import {IsBlockCabinetUserGuard} from "../../users/guards/isBlockCabinet.user.guard";
+import { UsersService } from 'src/users/application/users.service';
 
 @ApiTags('Классы')
 @ApiBearerAuth()
@@ -20,6 +21,7 @@ export class ClassController {
     constructor(
         private schoolService: SchoolService,
         private classService: ClassService,
+        private userService: UsersService,
         private badException: BadCheckEntitiesException,
     ) { }
 
@@ -65,6 +67,14 @@ export class ClassController {
         const school = await this.schoolService.getSchoolById(classDto.school_id);
 
         this.badException.checkAndGenerateException(!school, 'school','not', ['school_id']);
+
+        const user = await this.userService.getById(classDto.user_id);
+
+        this.badException.checkAndGenerateException(!user, 'user', 'not', ['user_id']);
+
+        const classForUser = await this.classService.checkUserForClassById(classDto.user_id);
+
+        this.badException.checkAndGenerateException(classForUser, 'teacher_class', 'more_class', ['user_id']);
 
         const classSchool = await this.classService.getClassByParams(classDto);
 
