@@ -47,7 +47,7 @@ export class User extends Model<User, IUserModelAttr> {
   @Column({ type: DataType.STRING(30), allowNull: true })
   lname: string;
 
-  @ApiProperty({example: "22.02.2022", description: "Дата рождения пользователя"})
+  @ApiProperty({ example: "2021-07-06", description: "Дата рождения пользователя" })
   @Column({ type: DataType.DATEONLY, allowNull: true })
   birthday: Date;
 

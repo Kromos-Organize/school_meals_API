@@ -75,8 +75,8 @@ export class UpdateUserDto {
     @IsPhoneNumber("BY", { message: "Код номера должен быть кодом используемым в РБ" })
     readonly phone?: string;
 
+    @Transform(({ value }) => value ? value : null)
     @ApiProperty({example: "20.20.2022", description: "Дата рождения пользователя"})
-    @IsString({ message: "Должно быть строкой." })
     readonly birthday?: Date;
 }
 

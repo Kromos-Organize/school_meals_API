@@ -45,7 +45,9 @@ export class UsersController {
 
         this.badException.checkAndGenerateException(!user, 'user', 'not', ['user_id']);
 
-        return user;
+        const {password, ...sendUser} = user.dataValues;
+
+        return sendUser;
     }
 
 

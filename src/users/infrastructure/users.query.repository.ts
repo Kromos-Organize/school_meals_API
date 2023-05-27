@@ -51,7 +51,7 @@ export class UsersQueryRepository {
         exclude: ['password'] }, 
         include: [{ model: Class, attributes: ['number', 'type']}], 
         order: [
-          ['fname', 'ASC'],
+          ['id', 'ASC'],
         ],
       }
     );
