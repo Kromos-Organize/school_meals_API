@@ -51,5 +51,9 @@ export class UserActivateResponseDto {
     message: string
 }
 
+export class CountEmployeeResponseDto {
 
+    @ApiProperty({ example: 30, description: "Количество сотрудников школы" })
+    count: number
+}
 

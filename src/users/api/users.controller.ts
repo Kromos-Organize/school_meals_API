@@ -1,8 +1,8 @@
 import {ApiBearerAuth, ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {Body, Controller, Delete, Get, HttpCode, Param, Post, Put, Query, UseGuards,} from "@nestjs/common";
 import {UsersService} from "../application/users.service";
-import {ActiveUserDto, CreateEmployee, ListUserSchoolParamDto, UpdateUserDto, UserParamDto} from "../domain/dto/user-request.dto";
-import {UserActivateResponseDto, UserDeleteResponseDto, UserResponseDto} from "../domain/dto/user-response.dto";
+import {ActiveUserDto, CountEmployeeSchoolParamDto, CreateEmployee, ListUserSchoolParamDto, UpdateUserDto, UserParamDto} from "../domain/dto/user-request.dto";
+import {CountEmployeeResponseDto, UserActivateResponseDto, UserDeleteResponseDto, UserResponseDto} from "../domain/dto/user-response.dto";
 import {BadCheckEntitiesException} from "../../helpers/exception/BadCheckEntitiesException";
 import {AuthGuard} from "@nestjs/passport";
 import {BadRequestResult} from "../../helpers/exception/badRequestResult";
@@ -62,6 +62,19 @@ export class UsersController {
         this.badException.checkAndGenerateException(!school, 'school', 'not', ['school_id']);
 
         return await this.usersService.getListUsersBySchool(paramDto);
+    }
+
+    @ApiOperation({summary: "Получение количества сотрудников одной школы"})
+    @ApiResponse({ status: 200, type: CountEmployeeResponseDto, description: 'Успешное количества сотрудников пользователей"' })
+    @HttpCode(200)
+    @Get('/count_employee/')
+    async getCountUsersBySchool(@Query() paramDto: CountEmployeeSchoolParamDto) {
+        
+        const school = this.schoolService.getSchoolById(paramDto.school_id)
+
+        this.badException.checkAndGenerateException(!school, 'school', 'not', ['school_id']);
+
+        return await this.usersService.getCountEmployeeBySchool(paramDto.school_id);
     }
 
 

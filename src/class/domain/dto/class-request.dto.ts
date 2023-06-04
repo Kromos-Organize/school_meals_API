@@ -1,11 +1,19 @@
 import {ApiProperty} from "@nestjs/swagger";
-import {IsEnum, IsNumber, IsString, Max, Min} from "class-validator";
+import {IsEnum, IsInt, IsNotEmpty, IsNumber, IsString, Max, Min} from "class-validator";
 import {PartialType} from "@nestjs/mapped-types";
 import {StudentQueryDto} from "../../../student/domain/dto/student-request.dto";
 import {ClassCategoryEnum} from "./class-service.dto";
+import { Transform } from 'class-transformer';
 
 
-export class ClassQueryDto extends PartialType(StudentQueryDto){}
+export class ClassQueryDto {
+
+    @ApiProperty({example:'int', description:'Айди школы'})
+    @Transform(({ value }) => parseInt(value))
+    @IsInt({message: 'Айди школы должна быть числом'})
+    @IsNotEmpty({message: 'Обязательное поле'})
+    school_id: number
+}
 
 export class ClassParamDto extends PartialType(StudentQueryDto) {}
 

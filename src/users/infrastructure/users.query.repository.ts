@@ -57,6 +57,13 @@ export class UsersQueryRepository {
     );
   }
 
+  async getCountEmployeeBySchool(school_id: number) {
+
+    const result = await this.usersRepository.findAll({ where: { school_id: school_id, role: RoleEnum.employee } });
+
+    return { count: result.length}
+  }
+
   async getUserByRecoveryCode(recoveryCode: string) {
 
     const recoveryData = await this.sequelize.query(`

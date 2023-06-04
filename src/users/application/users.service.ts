@@ -36,6 +36,11 @@ export class UsersService {
     return await this.usersQueryRepository.getListUsersBySchool(param)
   }
 
+  async getCountEmployeeBySchool(school_id: number) {
+
+    return await this.usersQueryRepository.getCountEmployeeBySchool(school_id)
+  }
+
   async createUser(inputModel: IUserModelAttr) {
 
     const password = inputModel.password ? inputModel.password : this.passwordService.generateRandomPass();

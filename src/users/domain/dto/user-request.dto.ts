@@ -53,6 +53,8 @@ export class ListUserSchoolParamDto {
     type_user: "EMPLOYEE" | "USERS"
 }
 
+export class CountEmployeeSchoolParamDto extends OmitType(ListUserSchoolParamDto, ["type_user"]) { }
+
 export class UpdateUserDto {
 
     @ApiProperty({ example: "Шавлинский", description: "Фамилия пользователя" })
