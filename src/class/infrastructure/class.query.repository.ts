@@ -3,6 +3,7 @@ import {InjectModel} from "@nestjs/sequelize";
 import {Injectable, Scope} from "@nestjs/common";
 import {ICreateClass} from "../domain/dto/class-service.dto";
 import { Class } from "../domain/entity/class.model";
+import { User } from 'src/users/domain/entities/user.model';
 
 @Injectable({ scope: Scope.DEFAULT })
 export class ClassQueryRepository {
@@ -11,7 +12,7 @@ export class ClassQueryRepository {
 
     async getAll(school_id: number) {
 
-        return await this.classRepo.findAll({where: {school_id}})
+        return await this.classRepo.findAll({where: {school_id}, include: [{ model: User, attributes: ['id', 'fname', 'name', 'lname']}]});
     }
 
     async getClass(class_id: number) {
