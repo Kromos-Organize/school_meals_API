@@ -26,10 +26,10 @@ export class PhoneParents extends Model<PhoneParents, IPhoneParents> {
     student: Student;
 
     @ApiProperty({ example: '(29)748-58-75', description: 'телефон мамы' })
-    @Column({ type: DataType.STRING(20), allowNull: false })
+    @Column({ type: DataType.STRING(20), allowNull: true })
     m_phone: string;
 
     @ApiProperty({ example: '(29)748-58-75', description: 'телефон папы' })
-    @Column({ type: DataType.STRING(20), allowNull: false })
+    @Column({ type: DataType.STRING(20), allowNull: true })
     f_phone: string;
 }

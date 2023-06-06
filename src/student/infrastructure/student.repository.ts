@@ -22,9 +22,9 @@ export class StudentRepository {
             const student = await this.studentRepository.create(studentDto, { transaction: transaction, });
 
             const phoneStudent =  {
-                student_id: student.student_id,
-                m_phone: studentDto.phoneParents.m_phone,
-                f_phone: studentDto.phoneParents.f_phone,
+                student_id: student.dataValues.student_id,
+                m_phone: studentDto.phoneParents?.m_phone ?? null,
+                f_phone: studentDto.phoneParents?.f_phone ?? null,
             }
 
             await this.parentsPhoneModel.create( phoneStudent, { transaction: transaction }, );

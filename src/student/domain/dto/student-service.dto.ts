@@ -31,7 +31,7 @@ export interface IUpdateStudent{
 export interface IPhoneParents {
     phone_id: number,
     student_id: number,
-    m_phone: string,
+    m_phone?: string,
     f_phone: string,
 }
 

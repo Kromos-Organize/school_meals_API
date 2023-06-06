@@ -37,6 +37,7 @@ export class StudentService {
         const newStudent: StudentCreationAttrs = {
             ...studentDto,
             isLargeFamilies: false,
+            isBudget: false,
         };
 
         return await this.studentRepository.createStudent(newStudent);

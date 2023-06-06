@@ -65,17 +65,23 @@ export class StudentRequestDto {
 
     @ApiProperty({example:'Игоревич', description:'Отчество ученика'})
     @IsString({message: 'Должно быть строкой.'})
+    @IsOptional()
     readonly lname?: string;
 
     @ApiProperty({example:'20.02.2022', description:'Дата рождения ученика'})
     @IsString({message: 'Должно быть строкой.'})
+    @IsOptional()
     readonly birthday?: Date;
 
     @ApiProperty({example: false, description: 'Параметр отвечающий многодетная семья или нет'})
+    @IsBoolean()
+    @IsOptional()
     readonly isLargeFamilies?: boolean;
 
     @ApiProperty({example: false, description: 'Питается за счёт бюджета(true) или родителей(false)',})
-    readonly isBudget: boolean;
+    @IsBoolean()
+    @IsOptional()
+    readonly isBudget?: boolean;
 
     @ApiProperty({
         example: '{ m_phone: "375297485875", f_phone: "375297485875" }', description: 'Телефоны родителей'})

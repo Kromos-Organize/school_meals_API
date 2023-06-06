@@ -102,7 +102,7 @@ export class StudentController {
         this.badException.checkAndGenerateException(!classSchool, 'class','not',['classSchool']);
         this.badException.checkAndGenerateException(student, 'student','yep',['school_id', 'class_id', 'fname', 'name']);
 
-        return this.studentService.create(studentDto);
+        return await this.studentService.create(studentDto);
     }
 
     @ApiOperation({summary: 'Изменение данных ученика'})

@@ -19,7 +19,7 @@ export class Student extends Model<Student, StudentCreationAttrs> {
     school_id: number;
 
     @ApiProperty({example:'1', description:'ID класса'})
-    @Column({type: DataType.INTEGER, allowNull: true})
+    @Column({type: DataType.INTEGER, allowNull: false})
     @ForeignKey(() => Class)
     class_id: number;
 
