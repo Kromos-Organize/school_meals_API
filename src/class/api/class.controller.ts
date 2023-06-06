@@ -3,7 +3,7 @@ import {Body, Controller, Delete, Get, HttpCode, Param, Post, Put, Query, UseGua
 import {ClassService} from "../application/class.service";
 import {AuthGuard} from "@nestjs/passport";
 import {ClassParamDto, ClassQueryDto, CreateClassDto, UpdateClassDto} from "../domain/dto/class-request.dto";
-import {ClassDeleteResponseDto} from "../domain/dto/class-response.dto";
+import {ClassDeleteResponseDto, CountClassesResponseDto} from "../domain/dto/class-response.dto";
 import {SchoolService} from "../../school/application/school.service";
 import {BadCheckEntitiesException} from "../../helpers/exception/BadCheckEntitiesException";
 import {BadRequestResult} from "../../helpers/exception/badRequestResult";
@@ -37,6 +37,19 @@ export class ClassController {
         this.badException.checkAndGenerateException(!school, 'school','not', ['school_id'])
 
         return this.classService.getAll(queryDto.school_id);
+    }
+
+    @ApiOperation({summary: "Получение количества классов одной школы"})
+    @ApiResponse({ status: 200, type: CountClassesResponseDto, description: 'Успешное количества классов пользователей"' })
+    @HttpCode(200)
+    @Get('/count')
+    async getCountClassesBySchool(@Query() paramDto: ClassQueryDto) {
+
+        const school = await this.schoolService.getSchoolById(paramDto.school_id);
+
+        this.badException.checkAndGenerateException(!school, 'school','not', ['school_id'])
+
+        return await this.classService.getCountClassesBySchool(paramDto.school_id);
     }
 
     @ApiOperation({summary: 'Получить данные класса'})

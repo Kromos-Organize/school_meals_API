@@ -17,6 +17,7 @@ import {
     StudentParamDto,
     StudentQueryDto,
     StudentRequestDto,
+    StudentToSchoolQueryDto,
     UpdateStudentDto,
 } from '../domain/dto/student-request.dto';
 import { BadCheckEntitiesException } from '../../helpers/exception/BadCheckEntitiesException';
@@ -39,20 +40,32 @@ export class StudentController {
         private badException: BadCheckEntitiesException,
     ) {}
 
-    @ApiOperation({summary: 'Получение списка учеников класса'})
+    @ApiOperation({summary: 'Получение списка учеников всей школы'})
     @ApiResponse({status: 200, type: [Student], description: 'Успешное получение списка учеников'})
-    @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage('school','not') + ' / ' +BadCheckEntitiesException.errorMessage('class','not')})
+    @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage('school','not')})
     @HttpCode(200)
-    @Get()
-    async getStudentToClass(@Query() query: StudentQueryDto) {
+    @Get('/school')
+    async getStudentToSchool(@Query() query: StudentToSchoolQueryDto) {
 
         const school = await this.schoolService.getSchoolById(query.school_id);
-        const classSchool = await this.classService.getClassById(query.class_id);
 
         this.badException.checkAndGenerateException(!school, 'school','not',['school_id']);
+
+        return this.studentService.getStudentToClass(query.school_id);
+    }
+
+    @ApiOperation({summary: 'Получение списка учеников класса'})
+    @ApiResponse({status: 200, type: [Student], description: 'Успешное получение списка учеников'})
+    @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage('class','not')})
+    @HttpCode(200)
+    @Get('/class')
+    async getStudentToClass(@Query() query: StudentQueryDto) {
+
+        const classSchool = await this.classService.getClassById(query.class_id);
+
         this.badException.checkAndGenerateException(!classSchool, 'class','not',['classSchool']);
 
-        return this.studentService.getStudentToClass( query.class_id);
+        return this.studentService.getStudentToClass(query.class_id);
     }
 
     @ApiOperation({summary: 'Получить данные ученика'})

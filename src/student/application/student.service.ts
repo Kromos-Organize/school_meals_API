@@ -12,6 +12,11 @@ export class StudentService {
         private studentRepository: StudentRepository,
     ) { }
 
+    async getStudentToSchool( school_id: number) {
+
+        return await this.studentQueryRepository.getStudentToSchool(school_id);
+    }
+
     async getStudentToClass( class_id: number) {
 
         return await this.studentQueryRepository.getAllStudentToClass(class_id);

@@ -8,10 +8,15 @@ import {Sequelize} from "sequelize-typescript";
 @Injectable({scope: Scope.DEFAULT})
 export class StudentQueryRepository {
 
-    constructor(@InjectModel(Student) private studentRepository: typeof Student,
-                private readonly sequelize: Sequelize) {
-    }
+    constructor(
+        @InjectModel(Student) private studentRepository: typeof Student, 
+        private readonly sequelize: Sequelize
+    ) { }
 
+    async getStudentToSchool(school_id: number) {
+
+        return await this.studentRepository.findAll({include: {model: PhoneParents}, where: { school_id }});
+    }
 
     async getAllStudentToClass(class_id: number) {
 

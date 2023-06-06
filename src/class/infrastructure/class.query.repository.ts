@@ -29,4 +29,11 @@ export class ClassQueryRepository {
 
         return await this.classRepo.findOne({ where: { user_id } });
     }
+
+    async getCountClassesBySchool(school_id: number) {
+
+      const result = await this.classRepo.findAll({ where: { school_id: school_id }});
+
+      return { count: result.length };
+    }
 }
