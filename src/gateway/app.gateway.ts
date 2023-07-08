@@ -15,8 +15,7 @@ import {AdminQueryRepository} from "../admin/infrastructure/admin.query.reposito
 import {MealsQueryRepository} from "../meals/infrastructure/meals-query-repository";
 import {IMealsCreateAttr} from "../meals/domain/dto/meals-service.dto";
 
-@WebSocketGateway({})
-
+@WebSocketGateway({ transports: ['websocket'] })
 export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
 
     @WebSocketServer() wss: Server
@@ -37,38 +36,42 @@ export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGateway
 
     async handleConnection(client: Socket, ...args: any[]) {
 
-        const cookie = client.request.headers?.cookie
+        const accessToken = client.handshake.auth.accessToken;
 
-        if (cookie && cookie.indexOf('refreshToken')) {
+        if(accessToken) {
+          
+          const user_id = await this.jwtService.getUserIdByAccessToken(accessToken)
 
-            let refToken = cookie.slice(cookie.indexOf('refreshToken')).split('=')[1].split(';')[0]
+          if(user_id) {
 
-            const payload = await this.jwtService.getUserIdByRefreshToken(refToken)
+            const user = await this.usersQueryRepo.getUserById(user_id);
 
-            if (payload.role !== 'S_ADMIN') {
-
-                const user =  await this.usersQueryRepo.getUserById(payload?.id)
-
-                this.clients[client.id] = {
-                    name: user.dataValues.name,
-                    role: user.dataValues.role
-                }
+            this.clients[client.id] = {
+                name: user.dataValues.name,
+                role: user.dataValues.role
             }
+          }
         }
 
-        this.clients[client.id] = this.clients[client.id] ? this.clients[client.id] : null
+        this.clients[client.id] = this.clients[client.id] ?? null;
 
-        const helloMsg = this.clients[client.id] ? `Здравствуйте, ${this.clients[client.id].name}!` : `Привет, Аноним!`
+        if(this.clients[client.id]) {
 
-        this.logger.log(helloMsg)
+            const helloMsg = `Здравствуйте, ${this.clients[client.id].name}!`
 
-        console.log(this.clients)
+            this.logger.log(helloMsg)
+        } else {
+
+            // this.wss.emit('no_valid_token', '')
+            client.disconnect();
+        }
     }
 
     handleDisconnect(client: Socket) {
 
-        this.logger.log(`Client ${client.id} disconnected)`)
-        console.log(this.clients)
+        this.logger.log(`Client ${client.id} disconnected`)
+
+        delete this.clients[client.id];
     }
 
     @SubscribeMessage('msgToServer')
@@ -85,7 +88,7 @@ export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGateway
         const res = (role == 'ADMIN') ? await this.mealsQueryRepo.getAllVisitsByDate(new Date) : null
 
         if (res) {
-            this.wss.emit('msgToClient', JSON.stringify(res))
+            this.wss.emit('all_meals_today_client', JSON.stringify(res))
         }
     }
 
@@ -97,7 +100,7 @@ export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGateway
         const res = (role == 'ADMIN') ? `Отправлены данные по питанию за ${data} класс` : null
 
         if (res) {
-            this.wss.emit('msgToClient', JSON.stringify(res))
+            this.wss.emit('one_meals_today_client', JSON.stringify(res))
         }
     }
 
@@ -109,7 +112,7 @@ export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGateway
         const res = role ? await this.mealsQueryRepo.getAllVisitsByDate(new Date) : null
 
         if (res) {
-            this.wss.emit('msgToClient', JSON.stringify(res))
+            this.wss.emit("calc_meals_today_client", JSON.stringify(res));
         }
     }
 
@@ -121,7 +124,7 @@ export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGateway
         const res = (role == 'EMPLOYEE') ? data : null
 
         if (res) {
-            this.wss.emit('msgToClient', JSON.stringify(res))
+            this.wss.emit("send_meals_client", JSON.stringify(res));
         }
 
         this.wss.emit('one_meals_today', res)
@@ -135,7 +138,7 @@ export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGateway
         const res = (role == 'ADMIN') ? await this.mealsQueryRepo.getAllVisitsByDate(new Date) : null
 
         if (res) {
-            this.wss.emit('msgToClient', JSON.stringify(res))
+            this.wss.emit("get_meals_today_ client", JSON.stringify(res));
         }
     }
 }

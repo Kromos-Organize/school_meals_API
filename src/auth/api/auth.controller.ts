@@ -16,6 +16,7 @@ import {ISessionCreateDTO} from "../../session/domain/dto/session-service.dto";
 import {SuperAdminCabinInput} from "../../admin/domain/dto/admin-request.dto";
 import {IsAdminGuard} from "../../admin/guards/isAdmin.guard";
 import { AuthGuard } from '@nestjs/passport';
+import { cookieConfigToken } from 'src/helpers/cookie.config';
 
 @ApiTags("Авторизация")
 @Controller("auth")
@@ -63,11 +64,11 @@ export class AuthController {
             }
             
             res
-            .send({
+              .cookie("refreshToken", tokens.refreshToken, cookieConfigToken)
+              .send({
                 ...sendUser,
                 accessToken: tokens.accessToken,
-                refreshToken: tokens.refreshToken,
-            });
+              });
         }
     }
 
@@ -145,7 +146,6 @@ export class AuthController {
         return {
             ...userWithoutPass,
             accessToken: tokens.accessToken,
-            refreshToken: tokens.refreshToken,
         }
     }
 
@@ -190,6 +190,6 @@ export class AuthController {
 
         await this.sessionService.logoutUserSession(sessionData)
 
-        res.sendStatus(201);
+        res.clearCookie("refreshToken").sendStatus(204);
     }
 }

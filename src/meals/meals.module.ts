@@ -12,7 +12,6 @@ import {TypeMenu} from "../typeMenu/domain/entity/type-menu.model";
 import {ClassModule} from "../class/class.module";
 import {StudentModule} from "../student/student.module";
 import {TypeMenuModule} from "../typeMenu/typeMenu.module";
-import {AppGateway} from "../gateway/app.gateway";
 import {GatewayModule} from "../gateway/gateway.module";
 import {AuthModule} from "../auth/auth.module";
 import {AdminModule} from "../admin/admin.module";
@@ -35,7 +34,6 @@ import {UserModule} from "../users/user.module";
 		MealsRepository,
 		MealsQueryRepository,
 		BadCheckEntitiesException,
-		AppGateway,
 	],
 	exports: [
 		MealsQueryRepository,
