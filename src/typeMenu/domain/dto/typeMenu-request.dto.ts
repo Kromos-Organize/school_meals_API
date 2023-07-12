@@ -27,7 +27,7 @@ export class CreateTypeMenuDto {
     school_id: number
 
     @ApiProperty({example:'Завтрак', description:'Тип меню'})
-    @Length(3,10, {message: 'Длина должна содержать от 3х до 10 символов'})
+    @Length(3,15, {message: 'Длина должна содержать от 3х до 15 символов'})
     type_menu: string
 }
 

@@ -90,14 +90,15 @@ export class UsersController {
         this.badException.checkAndGenerateException(user, 'user', 'yep', ['email']);
 
         const userInput: IUserModelAttr = {
-            ...userDto,
-            school_id: userDto.school_id,
-            email: userDto.email,
-            password: null,
-            role: RoleEnum.employee,
-            phone: userDto.phone,
-            isActive: true,
-        }
+          ...userDto,
+          school_id: userDto.school_id,
+          email: userDto.email,
+          //@ts-ignore
+          password: `${userDto.password}`,
+          role: RoleEnum.employee,
+          phone: userDto.phone,
+          isActive: true,
+        };
 
         return this.usersService.createUser(userInput);
     }

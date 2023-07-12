@@ -24,7 +24,7 @@ export class TypeMenuQueryRepository {
 
     async getTypesMenuByVisit(meals: number[]) {
 
-        return  await this.typeMenuRepository.findAll({where: {type_id: meals}})
+        return await this.typeMenuRepository.findAll({where: {type_id: meals}})
 
     }
 }

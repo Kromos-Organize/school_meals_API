@@ -5,7 +5,7 @@ import {AuthModule} from "./auth/auth.module";
 import {SchoolModule} from "./school/school.module";
 import {StudentModule} from "./student/student.module";
 import {AdminModule} from "./admin/admin.module";
-import {LoggerMiddleware} from "./helpers/middleware/logger.middleware";
+import {LoggerMiddleware} from "./helpers/middleware/logger/query.middleware";
 import {ClassModule} from "./class/class.module";
 import {allModels} from "./importModels";
 import {UserModule} from "./users/user.module";
@@ -67,7 +67,7 @@ import {EmailModule} from "./email-adapter/email.module";
     TelegramBotModule,
     MenuModule,
     TypeMenuModule,
-    PricesModule,
+    PricesModule,//todo проверить нужны ли prices
     LogsModule,
     MealsModule,
     GatewayModule,
@@ -76,9 +76,6 @@ import {EmailModule} from "./email-adapter/email.module";
   ],
 })
 export class AppModule {
-  constructor(private bot: TelegramBotService) {
-    bot.connectBot();
-  }
 
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(LoggerMiddleware).forRoutes("*");

@@ -17,9 +17,13 @@ export class Meals extends Model<Meals, IMealsCreateAttr>{
     student_id: number;
 
     @ApiProperty({example:'[2,3,5]', description:'Массив ID типов меню'})
-    @Column({type: DataType.ARRAY(DataType.INTEGER), allowNull: false, })
+    @Column({type: DataType.ARRAY(DataType.INTEGER), allowNull: false })
     @ForeignKey(() => TypeMenu)
     meals: TypeMenu[];
+    
+    @ApiProperty({example: false, description: 'Питается за счёт бюджета(true) или родителей(false)'})
+    @Column({ type: DataType.BOOLEAN, allowNull: false, defaultValue: false })
+    isBudget: boolean;
 
     @ApiProperty({example:'25/03/2023', description:'Дата визита'})
     @Column({type: DataType.DATEONLY, allowNull: false, defaultValue: new Date()})
