@@ -12,12 +12,12 @@ import {AuthGuard} from "@nestjs/passport";
 @UseGuards(AuthGuard())
 @Controller('logs')
 export class LogsController {
-    constructor(private logsService: LogsService,
-                private badException: BadCheckEntitiesException
-                ) {
-    }
+    constructor(
+        private logsService: LogsService,
+        private badException: BadCheckEntitiesException
+    ) { }
 
-    @ApiOperation({summary: 'Получение списка логов'})
+    @ApiOperation({summary: 'Получение списка дат с логами'})
     @ApiResponse({ status: 200, type: [String], description: 'Успешное получение списка логов (массив дат)' })
     @HttpCode(200)
     @Get()
@@ -33,7 +33,7 @@ export class LogsController {
     @Get('/log')
     async getDailyLog(@Query() query: LogQueryDto) {
 
-        const logfile = await this.logsService.getSpecificLog(query.date)
+        const logfile = await this.logsService.getSpecificLog(query.date, query.file_name)
 
         this.badException.checkAndGenerateException(!logfile, 'logs', 'not', ['fileName']);
 

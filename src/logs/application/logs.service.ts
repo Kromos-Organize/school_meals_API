@@ -7,16 +7,15 @@ import * as process from "process";
 export class LogsService {
 
     private readonly logsDir = './logs'
-    private readonly logName = 'query_logs.log'
 
     async getAll() {
 
         return fs.readdirSync(path.join(process.cwd(), this.logsDir))
     }
 
-    async getSpecificLog(date: string) {
+    async getSpecificLog(date: string, file_name: string) {
 
-        const logPath = path.join(process.cwd(), this.logsDir, date, this.logName)
+        const logPath = path.join(process.cwd(), this.logsDir, date, `${file_name}_logs.log`);
 
         if (!fs.existsSync(logPath)) return null
 
