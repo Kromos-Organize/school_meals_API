@@ -155,7 +155,7 @@ export class AuthController {
     @HttpCode(200)
     @UseGuards(AuthGuard('jwt'))
     @Post('/update_session')
-    async updateSessionUser(@Body() inputDto: EmailInputDto) {
+    async updateSessionUser(@Body() inputDto: EmailInputDto, @Res() res) {
 
         const user = await this.usersQueryRepository.getUserByEmail(inputDto.email)
 
@@ -165,11 +165,12 @@ export class AuthController {
 
         const { password, ...userWithoutPass } = user.dataValues;
 
-        return {
-            ...userWithoutPass,
-            accessToken: tokens.accessToken,
-            refreshToken: tokens.refreshToken,
-        }
+         res
+           .cookie("refreshToken", tokens.refreshToken, cookieConfigToken)
+           .send({
+             ...userWithoutPass,
+             accessToken: tokens.accessToken,
+           });
     }
 
     @UseGuards(RefreshTokenGuard)

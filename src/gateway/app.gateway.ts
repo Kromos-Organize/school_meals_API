@@ -19,7 +19,7 @@ import { MealsQueryRepository } from 'src/meals/infrastructure/meals-query-repos
 import { IMealsCreateAttr } from 'src/meals/domain/dto/meals-service.dto';
 
 @WebSocketGateway({ transports: ['websocket'] })
-export class AppGateway  implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
+export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
 
     @WebSocketServer() wss: Server
 
