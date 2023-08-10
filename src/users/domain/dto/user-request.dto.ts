@@ -88,3 +88,10 @@ export class ActiveUserDto {
     @IsBoolean({ message: "Должно быть булевым значением" })
     readonly isActive: boolean;
 }
+
+export class SearchDtoUser {
+
+    @ApiProperty({ example: 'Roma', description: "Имя Фамилия пользователя" })
+    @IsString({ message: "Должно быть строкой." })
+    readonly name?: string;
+}

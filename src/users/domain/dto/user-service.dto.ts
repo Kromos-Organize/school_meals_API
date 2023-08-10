@@ -53,3 +53,7 @@ export interface IListUsersSchool {
     school_id: number 
     type_user: "EMPLOYEE" | "USERS"
 }
+
+export interface ISearchQueryUser {
+    name?: string
+}

@@ -28,8 +28,7 @@ export class AuthController {
         private jwtService: JwtService,
         private badException: BadCheckEntitiesException,
         private sessionService: SessionService,
-    ) {
-    }
+    ) { }
 
     @UseGuards(IsActiveUserAuthGuard)
     @ApiOperation({summary: "Логинизация"})

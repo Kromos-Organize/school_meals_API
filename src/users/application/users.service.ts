@@ -2,7 +2,7 @@ import {Injectable} from "@nestjs/common";
 import {UsersRepository} from "../infrastructure/users.repository";
 import {UsersQueryRepository} from "../infrastructure/users.query.repository";
 import {PasswordService} from "../../helpers/password/password.service";
-import {IActiveUser, IListUsersSchool, IRecoveryData, IUserModelAttr, IUserUpdateModel} from "../domain/dto/user-service.dto";
+import {IActiveUser, IListUsersSchool, IRecoveryData, ISearchQueryUser, IUserModelAttr, IUserUpdateModel} from "../domain/dto/user-service.dto";
 import {UserActivateResponseDto} from "../domain/dto/user-response.dto";
 import {EmailService} from "../../email-adapter/email-service";
 
@@ -16,9 +16,9 @@ export class UsersService {
     private emailService: EmailService
   ) {}
 
-  async getAll() {
+  async getAll(query: ISearchQueryUser) {
 
-    return await this.usersQueryRepository.getAllUsers();
+    return await this.usersQueryRepository.getAllUsers(query);
   }
 
   async getByEmail(email: string) {
@@ -93,6 +93,11 @@ export class UsersService {
   async createRecoveryData(recoveryData: IRecoveryData) {
 
     return this.usersRepository.addRecoveryData(recoveryData)
+  }
+
+  async updateRecoveryData(recoveryData: IRecoveryData) {
+
+    return this.usersRepository.updateRecoveryData(recoveryData)
   }
 
   async confirmAndChangePassword(id: number, passwordData: string) {

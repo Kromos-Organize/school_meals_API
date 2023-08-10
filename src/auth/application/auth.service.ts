@@ -79,9 +79,20 @@ export class AuthService {
         is_confirmed: false
       }
 
-      const addRecoveryData = await this.usersService.createRecoveryData(recoveryData)
+      const isSendMessage = await this.usersQueryRepository.checkSendRecoveryToken(user.id)
 
-      return this.emailService.sendRecoveryCode(user.email, addRecoveryData.recovery_code)
+      let recovery;
+
+      if(!isSendMessage) {
+
+        recovery = await this.usersService.createRecoveryData(recoveryData);
+
+      } else {
+
+        recovery = await this.usersService.updateRecoveryData(recoveryData);
+      }
+
+      return this.emailService.sendRecoveryCode(user.email, recovery.recovery_code)
     }
 
   async confirmPassword(inputPasswordDto: NewPasswordDto) {

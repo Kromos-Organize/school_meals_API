@@ -1,7 +1,7 @@
 import {ApiBearerAuth, ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {Body, Controller, Delete, Get, HttpCode, Param, Post, Put, Query, UseGuards,} from "@nestjs/common";
 import {UsersService} from "../application/users.service";
-import {ActiveUserDto, CountEmployeeSchoolParamDto, CreateEmployee, ListUserSchoolParamDto, UpdateUserDto, UserParamDto} from "../domain/dto/user-request.dto";
+import {ActiveUserDto, CountEmployeeSchoolParamDto, CreateEmployee, ListUserSchoolParamDto, SearchDtoUser, UpdateUserDto, UserParamDto} from "../domain/dto/user-request.dto";
 import {CountEmployeeResponseDto, UserActivateResponseDto, UserDeleteResponseDto, UserResponseDto} from "../domain/dto/user-response.dto";
 import {BadCheckEntitiesException} from "../../helpers/exception/BadCheckEntitiesException";
 import {AuthGuard} from "@nestjs/passport";
@@ -28,11 +28,10 @@ export class UsersController {
     @ApiResponse({status: 200, type: [UserResponseDto], description: 'Успешное получение списка пользователей'})
     @HttpCode(200)
     @Get()
-    getAll() {
+    getAll(@Query() paramDto: SearchDtoUser) {
 
-        return this.usersService.getAll();
+        return this.usersService.getAll(paramDto);
     }
-
 
     @ApiOperation({summary: "Получение данных пользователя"})
     @ApiResponse({status: 200, type: UserResponseDto, description: 'Успешное получение данных пользователя'})

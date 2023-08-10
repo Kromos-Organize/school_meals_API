@@ -51,7 +51,18 @@ export class UsersRepository {
 
     async addRecoveryData(recoveryData: IRecoveryData) {
 
-        return this.recoveryDataRepository.create(recoveryData)
+        return await this.recoveryDataRepository.create(recoveryData)
+    }
+
+    async updateRecoveryData(updateRecoveryData: IRecoveryData) {
+
+        const instance = await this.recoveryDataRepository.findOne({where: { user_id: updateRecoveryData.user_id }});
+
+        if (!instance) return false;
+
+        await instance.update(updateRecoveryData);
+
+        return await instance.save();
     }
 
     async updateUserPasswordAndRecoveryData(id: number, passwordData: string) {

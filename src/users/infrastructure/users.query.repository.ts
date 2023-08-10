@@ -4,7 +4,7 @@ import { User } from "../domain/entities/user.model";
 import {Sequelize} from "sequelize-typescript";
 import {QueryTypes} from "sequelize";
 import {RecoveryData} from "../domain/entities/recovery-data.model";
-import { IListUsersSchool } from '../domain/dto/user-service.dto';
+import { IListUsersSchool, ISearchQueryUser } from '../domain/dto/user-service.dto';
 import { RoleEnum } from '../domain/entities/role.enum';
 import { Class } from 'src/class/domain/entity/class.model';
 
@@ -13,10 +13,11 @@ export class UsersQueryRepository {
 
   constructor(
     @InjectModel(User) private usersRepository: typeof User,
+    @InjectModel(RecoveryData) private recoveryDataRepository: typeof RecoveryData,
     private sequelize: Sequelize,
   ) {}
 
-  async getAllUsers() {
+  async getAllUsers(query: ISearchQueryUser) {
 
     const res = await this.sequelize.query(`
         SELECT u.id, u.school_id, u.role, u.email, u.phone, u.fname, u.name, u.lname, u."isActive", 
@@ -86,4 +87,9 @@ export class UsersQueryRepository {
 
     return {user: user, recoveryData: recoveryData[0]}
   }
+
+  async checkSendRecoveryToken(user_id: number) {
+
+    return await this.recoveryDataRepository.findOne({where: {user_id}})
+}
 }
