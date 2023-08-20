@@ -15,6 +15,7 @@ export class EmailService {
                 subject: 'Восстановление пароля',
                 template: './recovery-password',
                 context: {
+                    baseUrl: process.env.BASE_URL_FRONT,
                     code: code
                 }
             })
