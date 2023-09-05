@@ -4,7 +4,7 @@ services:
   db:
     image: postgres:15-alpine
     env_file:
-      - .development_docker.env
+      - .development.env
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -24,7 +24,7 @@ services:
       context: .
       dockerfile: ./conf/dev/dockerFiles/main.Dockerfile
     env_file:
-      - .development_docker.env
+      - .development.env
     volumes:
       - .:/var/www/api.schoolmeals.d
       - /var/www/api.schoolmeals.d/node_modules
