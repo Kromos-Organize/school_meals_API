@@ -113,6 +113,6 @@ export class UsersService {
 
   updateQueryIdParams(params: ISearchQueryUser): string  {
     const conditions = Object.keys(params).map(name_param => `u.${name_param} = ${params[name_param]}`);
-    return 'WHERE ' + conditions.join(' OR ');
+    return !!conditions ? "WHERE " + conditions.join(" OR ") : "";
   }
 }
