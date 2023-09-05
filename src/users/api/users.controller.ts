@@ -7,7 +7,6 @@ import {BadCheckEntitiesException} from "../../helpers/exception/BadCheckEntitie
 import {AuthGuard} from "@nestjs/passport";
 import {BadRequestResult} from "../../helpers/exception/badRequestResult";
 import {IUserModelAttr} from "../domain/dto/user-service.dto";
-import {use} from "passport";
 import {RoleEnum} from "../domain/entities/role.enum";
 import { SchoolService } from 'src/school/application/school.service';
 

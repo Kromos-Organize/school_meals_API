@@ -91,7 +91,7 @@ export class ActiveUserDto {
 
 export class SearchDtoUser {
 
-    @ApiProperty({ example: 'Roma', description: "Имя Фамилия пользователя" })
-    @IsString({ message: "Должно быть строкой." })
-    readonly name?: string;
+    // @ApiProperty({ example: 'Шавлинский', description: "Фамилия пользователя" })
+    // readonly fname?: string;
+    
 }

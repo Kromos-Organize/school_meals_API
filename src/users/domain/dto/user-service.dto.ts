@@ -55,5 +55,5 @@ export interface IListUsersSchool {
 }
 
 export interface ISearchQueryUser {
-    name?: string
+    fname?: string
 }
