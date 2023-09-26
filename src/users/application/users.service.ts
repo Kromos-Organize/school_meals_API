@@ -16,10 +16,8 @@ export class UsersService {
   ) {}
 
   async getAll(query: ISearchQueryUser) {
-
-    const sqlParams = this.updateQueryIdParams(query);
   
-    return await this.usersQueryRepository.getAllUsers(sqlParams);
+    return await this.usersQueryRepository.getAllUsers(query);
   }
 
   async getByEmail(email: string) {
@@ -79,7 +77,7 @@ export class UsersService {
         message: message,
       };
 
-      await this.emailService.sendModerationMessage(email, message);
+      this.emailService.sendModerationMessage(email, message);
 
       return resultActivated;
     }
@@ -104,15 +102,5 @@ export class UsersService {
       id,
       passwordData
     );
-  }
-
-  // updateQueryNamesParams(params: ISearchQueryUser): string {
-  //   const conditions = Object.keys(params).map(name_param => `u.${name_param} ILIKE '%' || '${params[name_param]}' || '%'`);
-  //   return 'WHERE ' + conditions.join(' OR ');
-  // }
-
-  updateQueryIdParams(params: ISearchQueryUser): string  {
-    const conditions = Object.keys(params).map(name_param => `u.${name_param} = ${params[name_param]}`);
-    return !!conditions ? "WHERE " + conditions.join(" OR ") : "";
   }
 }

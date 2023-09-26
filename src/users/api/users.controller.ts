@@ -116,7 +116,6 @@ export class UsersController {
         return this.usersService.updateUser(paramDto.user_id, userDto);
     }
 
-
     @ApiOperation({summary: "Активация/Деактивация пользователя"})
     @ApiResponse({status: 200, type: UserActivateResponseDto, description: 'Успешная активация/деактивация пользователя'})
     @ApiResponse({status: 400, type: BadRequestResult, description: BadCheckEntitiesException.errorMessage('user', 'not')})

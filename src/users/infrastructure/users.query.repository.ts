@@ -17,15 +17,33 @@ export class UsersQueryRepository {
     private sequelize: Sequelize
   ) {}
 
-  async getAllUsers(params: string) {
+  async getAllUsers(query: ISearchQueryUser) {
 
     const res = await this.sequelize.query(
+//       'SELECT *' +
+//         'FROM (' +
+//           'SELECT u.id, u.school_id, u.role, u.email, u.phone, u.fname, u.name, u.lname, u."isActive",'+
+//             'CASE WHEN b.user_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_block' +
+//           'FROM public.user u' +
+//           'LEFT JOIN block_cabinet b ON u.id = b.user_id' +
+//           'WHERE' +
+// '            (u.id = COALESCE(' + query.id + ', u.id) OR ${query.id} IS NULL)' +
+//             'OR (u.fname = COALESCE("' + query.fname + '", u.fname) OR "' + query.fname +'" IS NULL)' +
+//             'OR (u.name = COALESCE("' + query.name + '", u.name) OR "' + query.name + '" IS NULL)' +
+//         ') AS search_result' +
+//        ' WHERE' +
+//           '(id = ' + query.id + ' OR ' + query.id + ' IS NULL)' +
+//          ' OR (fname = "' + query.fname + '" OR "' + query.fname + '" IS NULL)' +
+//           'OR (name = "' + query.name + '" OR "' + query.name + '" IS NULL)' +
+//        ' ORDER BY id ASC;',
       `
         SELECT u.id, u.school_id, u.role, u.email, u.phone, u.fname, u.name, u.lname, u."isActive", 
         CASE WHEN b.user_id IS NOT NULL THEN TRUE ELSE FALSE END AS is_block
         FROM public.user u 
         LEFT JOIN block_cabinet b ON u.id = b.user_id
-        ${params}
+        WHERE (u.id = COALESCE(${query.id || 'NULL'}, u.id) OR ${query.id || 'NULL'} IS NULL)
+        OR (u.fname = COALESCE(${query.fname ? 'u.fname' : 'NULL'}, u.fname) OR ${query.fname || 'NULL'} IS NULL)
+        OR (u.name = COALESCE(${query.name || 'NULL'}, u.name) OR ${query.name || 'NULL'} IS NULL)
         ORDER BY u.id ASC;`,
       {
         type: QueryTypes.SELECT,
